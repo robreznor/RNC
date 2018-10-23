@@ -1,0 +1,10 @@
+/node_installation
+/angular-project
+.classpath
+.DS_Store
+.project
+.idea
+/node
+/target/
+/.apt_generated/
+
