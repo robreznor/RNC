@@ -1,8 +1,7 @@
-
 /* resize images */
 .container img {
-    height: auto;
-    padding: 10px;
+	height: auto;
+	padding: 5px;
 }
 
 .left img {
