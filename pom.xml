@@ -228,8 +228,7 @@
            		</execution>
            </executions>
         </plugin> --> 
-        
 		</plugins>
-		<finalName>rnc</finalName>
+		<finalName>api</finalName>
 	</build>
 </project>
