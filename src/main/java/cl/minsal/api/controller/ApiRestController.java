@@ -58,14 +58,14 @@ public class ApiRestController {
     }
 	
 	@RequestMapping(value="/paciente", method=RequestMethod.GET)
-    public List<Paciente> pacientes() {
+    public String pacientes() {
 		
 		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
         Query q = session.createQuery("from Paciente");
         List<Paciente> pacientes = q.list();
         sessionFactory.close();
-        return pacientes;
+        return "Actualizado";
     }
 	
 	@RequestMapping(value="/paciente/{id}", method=RequestMethod.GET)
