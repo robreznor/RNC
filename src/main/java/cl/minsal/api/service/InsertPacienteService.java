@@ -24,6 +24,7 @@ import org.springframework.ui.ModelMap;
 
 import cl.minsal.api.model.Antecedentes;
 import cl.minsal.api.model.Diagnostico;
+import cl.minsal.api.model.Localizacion;
 import cl.minsal.api.model.Medico;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Tratamiento;
@@ -32,10 +33,20 @@ public class InsertPacienteService {
 	
 	private ModelMap model;
 	private Timestamp timestamp;
+	private Boolean validation_fail;
 	
+	public ModelMap getModel() {
+		return model;
+	}
+
+	public Boolean getValidation_fail() {
+		return validation_fail;
+	}
+
 	public Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
 
         if(paciente == null){
+        	
         	paciente = new Paciente();
         	
     		paciente.setNombre(pacienteData[0]);
@@ -67,13 +78,6 @@ public class InsertPacienteService {
 	
 	public Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente) throws ParseException{
 		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
-		System.out.println("insertando diagnostico");
 		Diagnostico diagnostico = new Diagnostico();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date fecha_diagnostico_date= fecha.parse(pacienteData[22]);
@@ -81,7 +85,6 @@ public class InsertPacienteService {
     	java.sql.Date fecha_diagnostico = new java.sql.Date(fecha_diagnostico_date.getTime()); 
     	java.sql.Date fecha_comite = new java.sql.Date(fecha_comite_date.getTime());
     		
-		diagnostico.setPaciente(paciente);
 		diagnostico.setTipo_comite(Integer.parseInt(pacienteData[21].split("_")[1]));
 		diagnostico.setFecha_diagnostico(fecha_diagnostico);
 		diagnostico.setFecha_comite(fecha_comite);
@@ -118,7 +121,6 @@ public class InsertPacienteService {
 			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[40].split("-")[1]));
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
-			System.out.println("Insertando tratamiento: "+tratamiento.getId_tratamiento());
 		}
 		System.out.println(pacienteData.length);
 		if(pacienteData.length>=46 && !pacienteData[46].equals("")){
@@ -139,7 +141,6 @@ public class InsertPacienteService {
 			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[46].split("-")[1]));
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
-			System.out.println("Insertando tratamiento: "+tratamiento.getId_tratamiento());
 		}
 		if(pacienteData.length>=52 && !pacienteData[52].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
@@ -159,7 +160,6 @@ public class InsertPacienteService {
 			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[52].split("-")[1]));
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
-			System.out.println("Insertando tratamiento: "+tratamiento.getId_tratamiento());
 		}
 		if(pacienteData.length>=58 && !pacienteData[58].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
@@ -182,7 +182,6 @@ public class InsertPacienteService {
 			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[58].split("-")[1]));
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
-			System.out.println("Insertando tratamiento: "+tratamiento.getId_tratamiento());
 		}
 		
 		return tratamientos;
@@ -203,6 +202,17 @@ public class InsertPacienteService {
 		return antecedente;
 	}
 	
+	public Localizacion InsertLocalizacion(String[] pacienteData) throws ParseException {
+		
+		Localizacion localizacion = new Localizacion();
+    	
+    	localizacion.setRegion(Integer.parseInt(pacienteData[17].split("_")[1]));
+    	localizacion.setProvincia(Integer.parseInt(pacienteData[18].split("_")[1]));
+    	localizacion.setComuna(Integer.parseInt(pacienteData[19].split("-")[1]));
+    	localizacion.setDireccion(pacienteData[20]);
+    	
+    	return localizacion;
+	}
 	public void InsertData(InputStreamReader csvFile) throws ParseException {
 
         BufferedReader br = null;
@@ -235,8 +245,12 @@ public class InsertPacienteService {
 			        	Diagnostico diagnostico = this.InsertDiagnostico(pacienteData, paciente);
 			        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico);
 			        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData);
+			        	Localizacion localizacion = this.InsertLocalizacion(pacienteData);
+			        	System.out.println("localizacion "+localizacion.getComuna());
 			        	
 			        	session.save(paciente);
+			        	session.save(localizacion);
+			        	paciente.setLocalizacion(localizacion);
 			        	
 			        	session.save(diagnostico);
 			        	antecedente.setId_diagnostico(diagnostico);
@@ -263,6 +277,33 @@ public class InsertPacienteService {
     sessionFactory.close(); 
 
         
+	}
+	
+	private void paciente_validation(String [] pacienteData){
+		
+		this.validation_fail = false;
+		
+		if(pacienteData[3].equals("")){
+			model.addAttribute("error.paciente.rut","El rut es un campo requerido");
+			this.validation_fail = true;
+		}
+		if(pacienteData[4].equals("")){
+			model.addAttribute("error.paciente.dv","El digito verificador es un campo requerido");
+			this.validation_fail = true;
+		}
+		if(pacienteData[0].equals("")){
+			model.addAttribute("error.paciente.nombre","El nombre del paciente es un campo requerido");
+			this.validation_fail = true;
+		}
+		if(pacienteData[1].equals("")){
+			model.addAttribute("error.paciente.apellido1","El primer apellido del paciente es un campo requerido");
+			this.validation_fail = true;
+		}
+		if(pacienteData[2].equals("")){
+			model.addAttribute("error.paciente.apellido","El segundo apellido del paciente es un campo requerido");
+			this.validation_fail = true;
+		}
+		
 	}
 
 }

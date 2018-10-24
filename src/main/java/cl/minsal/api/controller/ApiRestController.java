@@ -153,6 +153,7 @@ public class ApiRestController {
             return new ModelAndView("upload_file");
         } else {
             try {
+            	System.out.println(fileBucket.getFile().getOriginalFilename());
             	InputStreamReader file = new InputStreamReader(fileBucket.getFile().getInputStream(), "UTF8");
             	InsertPacienteService insertar = new InsertPacienteService();
             	System.out.println("Insertando datos");

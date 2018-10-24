@@ -23,10 +23,16 @@ public class Establecimiento implements Serializable {
 	private String nombre_establecimiento;
 	private Integer servicio_salud; 
 	
-	@OneToOne
+	@OneToOne(mappedBy="establecimiento")
 	@JoinColumn(name = "id_establecimiento")
 	private Localizacion id_localizacion;
 	
+	public Localizacion getlocalizacion() {
+		return id_localizacion;
+	}
+	public void setlocalizacion(Localizacion id_localizacion) {
+		this.id_localizacion = id_localizacion;
+	}
 	public void setCodigo_establecimiento(Integer codigo_establecimiento) {
 		this.codigo_establecimiento = codigo_establecimiento;
 	}

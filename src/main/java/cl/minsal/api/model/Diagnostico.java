@@ -43,6 +43,10 @@ public class Diagnostico implements Serializable {
     @JoinColumn(name = "id_diagnostico")
 	private Antecedentes id_antecedentes;
 	
+	public Antecedentes getAntecedentes(){
+		return this.id_antecedentes;
+	}
+	
 	public void setTipo_comite(Integer tipo_comite) {
 		this.tipo_comite = tipo_comite;
 	}

@@ -40,29 +40,22 @@ public class Paciente implements Serializable {
 	private Integer prevision;
 	private Integer beneficiario_fonasa;
 	private Timestamp fecha_registro;
-//	
-//	@OneToMany(mappedBy="paciente")
-//	private Set<Documentos> documento;
-//	
 	
 	@OneToMany(mappedBy="paciente")
 	private Set<Diagnostico> diagnostico;
 	
 	@OneToOne
     @JoinColumn(name = "id_paciente")
-	private Establecimiento id_establecimiento;
+	private Localizacion id_localizacion;
 	
-//	@OneToMany(mappedBy="paciente")
-//	private Set<Tratamiento> tratamiento;
+	public Set<Diagnostico> getDiagnostico() {
+		return diagnostico;
+	}
 	
 	public Integer getId_paciente(){
 		return id_paciente;
 	}
-	
-	public Set<Diagnostico> getDiagnostico(){
-		return diagnostico;
-	}
-	
+
 	public Integer getRut() {
 		return rut;
 	}
@@ -70,7 +63,14 @@ public class Paciente implements Serializable {
 	public String getDverificador() {
 		return dverificador;
 	}
-
+	
+	public Localizacion getLocalizacion(){
+		return id_localizacion;
+	}
+	
+	public void setLocalizacion(Localizacion localizacion) {
+		this.id_localizacion = localizacion;
+	}
 
 	public void setRut(Integer rut) {
 		this.rut = rut;
