@@ -24,6 +24,6 @@
         <mapping class="cl.minsal.api.model.Establecimiento"/>
         <mapping class="cl.minsal.api.model.Medico"/>
         <mapping class="cl.minsal.api.model.Tratamiento"/>
-				<mapping class="cl.minsal.api.model.Diagnostico"/>      
+		<mapping class="cl.minsal.api.model.Diagnostico"/>      
     </session-factory>
 </hibernate-configuration>
