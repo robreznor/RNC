@@ -22,29 +22,13 @@ public class Localizacion implements Serializable {
 	private Integer comuna;
 	private String direccion;
 	
-	@OneToOne
-	private Paciente id_paciente;
-	
-	@OneToOne
-	private Establecimiento id_establecimiento;
-	
 	public void setRegion(Integer region) {
 		this.region = region;
 	}
 	
-
 	public void setProvincia(Integer provincia) {
 		this.provincia = provincia;
 	}
-
-	public void setId_paciente(Paciente id_paciente) {
-		this.id_paciente = id_paciente;
-	}
-
-	public void setId_establecimiento(Establecimiento id_establecimiento) {
-		this.id_establecimiento = id_establecimiento;
-	}
-
 
 	public void setComuna(Integer comuna) {
 		this.comuna = comuna;

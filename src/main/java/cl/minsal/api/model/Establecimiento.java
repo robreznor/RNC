@@ -1,6 +1,7 @@
 package cl.minsal.api.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
@@ -23,16 +25,21 @@ public class Establecimiento implements Serializable {
 	private String nombre_establecimiento;
 	private Integer servicio_salud; 
 	
-	@OneToOne(mappedBy="id_establecimiento")
-	@JoinColumn(name = "id_establecimiento")
-	private Localizacion id_localizacion;
+	@JoinColumn(name = "id_localizacion")
+    @OneToOne
+    private Localizacion localizacion;
+
+	@OneToMany(mappedBy="paciente")
+	private Set<Diagnostico> diagnostico;
 	
-	public Localizacion getlocalizacion() {
-		return id_localizacion;
+	public Localizacion getLocalizacion(){
+		return localizacion;
 	}
-	public void setlocalizacion(Localizacion id_localizacion) {
-		this.id_localizacion = id_localizacion;
+	
+	public void setLocalizacion(Localizacion localizacion){
+		this.localizacion = localizacion;
 	}
+	
 	public void setCodigo_establecimiento(Integer codigo_establecimiento) {
 		this.codigo_establecimiento = codigo_establecimiento;
 	}

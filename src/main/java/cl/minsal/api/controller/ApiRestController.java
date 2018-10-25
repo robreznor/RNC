@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import java.text.ParseException;
 
+import java.text.ParseException;
 
 import cl.minsal.api.object.FileBucket;
 import cl.minsal.api.service.InsertPacienteService;
 import cl.minsal.api.util.FileValidator;
+import cl.minsal.api.util.PacienteValidator;
 import cl.minsal.api.model.Diagnostico;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.object.PacienteSearch;
@@ -29,6 +30,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.Validator;
 
 @RestController
 public class ApiRestController {
@@ -41,6 +43,11 @@ public class ApiRestController {
         binder.setValidator(fileValidator);
     }
 
+    @RequestMapping(value="/", method=RequestMethod.GET)
+	public ModelAndView index(){
+		return new ModelAndView("redirect:/subir_archivo");
+	}
+    
     @RequestMapping(value="/subir_archivo", method=RequestMethod.GET)
 	public ModelAndView uploadFile(){
 		return new ModelAndView("upload_file");
@@ -143,14 +150,13 @@ public class ApiRestController {
 		return diagnostico.get(0);
 	}
 	
-	
 	@RequestMapping(value = "/file_upload", method = RequestMethod.POST)
     public ModelAndView singleFileUpload(@Valid FileBucket fileBucket,
             BindingResult result, ModelMap model) throws IOException, ParseException {
 		
         if (result.hasErrors()) {
             model.addAttribute("error", "The id selected is out of Range, please select another id within range");
-            return new ModelAndView("upload_file");
+            return new ModelAndView("redirect:/subir_archivo", model);
         } else {
             try {
             	System.out.println(fileBucket.getFile().getOriginalFilename());
@@ -158,12 +164,12 @@ public class ApiRestController {
             	InsertPacienteService insertar = new InsertPacienteService();
             	System.out.println("Insertando datos");
                 insertar.InsertData(file);
+                model = insertar.getModel();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-            
-            model.addAttribute("error", "The id selected is out of Range, please select another id within range");
-            return new ModelAndView("upload_file");
+            } 
+            System.out.println(model);
+            return new ModelAndView("redirect:/subir_archivo", model);
         }
     }
 }

@@ -39,12 +39,16 @@ public class Diagnostico implements Serializable {
 	@OneToMany(mappedBy="diagnostico")
 	private Set<Tratamiento> tratamiento;
 	
-	@OneToOne
-    @JoinColumn(name = "id_diagnostico")
-	private Antecedentes id_antecedentes;
+	@JoinColumn(name = "id_antecedentes")
+    @OneToOne
+    private Antecedentes antecedentes;
 	
 	public Antecedentes getAntecedentes(){
-		return this.id_antecedentes;
+		return this.antecedentes;
+	}
+	
+	public void setAntecedentes(Antecedentes antecedentes){
+		this.antecedentes = antecedentes;
 	}
 	
 	public void setTipo_comite(Integer tipo_comite) {

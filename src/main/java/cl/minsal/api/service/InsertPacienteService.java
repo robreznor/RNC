@@ -1,17 +1,13 @@
 package cl.minsal.api.service;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hibernate.HibernateException;
@@ -28,6 +24,7 @@ import cl.minsal.api.model.Localizacion;
 import cl.minsal.api.model.Medico;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Tratamiento;
+import cl.minsal.api.util.PacienteValidator;
 
 public class InsertPacienteService {
 	
@@ -72,7 +69,6 @@ public class InsertPacienteService {
     		if(!pacienteData[16].equals("")) paciente.setBeneficiario_fonasa(Integer.parseInt(pacienteData[16].split("-")[1]));
     		paciente.setFecha_registro(this.timestamp);
         }
-        System.out.println(paciente.getRut());
     	return paciente;
 	}
 	
@@ -104,7 +100,7 @@ public class InsertPacienteService {
 		Set<Tratamiento> tratamientos = new HashSet<Tratamiento>();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
 			
-		if(pacienteData.length>=40 && !pacienteData[40].equals("")){
+		if(!pacienteData[40].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
 			Medico medico = new Medico();
 			medico.setNombre_medico(pacienteData[36]);
@@ -123,8 +119,8 @@ public class InsertPacienteService {
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
-		System.out.println(pacienteData.length);
-		if(pacienteData.length>=46 && !pacienteData[46].equals("")){
+		
+		if(!pacienteData[46].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
 			Medico medico = new Medico();
 			medico.setNombre_medico(pacienteData[42]);
@@ -143,7 +139,7 @@ public class InsertPacienteService {
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
-		if(pacienteData.length>=52 && !pacienteData[52].equals("")){
+		if(!pacienteData[52].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
 			Medico medico = new Medico();
 			medico.setNombre_medico(pacienteData[48]);
@@ -162,7 +158,7 @@ public class InsertPacienteService {
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
-		if(pacienteData.length>=58 && !pacienteData[58].equals("")){
+		if(!pacienteData[58].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
 			Medico medico = new Medico();
 			medico.setNombre_medico(pacienteData[54]);
@@ -227,17 +223,26 @@ public class InsertPacienteService {
         int count = 0;
         SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         Session session = sessionFactory.openSession();
-            
+        PacienteValidator validador = new PacienteValidator();
+        String[] read_line;
+        String[] pacienteData = new String[59]; 
         try {
 			while (((line = br.readLine()) != null)) {   
 					
 				if(count>3){        
- 
-			        String[] pacienteData = line.split(cvsSplitBy);
+					
+			        read_line = line.split(cvsSplitBy);
 			        Transaction tx1 = session.beginTransaction();
-			        
-			        if(pacienteData.length>1 && !pacienteData[0].equals("")){ 
-			        	
+			        for(int i=0;i<pacienteData.length;i++){
+			        	if(i<read_line.length){
+			        		pacienteData[i] = read_line[i];			        
+			        	}else{
+			        		pacienteData[i] = "";
+			        	}			        	
+			        }
+	
+			        if(!pacienteData[0].equals("")){ 
+			        	validador.pacienteValidation(pacienteData);
 			         	System.out.println("Insertando paciente");
 			         	Integer rut = Integer.parseInt(pacienteData[3]);
 			    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
@@ -247,16 +252,13 @@ public class InsertPacienteService {
 			        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico);
 			        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData);
 			        	Localizacion localizacion = this.InsertLocalizacion(pacienteData);
-			        	System.out.println("localizacion "+localizacion.getComuna());
-			        	
-			        	session.save(paciente);
-			        	localizacion.setId_paciente(paciente);
 			        	session.save(localizacion);
-			        	
-			        	session.save(diagnostico);
-			        	antecedente.setId_diagnostico(diagnostico);
+			        	paciente.setLocalizacion(localizacion);
+			        	session.save(paciente);
 			        	session.save(antecedente);
-
+			        	diagnostico.setAntecedentes(antecedente);
+			        	session.save(diagnostico);
+			        	
 			        	for(Tratamiento tratamiento: tratamientos){
 			        		System.out.print(tratamiento.getMedico());
 			        		session.save(tratamiento.getMedico());
@@ -264,47 +266,20 @@ public class InsertPacienteService {
 			        	}
         	
 		        	tx1.commit();
-		        }
+			        }
+				}
+				count++;               
 			}
-			count++;               
-		}
-	} catch (HibernateException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+		sessionFactory.close();
+		this.validation_fail = validador.getValidation_fail();
+		this.model = validador.getModel();
+		}     
 	}
-    sessionFactory.close(); 
-
-        
-	}
-	
-	private void paciente_validation(String [] pacienteData){
-		
-		this.validation_fail = false;
-		
-		if(pacienteData[3].equals("")){
-			model.addAttribute("error.paciente.rut","El rut es un campo requerido");
-			this.validation_fail = true;
-		}
-		if(pacienteData[4].equals("")){
-			model.addAttribute("error.paciente.dv","El digito verificador es un campo requerido");
-			this.validation_fail = true;
-		}
-		if(pacienteData[0].equals("")){
-			model.addAttribute("error.paciente.nombre","El nombre del paciente es un campo requerido");
-			this.validation_fail = true;
-		}
-		if(pacienteData[1].equals("")){
-			model.addAttribute("error.paciente.apellido1","El primer apellido del paciente es un campo requerido");
-			this.validation_fail = true;
-		}
-		if(pacienteData[2].equals("")){
-			model.addAttribute("error.paciente.apellido","El segundo apellido del paciente es un campo requerido");
-			this.validation_fail = true;
-		}
-		
-	}
-
 }

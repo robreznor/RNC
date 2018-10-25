@@ -40,9 +40,21 @@ public class Paciente implements Serializable {
 	private Integer prevision;
 	private Integer beneficiario_fonasa;
 	private Timestamp fecha_registro;
-	
+
+    @JoinColumn(name = "id_localizacion")
+    @OneToOne
+    private Localizacion localizacion;
+
 	@OneToMany(mappedBy="paciente")
 	private Set<Diagnostico> diagnostico;
+	
+	public Localizacion getLocalizacion(){
+		return localizacion;
+	}
+	
+	public void setLocalizacion(Localizacion localizacion) {
+		this.localizacion = localizacion;
+	}
 	
 	public Set<Diagnostico> getDiagnostico() {
 		return diagnostico;
