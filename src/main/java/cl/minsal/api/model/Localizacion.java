@@ -23,12 +23,10 @@ public class Localizacion implements Serializable {
 	private String direccion;
 	
 	@OneToOne
-    @JoinColumn(name = "id_localizacion")
 	private Paciente id_paciente;
 	
 	@OneToOne
-    @JoinColumn(name = "id_localizacion")
-	private Paciente id_establecimiento;
+	private Establecimiento id_establecimiento;
 	
 	public void setRegion(Integer region) {
 		this.region = region;
@@ -38,6 +36,15 @@ public class Localizacion implements Serializable {
 	public void setProvincia(Integer provincia) {
 		this.provincia = provincia;
 	}
+
+	public void setId_paciente(Paciente id_paciente) {
+		this.id_paciente = id_paciente;
+	}
+
+	public void setId_establecimiento(Establecimiento id_establecimiento) {
+		this.id_establecimiento = id_establecimiento;
+	}
+
 
 	public void setComuna(Integer comuna) {
 		this.comuna = comuna;

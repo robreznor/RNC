@@ -23,7 +23,7 @@ public class Establecimiento implements Serializable {
 	private String nombre_establecimiento;
 	private Integer servicio_salud; 
 	
-	@OneToOne(mappedBy="establecimiento")
+	@OneToOne(mappedBy="id_establecimiento")
 	@JoinColumn(name = "id_establecimiento")
 	private Localizacion id_localizacion;
 	

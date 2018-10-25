@@ -77,6 +77,7 @@ public class InsertPacienteService {
 	}
 	
 	public Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente) throws ParseException{
+		
 		System.out.println("insertando diagnostico");
 		Diagnostico diagnostico = new Diagnostico();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -249,8 +250,8 @@ public class InsertPacienteService {
 			        	System.out.println("localizacion "+localizacion.getComuna());
 			        	
 			        	session.save(paciente);
+			        	localizacion.setId_paciente(paciente);
 			        	session.save(localizacion);
-			        	paciente.setLocalizacion(localizacion);
 			        	
 			        	session.save(diagnostico);
 			        	antecedente.setId_diagnostico(diagnostico);

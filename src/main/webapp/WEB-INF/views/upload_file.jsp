@@ -8,7 +8,7 @@
 
 <html>
 <head>
-<link href="/api/resources/css/styles.css" rel="stylesheet">
+<link href="/rnc/resources/css/styles.css" rel="stylesheet">
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -19,13 +19,13 @@
 	<div class="header">
 		<div class="row margin-bottom-10">
 			<div class="container col-md-4 left">
-				<img src="/api/resources/imagenes/MINSAL.png" />
+				<img src="/rnc/resources/imagenes/MINSAL.png" />
 			</div>
 			<div class="container col-md-4 text-center center">
-				<img src="/api/resources/imagenes/1.png" />
+				<img src="/rnc/resources/imagenes/1.png" />
 			</div>
 			<div class="container col-md-4 text-right right">
-				<img src="/api/resources/imagenes/2.png" />
+				<img src="/rnc/resources/imagenes/2.png" />
 			</div>
 		</div>
 		<h3 class="text-center margin-bottom-30">

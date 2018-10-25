@@ -44,10 +44,6 @@ public class Paciente implements Serializable {
 	@OneToMany(mappedBy="paciente")
 	private Set<Diagnostico> diagnostico;
 	
-	@OneToOne
-    @JoinColumn(name = "id_paciente")
-	private Localizacion id_localizacion;
-	
 	public Set<Diagnostico> getDiagnostico() {
 		return diagnostico;
 	}
@@ -64,14 +60,6 @@ public class Paciente implements Serializable {
 		return dverificador;
 	}
 	
-	public Localizacion getLocalizacion(){
-		return id_localizacion;
-	}
-	
-	public void setLocalizacion(Localizacion localizacion) {
-		this.id_localizacion = localizacion;
-	}
-
 	public void setRut(Integer rut) {
 		this.rut = rut;
 	}
