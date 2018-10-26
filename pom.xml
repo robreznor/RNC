@@ -145,66 +145,121 @@
 	    <version>2.5</version>
 		</dependency>
 		<dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.3.1</version>
-        </dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.3.1</version>
+    </dependency>
 	</dependencies>
 	
 	<build>
 		<plugins>
-		<plugin> 
-         <groupId>com.github.eirslett</groupId>
-	         <artifactId>frontend-maven-plugin</artifactId>
-	         <version>1.0</version>
-	         <configuration>
-	             <workingDirectory>${angular.project.location}</workingDirectory>
-	             <installDirectory>${angular.project.nodeinstallation}</installDirectory>
-	         </configuration>
-	         <executions>
-             <!-- It will install nodejs and npm -->
-             <execution>
-                 <id>install node and npm</id>
-                 <goals>
-                     <goal>install-node-and-npm</goal>
-                 </goals>
-                 <configuration>
-                     <nodeVersion>v8.11.4</nodeVersion>
-                     <npmVersion>5.6.0</npmVersion>
-                 </configuration>
-             </execution>
-             <!-- It will execute command "npm install" inside "/e2e-angular2" directory -->
-             <execution>
-                 <id>npm install</id>
-                 <goals>
-                     <goal>npm</goal>
-                 </goals>
-                 <configuration>
-                     <arguments>install</arguments>
-                 </configuration>
-             </execution>
-             <!-- It will execute command "npm build" inside "/e2e-angular2" directory 
-                 to clean and create "/dist" directory -->
-             <execution>
-                 <id>npm build</id>
-                 <goals>
-                     <goal>npm</goal>
-                 </goals>
-                 <configuration>
-                     <arguments>run build</arguments>
-                 </configuration>
-             </execution>
-         </executions>
-      </plugin>
+		<plugin>
+	    <groupId>com.github.eirslett</groupId>
+	    <artifactId>frontend-maven-plugin</artifactId>
+	    <version>1.3</version>
+	    <configuration>
+	        <nodeVersion>v8.11.3</nodeVersion>
+	        <npmVersion>6.3.0</npmVersion>
+	        <workingDirectory>${angular.project.location}</workingDirectory>
+	    </configuration>
+	    <executions>
+	        <execution>
+	            <id>install node and npm</id>
+	            <goals>
+	                <goal>install-node-and-npm</goal>
+	            </goals>
+	        </execution>
+	        <execution>
+	            <id>npm install</id>
+	            <goals>
+	                <goal>npm</goal>
+	            </goals>
+	        </execution>
+	        <execution>
+	            <id>npm run build</id>
+	            <goals>
+	                <goal>npm</goal>
+	            </goals>
+	            <configuration>
+	                <arguments>run build</arguments>
+	            </configuration>
+	        </execution>
+	        <execution>
+	            <id>prod</id>
+	            <goals>
+	                <goal>npm</goal>
+	            </goals>
+	            <configuration>
+	                <arguments>run-script build</arguments>
+	            </configuration>
+	            <phase>generate-resources</phase>
+	        </execution>
+	    </executions>
+		</plugin>
+		<plugin>
+		    <artifactId>maven-resources-plugin</artifactId>
+		    <executions>
+		        <execution>
+		            <id>copy-resources</id>
+		            <phase>validate</phase>
+		            <goals>
+		                <goal>copy-resources</goal>
+		            </goals>
+		            <configuration>
+		                <outputDirectory>{project.build.directory}/${project.artifactId}/resources/</outputDirectory>
+		                <resources>
+		                    <resource>
+		                        <directory>${project.build.directory}/${project.artifactId}/${angular.project.location}/dist/angular-project</directory>
+		                    </resource>
+		                </resources>
+		            </configuration>
+		        </execution>
+		    </executions>
+		</plugin>
+<!-- 			<plugin> 
+        <groupId>com.github.eirslett</groupId>
+         <artifactId>frontend-maven-plugin</artifactId>
+         <version>1.0</version>
+         <configuration>
+             <workingDirectory>${angular.project.location}</workingDirectory>
+             <installDirectory>${angular.project.nodeinstallation}</installDirectory>
+         </configuration>
+         <executions>
+            It will install nodejs and npm
+            <execution>
+                <id>install node and npm</id>
+                <goals>
+                    <goal>install-node-and-npm</goal>
+                </goals>
+                <configuration>
+                    <nodeVersion>v8.11.4</nodeVersion>
+                    <npmVersion>5.6.0</npmVersion>
+                </configuration>
+            </execution>
+            It will execute command "npm install" inside "/e2e-angular2" directory
+            <execution>
+                <id>npm install</id>
+                <goals>
+                    <goal>npm</goal>
+                </goals>
+                <configuration>
+                    <arguments>install</arguments>
+                </configuration>
+            </execution>
+            It will execute command "npm build" inside "/e2e-angular2" directory 
+                to clean and create "/dist" directory
+            <execution>
+                <id>npm build</id>
+                <goals>
+                    <goal>npm</goal>
+                </goals>
+                <configuration>
+                    <arguments>run build</arguments>
+                </configuration>
+            </execution>
+        </executions>
+      </plugin> -->		
 			<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-    			<webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
-  			</configuration>
-       </plugin>			
-       <plugin>
        		<groupId>org.apache.maven.plugins</groupId>
          	<artifactId>maven-resources-plugin</artifactId>
           <version>2.4</version>
@@ -222,16 +277,24 @@
                    So if you have customized the name of war-file for ex. as "app.war"
                    then below value should be ${project.build.directory}/app/ 
                    Value given below is as per default war-file name -->
-                   <outputDirectory>${project.build.directory}/${project.artifactId}/resources</outputDirectory>
+                   <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
                    <resources>
                        <resource>
-                           <directory>${project.basedir}/${angular.project.location}/dist</directory>
+                           <directory>${project.parent.basedir}/api/src/main/angular-project/dist/angular-project</directory>
                        </resource>
                    </resources>
               	</configuration>
            		</execution>
            </executions>
-        </plugin>  
+        </plugin> 
+        <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-war-plugin</artifactId>
+	        <version>2.4</version>
+	        <configuration>
+	    			<webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+	  			</configuration>
+       </plugin>			
 		</plugins>
 		<finalName>api</finalName>
 	</build>
