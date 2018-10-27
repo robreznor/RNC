@@ -30,14 +30,14 @@ public class InsertPacienteService {
 	
 	private ModelMap model;
 	private Timestamp timestamp;
-	private Boolean validation_fail;
+	private Boolean validation;
 	
 	public ModelMap getModel() {
 		return model;
 	}
 
-	public Boolean getValidation_fail() {
-		return validation_fail;
+	public Boolean getValidation() {
+		return validation;
 	}
 
 	public Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
@@ -215,7 +215,7 @@ public class InsertPacienteService {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ";";
-       
+        this.validation = true;
         Date date = new Date();
         this.timestamp = new Timestamp(date.getTime());
         
@@ -227,10 +227,10 @@ public class InsertPacienteService {
         String[] read_line;
         String[] pacienteData = new String[59]; 
         try {
-			while (((line = br.readLine()) != null)) {   
+			while (((line = br.readLine()) != null && this.validation)) {   
 					
 				if(count>3){        
-					
+
 			        read_line = line.split(cvsSplitBy);
 			        Transaction tx1 = session.beginTransaction();
 			        for(int i=0;i<pacienteData.length;i++){
@@ -240,9 +240,9 @@ public class InsertPacienteService {
 			        		pacienteData[i] = "";
 			        	}			        	
 			        }
-	
-			        if(!pacienteData[0].equals("")){ 
-			        	validador.pacienteValidation(pacienteData);
+			        validador.pacienteValidation(pacienteData);
+			        this.validation = validador.getValidation();
+			        if(this.validation){ 
 			         	System.out.println("Insertando paciente");
 			         	Integer rut = Integer.parseInt(pacienteData[3]);
 			    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
@@ -264,7 +264,6 @@ public class InsertPacienteService {
 			        		session.save(tratamiento.getMedico());
 			        		session.save(tratamiento);
 			        	}
-        	
 		        	tx1.commit();
 			        }
 				}
@@ -277,9 +276,8 @@ public class InsertPacienteService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-		sessionFactory.close();
-		this.validation_fail = validador.getValidation_fail();
-		this.model = validador.getModel();
+			sessionFactory.close();
+			this.model = validador.getModel();
 		}     
 	}
 }

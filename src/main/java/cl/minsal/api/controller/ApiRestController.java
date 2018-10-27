@@ -53,41 +53,41 @@ public class ApiRestController {
 		return new ModelAndView("upload_file");
 	}
 	
-	@RequestMapping(value="/paciente_search", method=RequestMethod.GET)
-    public List<PacienteSearch> pacienteSearch() {
-		
-		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        Query q = session.createQuery("from PacienteSearch");
-        List<PacienteSearch> pacientes = q.list();
-        sessionFactory.close();
-        return pacientes;
-    }
-	
-	@RequestMapping(value="/paciente", method=RequestMethod.GET)
-    public List<Paciente> pacientes() {
-		
-		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        Query q = session.createQuery("from Paciente");
-        List<Paciente> pacientes = q.list();
-        sessionFactory.close();
-        return pacientes;
-    }
-	
-	@RequestMapping(value="/paciente/{id}", method=RequestMethod.GET)
-	private Paciente search(@PathVariable Integer id){
-		
-		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
-        List<Paciente> pacientes = q.list();
-        sessionFactory.close();
-        if(pacientes.size()>0){
-        	return pacientes.get(0);
-        }
-		return null;
-	}
+//	@RequestMapping(value="/paciente_search", method=RequestMethod.GET)
+//    public List<PacienteSearch> pacienteSearch() {
+//		
+//		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+//        Session session = sessionFactory.openSession();
+//        Query q = session.createQuery("from PacienteSearch");
+//        List<PacienteSearch> pacientes = q.list();
+//        sessionFactory.close();
+//        return pacientes;
+//    }
+//	
+//	@RequestMapping(value="/paciente", method=RequestMethod.GET)
+//    public List<Paciente> pacientes() {
+//		
+//		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+//        Session session = sessionFactory.openSession();
+//        Query q = session.createQuery("from Paciente");
+//        List<Paciente> pacientes = q.list();
+//        sessionFactory.close();
+//        return pacientes;
+//    }
+//	
+//	@RequestMapping(value="/paciente/{id}", method=RequestMethod.GET)
+//	private Paciente search(@PathVariable Integer id){
+//		
+//		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+//        Session session = sessionFactory.openSession();
+//        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
+//        List<Paciente> pacientes = q.list();
+//        sessionFactory.close();
+//        if(pacientes.size()>0){
+//        	return pacientes.get(0);
+//        }
+//		return null;
+//	}
 	
 //	@RequestMapping(value="/paciente_data/{id}", method=RequestMethod.GET)
 //	private PacienteData paciente_data(@PathVariable Integer id){
@@ -139,16 +139,16 @@ public class ApiRestController {
 //		return pacientes.get(0);
 //	}
 	
-	@RequestMapping(value="/diagnostico/{id}", method=RequestMethod.GET)
-	private Diagnostico paciente_tratamiento(@PathVariable Integer id){
-		
-		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        Query q = session.createQuery("from Diagnostico p where p.id= '" + id + "'");
-        List<Diagnostico> diagnostico = q.list();
-        sessionFactory.close();
-		return diagnostico.get(0);
-	}
+//	@RequestMapping(value="/diagnostico/{id}", method=RequestMethod.GET)
+//	private Diagnostico paciente_tratamiento(@PathVariable Integer id){
+//		
+//		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+//        Session session = sessionFactory.openSession();
+//        Query q = session.createQuery("from Diagnostico p where p.id= '" + id + "'");
+//        List<Diagnostico> diagnostico = q.list();
+//        sessionFactory.close();
+//		return diagnostico.get(0);
+//	}
 	
 	@RequestMapping(value = "/file_upload", method = RequestMethod.POST)
     public ModelAndView singleFileUpload(@Valid FileBucket fileBucket,

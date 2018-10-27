@@ -4,10 +4,14 @@
 <script
 	src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
 
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isScriptingEnabled="true" isELIgnored="false" %>
+    
 <html>
 <head>
+
 <link href="/rnc/resources/css/styles.css" rel="stylesheet">
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -16,6 +20,14 @@
 	src="http://www.expertphp.in/js/jquery.form.js"></script>
 </head>
 <body>
+	${model}
+	${error.paciente.rut}
+	${model.error.paciente.rut}
+	${error.paciente.apellido1}
+	${'error.paciente.apellido1'}
+	${'model'}
+	<c:out value="${error.paciente.rut}"/>
+	<c:out value="${model.error.paciente.rut}"/>
 	<div class="header">
 		<div class="row margin-bottom-10">
 			<div class="container col-md-4 left">
@@ -29,8 +41,8 @@
 			</div>
 		</div>
 		<h3 class="text-center margin-bottom-30">
-			Repositorio Nacional del Cáncer - Sistema de Cargas de Archivos CSV -
-			Clínica Universidad Católica: <a
+			Repositorio Nacional del CÃ¡ncer - Sistema de Cargas de Archivos CSV -
+			ClÃ­nica Universidad CatÃ³lica: <a
 				href="http://redsalud.uc.cl/ucchristus/Hospital/ClinicaUC/">@UC-Christus</a>
 		</h3>
 	</div>
@@ -77,7 +89,7 @@
 					<li>En documento excel debe seleccionar "Guardar Como:"</li>
 					<li>Al desplegar la ventana, debe seleccionar el lugar donde
 						desea guardar el archivo</li>
-					<li>A continuación debe seleccionar formato de archivo y
+					<li>A continuaciÃ³n debe seleccionar formato de archivo y
 						seleccionar: "CSV codificado en UTF-8 (delimitado por
 						comas)(.CSV)"</li>
 					<li>En caso que se despliegue una ventana emergente, debe
