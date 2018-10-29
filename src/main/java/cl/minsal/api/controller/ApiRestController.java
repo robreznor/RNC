@@ -113,18 +113,18 @@ public class ApiRestController {
         //paciente_data.setFechaPrimeraConsulta(dateFormat.format(paciente.getAntecedentes().getFecha_primera_consulta()));
 		return paciente_data;
 	}
-//	
-//	@RequestMapping(value="/paciente_primera_consulta/{id}", method=RequestMethod.GET)
-//	private Paciente paciente_primera_consulta(@PathVariable Integer id){
-//		
-//		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-//        Session session = sessionFactory.openSession(); 
-//        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
-//        List<Paciente> pacientes = q.list();
-//        
-//		return pacientes.get(0);
-//	}
-//	
+	
+	@RequestMapping(value="/api/paciente_primera_consulta/{id}", method=RequestMethod.GET)
+	private Paciente paciente_primera_consulta(@PathVariable Integer id){
+		
+		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session session = sessionFactory.openSession(); 
+        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
+        List<Paciente> pacientes = q.list();
+        
+		return pacientes.get(0);
+	}
+	
 //	@RequestMapping(value="/paciente_diagnostico/{id}", method=RequestMethod.GET)
 //	private Paciente paciente_diagnostico(@PathVariable Integer id){
 //		
