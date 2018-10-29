@@ -151,37 +151,16 @@
 	</dependencies>
 	
 	<build>
-		<plugins>
-			<!-- <plugin>
-			    <artifactId>maven-resources-plugin</artifactId>
-			    <executions>
-			        <execution>
-			            <id>copy-resources</id>
-			            <phase>validate</phase>
-			            <goals>
-			                <goal>copy-resources</goal>
-			            </goals>
-			            <configuration>
-			                <outputDirectory>{project.build.directory}\${project.artifactId}\resources\</outputDirectory>
-			                <resources>
-			                    <resource>
-			                        <directory>${project.build.directory}\${project.artifactId}\${angular.project.location}\dist\angular-project</directory>
-			                    </resource>
-			                </resources>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin> -->
-<!-- 			<plugin> 
-        <groupId>com.github.eirslett</groupId>
+	<plugins>
+	  <plugin> 
+         <groupId>com.github.eirslett</groupId>
          <artifactId>frontend-maven-plugin</artifactId>
          <version>1.0</version>
          <configuration>
              <workingDirectory>${angular.project.location}</workingDirectory>
              <installDirectory>${angular.project.nodeinstallation}</installDirectory>
          </configuration>
-         <executions>
-            It will install nodejs and npm
+         <executions>  
             <execution>
                 <id>install node and npm</id>
                 <goals>
@@ -192,7 +171,6 @@
                     <npmVersion>5.6.0</npmVersion>
                 </configuration>
             </execution>
-            It will execute command "npm install" inside "/e2e-angular2" directory
             <execution>
                 <id>npm install</id>
                 <goals>
@@ -202,8 +180,6 @@
                     <arguments>install</arguments>
                 </configuration>
             </execution>
-            It will execute command "npm build" inside "/e2e-angular2" directory 
-                to clean and create "/dist" directory
             <execution>
                 <id>npm build</id>
                 <goals>
@@ -213,48 +189,9 @@
                     <arguments>run build</arguments>
                 </configuration>
             </execution>
-        </executions>
-      </plugin> -->		
-			<plugin> 
-         <groupId>com.github.eirslett</groupId>
-	         <artifactId>frontend-maven-plugin</artifactId>
-	         <version>1.0</version>
-	         <configuration>
-	             <workingDirectory>${angular.project.location}</workingDirectory>
-	             <installDirectory>${angular.project.nodeinstallation}</installDirectory>
-	         </configuration>
-	         <executions>  
-             <execution>
-                 <id>install node and npm</id>
-                 <goals>
-                     <goal>install-node-and-npm</goal>
-                 </goals>
-                 <configuration>
-                     <nodeVersion>v8.11.4</nodeVersion>
-                     <npmVersion>5.6.0</npmVersion>
-                 </configuration>
-             </execution>
-             <execution>
-                 <id>npm install</id>
-                 <goals>
-                     <goal>npm</goal>
-                 </goals>
-                 <configuration>
-                     <arguments>install</arguments>
-                 </configuration>
-             </execution>
-             <execution>
-                 <id>npm build</id>
-                 <goals>
-                     <goal>npm</goal>
-                 </goals>
-                 <configuration>
-                     <arguments>run build</arguments>
-                 </configuration>
-             </execution>
          </executions>
       </plugin> 
-			<plugin>
+	  <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.4</version>
@@ -263,8 +200,8 @@
   			</configuration>
        </plugin>			
        <plugin>
-       		<groupId>org.apache.maven.plugins</groupId>
-         	<artifactId>maven-resources-plugin</artifactId>
+    		<groupId>org.apache.maven.plugins</groupId>
+        	<artifactId>maven-resources-plugin</artifactId>
           <version>2.4</version>
         <executions>
            <execution>
