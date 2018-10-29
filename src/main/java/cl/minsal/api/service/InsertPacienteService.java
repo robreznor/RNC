@@ -24,20 +24,16 @@ import cl.minsal.api.model.Localizacion;
 import cl.minsal.api.model.Medico;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Tratamiento;
+import cl.minsal.api.object.ValidationMessages;
 import cl.minsal.api.util.PacienteValidator;
 
 public class InsertPacienteService {
 	
-	private ModelMap model;
+	private ValidationMessages messages;
 	private Timestamp timestamp;
-	private Boolean validation_fail;
 	
-	public ModelMap getModel() {
-		return model;
-	}
-
-	public Boolean getValidation_fail() {
-		return validation_fail;
+	public ValidationMessages getMessages() {
+		return messages;
 	}
 
 	public Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
@@ -215,7 +211,6 @@ public class InsertPacienteService {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ";";
-       
         Date date = new Date();
         this.timestamp = new Timestamp(date.getTime());
         
@@ -227,12 +222,13 @@ public class InsertPacienteService {
         String[] read_line;
         String[] pacienteData = new String[59]; 
         try {
-			while (((line = br.readLine()) != null)) {   
+			while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
 					
 				if(count>3){        
-					
+
 			        read_line = line.split(cvsSplitBy);
 			        Transaction tx1 = session.beginTransaction();
+			        System.out.println(read_line.length);
 			        for(int i=0;i<pacienteData.length;i++){
 			        	if(i<read_line.length){
 			        		pacienteData[i] = read_line[i];			        
@@ -240,32 +236,32 @@ public class InsertPacienteService {
 			        		pacienteData[i] = "";
 			        	}			        	
 			        }
-	
-			        if(!pacienteData[0].equals("")){ 
+			        if(read_line.length>33){
 			        	validador.pacienteValidation(pacienteData);
-			         	System.out.println("Insertando paciente");
-			         	Integer rut = Integer.parseInt(pacienteData[3]);
-			    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
-			            Paciente paciente_req = (Paciente) q.uniqueResult();
-			        	Paciente paciente = InsertPaciente(pacienteData, paciente_req);
-			        	Diagnostico diagnostico = this.InsertDiagnostico(pacienteData, paciente);
-			        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico);
-			        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData);
-			        	Localizacion localizacion = this.InsertLocalizacion(pacienteData);
-			        	session.save(localizacion);
-			        	paciente.setLocalizacion(localizacion);
-			        	session.save(paciente);
-			        	session.save(antecedente);
-			        	diagnostico.setAntecedentes(antecedente);
-			        	session.save(diagnostico);
-			        	
-			        	for(Tratamiento tratamiento: tratamientos){
-			        		System.out.print(tratamiento.getMedico());
-			        		session.save(tratamiento.getMedico());
-			        		session.save(tratamiento);
-			        	}
-        	
-		        	tx1.commit();
+			        	if(validador.getMessages().getValidation()){       	
+				         	System.out.println("Insertando paciente");
+				         	Integer rut = Integer.parseInt(pacienteData[3]);
+				    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
+				            Paciente paciente_req = (Paciente) q.uniqueResult();
+				        	Paciente paciente = InsertPaciente(pacienteData, paciente_req);
+				        	Diagnostico diagnostico = this.InsertDiagnostico(pacienteData, paciente);
+				        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico);
+				        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData);
+				        	Localizacion localizacion = this.InsertLocalizacion(pacienteData);
+				        	session.save(localizacion);
+				        	paciente.setLocalizacion(localizacion);
+				        	session.save(paciente);
+				        	session.save(antecedente);
+				        	diagnostico.setAntecedentes(antecedente);
+				        	session.save(diagnostico);
+				        	
+				        	for(Tratamiento tratamiento: tratamientos){
+				        		System.out.print(tratamiento.getMedico());
+				        		session.save(tratamiento.getMedico());
+				        		session.save(tratamiento);
+				        	}
+				        	tx1.commit();
+				        }
 			        }
 				}
 				count++;               
@@ -277,9 +273,8 @@ public class InsertPacienteService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-		sessionFactory.close();
-		this.validation_fail = validador.getValidation_fail();
-		this.model = validador.getModel();
+			sessionFactory.close();
+			this.messages = validador.getMessages();
 		}     
 	}
 }

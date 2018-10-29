@@ -4,10 +4,10 @@
 <script
 	src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
+    
 <html>
 <head>
+
 <link href="/rnc/resources/css/styles.css" rel="stylesheet">
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -16,6 +16,14 @@
 	src="http://www.expertphp.in/js/jquery.form.js"></script>
 </head>
 <body>
+	${model}
+	${error.paciente.rut}
+	${model.error.paciente.rut}
+	${error.paciente.apellido1}
+	${'error.paciente.apellido1'}
+	${'model'}
+	<c:out value="${error.paciente.rut}"/>
+	<c:out value="${model.error.paciente.rut}"/>
 	<div class="header">
 		<div class="row margin-bottom-10">
 			<div class="container col-md-4 left">
