@@ -22,12 +22,10 @@ public class Diagnostico implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id_diagnostico;
-	private Integer tipo_comite;
 	private Date fecha_diagnostico;
 	private Date fecha_comite;
 	private String diagnostico_comite;
 	private String diagnostico_cie10;
-	private Integer ecog;
 	private String tnm;
 	private String estadio;
 	private Timestamp fecha_registro;
@@ -43,16 +41,22 @@ public class Diagnostico implements Serializable {
     @OneToOne
     private Antecedentes antecedentes;
 	
+	@JoinColumn(name="ecog")
+    @OneToOne
+    private Ecog ecog;
+	
+	@JoinColumn(name="tipo_comite")
+    @OneToOne
+    private Tipos_comite tipos_comite;
+		
+	public void setEcog(Ecog ecog) {
+		this.ecog = ecog;
+	}
 	public Antecedentes getAntecedentes(){
 		return this.antecedentes;
 	}
-	
 	public void setAntecedentes(Antecedentes antecedentes){
 		this.antecedentes = antecedentes;
-	}
-	
-	public void setTipo_comite(Integer tipo_comite) {
-		this.tipo_comite = tipo_comite;
 	}
 	public void setFecha_diagnostico(Date fecha_diagnostico) {
 		this.fecha_diagnostico = fecha_diagnostico;
@@ -62,9 +66,6 @@ public class Diagnostico implements Serializable {
 	}
 	public void setDiagnostico_cie10(String diagnostico_cie10) {
 		this.diagnostico_cie10 = diagnostico_cie10;
-	}
-	public void setEcog(Integer ecog) {
-		this.ecog = ecog;
 	}
 	public void setTnm(String tnm) {
 		this.tnm = tnm;
@@ -78,9 +79,6 @@ public class Diagnostico implements Serializable {
 	public Integer getId_diagnostico() {
 		return id_diagnostico;
 	}
-	public Integer getTipo_comite() {
-		return tipo_comite;
-	}
 	public Date getFecha_diagnostico() {
 		return fecha_diagnostico;
 	}
@@ -90,7 +88,13 @@ public class Diagnostico implements Serializable {
 	public String getDiagnostico_cie10() {
 		return diagnostico_cie10;
 	}
-	public Integer getEcog() {
+	public Tipos_comite getTipos_comite() {
+		return tipos_comite;
+	}
+	public void setTipo_comite(Tipos_comite tipos_comite) {
+		this.tipos_comite = tipos_comite;
+	}
+	public Ecog getEcog() {
 		return ecog;
 	}
 	public String getTnm() {

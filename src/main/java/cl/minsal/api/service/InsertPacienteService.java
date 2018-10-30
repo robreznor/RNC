@@ -18,6 +18,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.springframework.ui.ModelMap;
 
+import cl.minsal.api.model.Actividad_economica;
 import cl.minsal.api.model.Antecedentes;
 import cl.minsal.api.model.Diagnostico;
 import cl.minsal.api.model.Localizacion;
@@ -25,6 +26,7 @@ import cl.minsal.api.model.Medico;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Tratamiento;
 import cl.minsal.api.object.ValidationMessages;
+import cl.minsal.api.util.HibernateUtility;
 import cl.minsal.api.util.PacienteValidator;
 
 public class InsertPacienteService {
@@ -39,9 +41,9 @@ public class InsertPacienteService {
 	public Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
 
         if(paciente == null){
-        	
-        	paciente = new Paciente();
-        	
+
+        	SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+            Session session = sessionFactory.openSession();
     		paciente.setNombre(pacienteData[0]);
         	paciente.setRut(Integer.parseInt(pacienteData[3]));
         	paciente.setDverificador(pacienteData[4]);
@@ -53,16 +55,22 @@ public class InsertPacienteService {
             	java.sql.Date fecha_nacimiento = new java.sql.Date(fecha_nacimiento_date.getTime());
     			paciente.setFecha_nacimiento(fecha_nacimiento);
     		}
-    		if(!pacienteData[6].equals("")) paciente.setGenero(Integer.parseInt(pacienteData[6].split("-")[1]));
-    		if(!pacienteData[8].equals("")) paciente.setNacionalidad(Integer.parseInt(pacienteData[8].split("-")[1]));
-    		if(!pacienteData[9].equals("")) paciente.setPueblo_originario(Integer.parseInt(pacienteData[9].split("-")[1]));
-    		if(!pacienteData[10].equals("")) paciente.setEstado_conyugal(Integer.parseInt(pacienteData[10].split("-")[1]));
-    		if(!pacienteData[11].equals("")) paciente.setReligion(Integer.parseInt(pacienteData[11].split("-")[1]));
-    		if(!pacienteData[12].equals("")) paciente.setNivel_instruccion(Integer.parseInt(pacienteData[12].split("-")[1]));
-    		if(!pacienteData[13].equals("")) paciente.setOcupacion(Integer.parseInt(pacienteData[13].split("-")[1]));
-    		if(!pacienteData[14].equals("")) paciente.setActividad_economica(Integer.parseInt(pacienteData[14].split("-")[1]));
-    		if(!pacienteData[15].equals("")) paciente.setPrevision(Integer.parseInt(pacienteData[15].split("-")[1]));
-    		if(!pacienteData[16].equals("")) paciente.setBeneficiario_fonasa(Integer.parseInt(pacienteData[16].split("-")[1]));
+//    		if(!pacienteData[6].equals("")) paciente.setGenero(Integer.parseInt(pacienteData[6].split("-")[1]));
+//    		if(!pacienteData[8].equals("")) paciente.setNacionalidad(Integer.parseInt(pacienteData[8].split("-")[1]));
+//    		if(!pacienteData[9].equals("")) paciente.setPueblo_originario(Integer.parseInt(pacienteData[9].split("-")[1]));
+//    		if(!pacienteData[10].equals("")) paciente.setEstado_conyugal(Integer.parseInt(pacienteData[10].split("-")[1]));
+//    		if(!pacienteData[11].equals("")) paciente.setReligion(Integer.parseInt(pacienteData[11].split("-")[1]));
+//    		if(!pacienteData[12].equals("")) paciente.setNivel_instruccion(Integer.parseInt(pacienteData[12].split("-")[1]));
+//    		if(!pacienteData[13].equals("")) paciente.setOcupacion(Integer.parseInt(pacienteData[13].split("-")[1]));
+//    		
+//    		if(!pacienteData[14].equals("")){
+//    			Query q = session.createQuery("from Actividad_economica a where a.id= '" + pacienteData[15].split("-")[1] + "'");
+//    	        Actividad_economica actividad_economica = (Actividad_economica) q.uniqueResult();
+//    	        sessionFactory.close();
+//    			paciente.setActividad_economica(actividad_economica);
+//    		}
+//    		if(!pacienteData[15].equals("")) paciente.setPrevision(Integer.parseInt(pacienteData[15].split("-")[1]));
+//    		if(!pacienteData[16].equals("")) paciente.setBeneficiario_fonasa(Integer.parseInt(pacienteData[16].split("-")[1]));
     		paciente.setFecha_registro(this.timestamp);
         }
     	return paciente;
@@ -78,12 +86,12 @@ public class InsertPacienteService {
     	java.sql.Date fecha_diagnostico = new java.sql.Date(fecha_diagnostico_date.getTime()); 
     	java.sql.Date fecha_comite = new java.sql.Date(fecha_comite_date.getTime());
     		
-		diagnostico.setTipo_comite(Integer.parseInt(pacienteData[21].split("_")[1]));
+		//diagnostico.setTipo_comite(Integer.parseInt(pacienteData[21].split("_")[1]));
 		diagnostico.setFecha_diagnostico(fecha_diagnostico);
 		diagnostico.setFecha_comite(fecha_comite);
 		diagnostico.setDiagnostico_comite(pacienteData[24]);
 		diagnostico.setDiagnostico_cie10(pacienteData[25]);
-		diagnostico.setEcog(Integer.parseInt(pacienteData[26].split("_")[1]));
+		//diagnostico.setEcog(Integer.parseInt(pacienteData[26].split("_")[1]));
 		diagnostico.setEstadio(pacienteData[34]+pacienteData[35]);
 		diagnostico.setPaciente(paciente);
 		diagnostico.setTnm(pacienteData[28]+pacienteData[29]+pacienteData[30]+pacienteData[31]+pacienteData[32]+pacienteData[33]);
@@ -199,9 +207,9 @@ public class InsertPacienteService {
 		
 		Localizacion localizacion = new Localizacion();
     	
-    	localizacion.setRegion(Integer.parseInt(pacienteData[17].split("_")[1]));
-    	localizacion.setProvincia(Integer.parseInt(pacienteData[18].split("_")[1]));
-    	localizacion.setComuna(Integer.parseInt(pacienteData[19].split("-")[1]));
+//    	localizacion.setRegion(Integer.parseInt(pacienteData[17].split("_")[1]));
+//    	localizacion.setProvincia(Integer.parseInt(pacienteData[18].split("_")[1]));
+//    	localizacion.setComuna(Integer.parseInt(pacienteData[19].split("-")[1]));
     	localizacion.setDireccion(pacienteData[20]);
     	
     	return localizacion;
@@ -216,7 +224,7 @@ public class InsertPacienteService {
         
         br = new BufferedReader(csvFile);
         int count = 0;
-        SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
         Session session = sessionFactory.openSession();
         PacienteValidator validador = new PacienteValidator();
         String[] read_line;
@@ -273,7 +281,9 @@ public class InsertPacienteService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			sessionFactory.close();
+			if(session!=null){
+				session.close();
+			}
 			this.messages = validador.getMessages();
 		}     
 	}

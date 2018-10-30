@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Localizacion implements Serializable {
@@ -15,20 +17,29 @@ public class Localizacion implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id_localizacion;
-	private Integer region;
-	private Integer provincia;
-	private Integer comuna;
 	private String direccion;
 	
-	public void setRegion(Integer region) {
+	@JoinColumn(name = "comuna")
+    @OneToOne
+    private Comuna comuna;
+	
+	@JoinColumn(name = "provincia")
+    @OneToOne
+    private Provincia provincia;
+	
+	@JoinColumn(name = "region")
+    @OneToOne
+    private Region region;
+	
+	public void setRegion(Region region) {
 		this.region = region;
 	}
 	
-	public void setProvincia(Integer provincia) {
+	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
 	}
 
-	public void setComuna(Integer comuna) {
+	public void setComuna(Comuna comuna) {
 		this.comuna = comuna;
 	}
 
@@ -40,15 +51,15 @@ public class Localizacion implements Serializable {
 		return id_localizacion;
 	}
 
-	public Integer getRegion() {
+	public Region getRegion() {
 		return region;
 	}
 
-	public Integer getProvincia() {
+	public Provincia getProvincia() {
 		return provincia;
 	}
 
-	public Integer getComuna() {
+	public Comuna getComuna() {
 		return comuna;
 	}
 

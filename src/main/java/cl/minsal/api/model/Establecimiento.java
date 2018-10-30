@@ -23,11 +23,14 @@ public class Establecimiento implements Serializable {
 	private Integer id_establecimiento;
 	private Integer codigo_establecimiento;
 	private String nombre_establecimiento;
-	private Integer servicio_salud; 
 	
 	@JoinColumn(name = "id_localizacion")
     @OneToOne
     private Localizacion localizacion;
+	
+	@JoinColumn(name = "servicio_salud")
+    @OneToOne
+    private Servicio_salud servicio_salud;
 
 	@OneToMany(mappedBy="paciente")
 	private Set<Diagnostico> diagnostico;
@@ -46,9 +49,6 @@ public class Establecimiento implements Serializable {
 	public void setNombre_establecimiento(String nombre_establecimiento) {
 		this.nombre_establecimiento = nombre_establecimiento;
 	}
-	public void setServicio_salud(Integer servicio_salud) {
-		this.servicio_salud = servicio_salud;
-	}
 	public Integer getId() {
 		return id_establecimiento;
 	}
@@ -58,8 +58,12 @@ public class Establecimiento implements Serializable {
 	public String getNombre_establecimiento() {
 		return nombre_establecimiento;
 	}
-	public Integer getServicio_salud() {
+
+	public Servicio_salud getServicio_salud() {
 		return servicio_salud;
 	}
-	
+
+	public void setServicio_salud(Servicio_salud servicio_salud) {
+		this.servicio_salud = servicio_salud;
+	}
 }

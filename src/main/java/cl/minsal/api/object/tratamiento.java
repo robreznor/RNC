@@ -32,5 +32,4 @@ public class tratamiento {
 		this.responsablesTratamiento = responsablesTratamiento;
 	}
 
-
 }
