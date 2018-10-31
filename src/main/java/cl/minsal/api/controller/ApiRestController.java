@@ -52,13 +52,6 @@ public class ApiRestController {
         binder.setValidator(fileValidator);
     }
     
-    @ModelAttribute
-    public void setVaryResponseHeader(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type");
-    }    
-
 //    @RequestMapping(value="/", method=RequestMethod.GET)
 //	public ModelAndView index(){   
 //		return new ModelAndView("redirect:/subir_archivo");
