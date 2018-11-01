@@ -51,16 +51,6 @@ public class ApiRestController {
     protected void initBinderFileBucket(WebDataBinder binder) {
         binder.setValidator(fileValidator);
     }
-    
-//    @RequestMapping(value="/", method=RequestMethod.GET)
-//	public ModelAndView index(){   
-//		return new ModelAndView("redirect:/subir_archivo");
-//	}
-    
-//    @RequestMapping(value="/subir_archivo", method=RequestMethod.GET)
-//	public ModelAndView uploadFile(){
-//		return new ModelAndView("upload_file");
-//	}
 	
 	@RequestMapping(value="/api/paciente_search", method=RequestMethod.GET)
     public List<Paciente> pacienteSearch() {
@@ -76,18 +66,7 @@ public class ApiRestController {
 			return null;
 		}
     }
-//	
-//	@RequestMapping(value="/paciente", method=RequestMethod.GET)
-//    public List<Paciente> pacientes() {
-//		
-//		SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-//        Session session = sessionFactory.openSession();
-//        Query q = session.createQuery("from Paciente");
-//        List<Paciente> pacientes = q.list();
-//        sessionFactory.close();
-//        return pacientes;
-//    }
-//	
+
 	@RequestMapping(value="/api/paciente/{id}", method=RequestMethod.GET)
 	private Paciente search(@PathVariable Integer id){
 		Paciente paciente = new Paciente();
@@ -175,7 +154,9 @@ public class ApiRestController {
             BindingResult result, ValidationMessages validadorResponse) throws IOException, ParseException {
 		
         if (result.hasErrors()) {
-            //model.addAttribute("error", "The id selected is out of Range, please select another id within range");
+        	validadorResponse.setValidation(false);
+        	validadorResponse.setMessage("");
+        	validadorResponse.setTitle("");
             return validadorResponse;
         } else {
             try {           	
@@ -186,6 +167,10 @@ public class ApiRestController {
                 validadorResponse = insertar.getMessages();
             } catch (IOException e) {
                 e.printStackTrace();
+                validadorResponse.setValidation(false);
+            	validadorResponse.setMessage("Hubo un error al procesar su archivo");
+            	validadorResponse.setTitle("");
+                return validadorResponse; 
             } 
             return validadorResponse;
         }

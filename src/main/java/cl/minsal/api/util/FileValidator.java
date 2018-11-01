@@ -3,24 +3,33 @@ package cl.minsal.api.util;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
 import cl.minsal.api.object.FileBucket;
+import cl.minsal.api.object.ValidationMessages;
  
 @Component
-public class FileValidator implements Validator {
+public class FileValidator {
      
-    public boolean supports(Class<?> clazz) {
-        return FileBucket.class.isAssignableFrom(clazz);
-    }
- 
-    public void validate(Object obj, Errors errors) {
+    public static ValidationMessages validate(Object obj) {
+    	
+    	ValidationMessages validadorResponse = new ValidationMessages();
         FileBucket file = (FileBucket) obj;
-                if(file.getFile()!=null){
+        if(file.getFile()!=null){
             if (file.getFile().getSize() == 0) {
-                errors.rejectValue("file", "missing.file");
+            	validadorResponse.setTitle("No ha especificado el archivo");
+            	validadorResponse.setValidation(false);
+            	return validadorResponse;    
             }
             if(!(file.getFile().getContentType().equals("text/csv") || file.getFile().getContentType().equals("application/vnd.ms-excel"))){
-            	errors.rejectValue("file", "csv file type is only supported");
+            	validadorResponse.setTitle("El archivo debe estar en formato csv");
+            	validadorResponse.setValidation(false);
+            	return validadorResponse;
             } 
+            return validadorResponse;
+        }else {
+        	validadorResponse.setValidation(false);
+        	validadorResponse.setMessage("No se encuentra el archivo");
+        	return validadorResponse;
         }
     }
 }

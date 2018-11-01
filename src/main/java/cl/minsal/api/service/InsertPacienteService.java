@@ -20,10 +20,21 @@ import org.springframework.ui.ModelMap;
 
 import cl.minsal.api.model.Actividad_economica;
 import cl.minsal.api.model.Antecedentes;
+import cl.minsal.api.model.Beneficiario_fonasa;
 import cl.minsal.api.model.Diagnostico;
+import cl.minsal.api.model.Ecog;
+import cl.minsal.api.model.Estado_conyugal;
+import cl.minsal.api.model.Genero;
+import cl.minsal.api.model.Instruccion;
 import cl.minsal.api.model.Localizacion;
 import cl.minsal.api.model.Medico;
+import cl.minsal.api.model.Ocupacion;
 import cl.minsal.api.model.Paciente;
+import cl.minsal.api.model.Pais;
+import cl.minsal.api.model.Prevision;
+import cl.minsal.api.model.Pueblo_originario;
+import cl.minsal.api.model.Religion_culto;
+import cl.minsal.api.model.Tipos_comite;
 import cl.minsal.api.model.Tratamiento;
 import cl.minsal.api.object.ValidationMessages;
 import cl.minsal.api.util.HibernateUtility;
@@ -41,7 +52,7 @@ public class InsertPacienteService {
 	public Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
 
         if(paciente == null){
-
+        	paciente = new Paciente();
         	SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
             Session session = sessionFactory.openSession();
     		paciente.setNombre(pacienteData[0]);
@@ -55,28 +66,73 @@ public class InsertPacienteService {
             	java.sql.Date fecha_nacimiento = new java.sql.Date(fecha_nacimiento_date.getTime());
     			paciente.setFecha_nacimiento(fecha_nacimiento);
     		}
-//    		if(!pacienteData[6].equals("")) paciente.setGenero(Integer.parseInt(pacienteData[6].split("-")[1]));
-//    		if(!pacienteData[8].equals("")) paciente.setNacionalidad(Integer.parseInt(pacienteData[8].split("-")[1]));
-//    		if(!pacienteData[9].equals("")) paciente.setPueblo_originario(Integer.parseInt(pacienteData[9].split("-")[1]));
-//    		if(!pacienteData[10].equals("")) paciente.setEstado_conyugal(Integer.parseInt(pacienteData[10].split("-")[1]));
-//    		if(!pacienteData[11].equals("")) paciente.setReligion(Integer.parseInt(pacienteData[11].split("-")[1]));
-//    		if(!pacienteData[12].equals("")) paciente.setNivel_instruccion(Integer.parseInt(pacienteData[12].split("-")[1]));
-//    		if(!pacienteData[13].equals("")) paciente.setOcupacion(Integer.parseInt(pacienteData[13].split("-")[1]));
-//    		
-//    		if(!pacienteData[14].equals("")){
-//    			Query q = session.createQuery("from Actividad_economica a where a.id= '" + pacienteData[15].split("-")[1] + "'");
-//    	        Actividad_economica actividad_economica = (Actividad_economica) q.uniqueResult();
-//    	        sessionFactory.close();
-//    			paciente.setActividad_economica(actividad_economica);
-//    		}
-//    		if(!pacienteData[15].equals("")) paciente.setPrevision(Integer.parseInt(pacienteData[15].split("-")[1]));
-//    		if(!pacienteData[16].equals("")) paciente.setBeneficiario_fonasa(Integer.parseInt(pacienteData[16].split("-")[1]));
+    		
+    		Query q = null;   		 	
+    		
+    		if(!pacienteData[6].equals("")){ 
+        		q = session.createQuery("from Genero gen where gen.codigo= '" + pacienteData[6].split("-")[1] + "'");
+        		Genero genero = (Genero) q.uniqueResult();
+    			paciente.setGenero(genero);
+    		}
+    		if(!pacienteData[8].equals("")){
+    			q = session.createQuery("from Pais pais where pais.codigo= '" + pacienteData[9].split("-")[1] + "'");
+        		Pais pais = (Pais) q.uniqueResult();
+    			paciente.setPais(pais);
+    		}
+    		if(!pacienteData[9].equals("")){
+    			q = session.createQuery("from Pueblo_originario pueblo where pueblo.codigo= '" + pacienteData[9].split("-")[1] + "'");
+        		Pueblo_originario pueblo_originario = (Pueblo_originario) q.uniqueResult();
+    			paciente.setPueblo_originario(pueblo_originario);
+    		}
+    		if(!pacienteData[10].equals("")){
+    			 q = session.createQuery("from Estado_conyugal estado where estado.codigo= '" + pacienteData[10].split("-")[1] + "'");
+	    		Estado_conyugal estado_conyugal = (Estado_conyugal) q.uniqueResult();
+    			paciente.setEstado_conyugal(estado_conyugal);
+    		}
+    		if(!pacienteData[11].equals("")){
+    			q = session.createQuery("from Religion_culto religion where religion.codigo= '" + pacienteData[11].split("-")[1] + "'");
+        		Religion_culto religion = (Religion_culto) q.uniqueResult();
+    			paciente.setReligion(religion);
+    		}
+    		if(!pacienteData[12].equals("")){
+    			q = session.createQuery("from Instruccion ins where ins.codigo= '" + pacienteData[12].split("-")[1] + "'");
+        		Instruccion instruccion = (Instruccion) q.uniqueResult();
+    			paciente.setInstruccion(instruccion);
+    		}
+    		if(!pacienteData[13].equals("")){
+    			 q = session.createQuery("from Ocupacion ocup where ocup.codigo= '" + pacienteData[13].split("-")[1] + "'");
+	    		Ocupacion ocupacion = (Ocupacion) q.uniqueResult();
+    			paciente.setOcupacion(ocupacion);
+    		}
+    		
+    		if(!pacienteData[14].equals("")){
+    			q = session.createQuery("from Actividad_economica a where a.codigo= '" + pacienteData[14].split("-")[1] + "'");
+    	        Actividad_economica actividad_economica = (Actividad_economica) q.uniqueResult();  
+    			paciente.setActividad_economica(actividad_economica);
+    		}
+    		if(!pacienteData[15].equals("")){
+    			q = session.createQuery("from Prevision prev where prev.codigo= '" + pacienteData[15].split("-")[1] + "'");
+    	        Prevision prevision = (Prevision) q.uniqueResult();
+    			paciente.setPrevision(prevision);
+    		}
+    		if(!pacienteData[16].equals("")){
+    			q = session.createQuery("from Beneficiario_fonasa fonasa where fonasa.codigo= '" + pacienteData[16].split("-")[1] + "'");
+    	        Beneficiario_fonasa beneficiario_fonasa = (Beneficiario_fonasa) q.uniqueResult();
+    			paciente.setBeneficiario_fonasa(beneficiario_fonasa);
+    		}
     		paciente.setFecha_registro(this.timestamp);
+    		sessionFactory.close();
         }
     	return paciente;
 	}
 	
-	public Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente) throws ParseException{
+	public Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente, Session session) throws ParseException{
+		
+		Query q = session.createQuery("from Tipos_comite tipo where tipo.codigo= '" + pacienteData[21].split("_")[1] + "'");
+		Tipos_comite tipo_comite = (Tipos_comite) q.uniqueResult();
+		
+		q = session.createQuery("from Ecog ecog where ecog.codigo= '" + pacienteData[26].split("_")[1] + "'");
+		Ecog ecog = (Ecog) q.uniqueResult();
 		
 		System.out.println("insertando diagnostico");
 		Diagnostico diagnostico = new Diagnostico();
@@ -85,13 +141,13 @@ public class InsertPacienteService {
     	java.util.Date fecha_comite_date= fecha.parse(pacienteData[23]);
     	java.sql.Date fecha_diagnostico = new java.sql.Date(fecha_diagnostico_date.getTime()); 
     	java.sql.Date fecha_comite = new java.sql.Date(fecha_comite_date.getTime());
-    		
-		//diagnostico.setTipo_comite(Integer.parseInt(pacienteData[21].split("_")[1]));
+    	
+		diagnostico.setTipo_comite(tipo_comite);
 		diagnostico.setFecha_diagnostico(fecha_diagnostico);
 		diagnostico.setFecha_comite(fecha_comite);
 		diagnostico.setDiagnostico_comite(pacienteData[24]);
 		diagnostico.setDiagnostico_cie10(pacienteData[25]);
-		//diagnostico.setEcog(Integer.parseInt(pacienteData[26].split("_")[1]));
+		diagnostico.setEcog(ecog);
 		diagnostico.setEstadio(pacienteData[34]+pacienteData[35]);
 		diagnostico.setPaciente(paciente);
 		diagnostico.setTnm(pacienteData[28]+pacienteData[29]+pacienteData[30]+pacienteData[31]+pacienteData[32]+pacienteData[33]);
@@ -99,7 +155,7 @@ public class InsertPacienteService {
 		return diagnostico;
 	}
 	
-	public Set<Tratamiento> InsertTratamiento(String[] pacienteData, Diagnostico diagnostico) throws ParseException{
+	public Set<Tratamiento> InsertTratamiento(String[] pacienteData, Diagnostico diagnostico, Session session) throws ParseException{
 		System.out.println("insertando tratamiento");
 		Set<Tratamiento> tratamientos = new HashSet<Tratamiento>();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -189,7 +245,7 @@ public class InsertPacienteService {
 	
 	}
 	
-	public Antecedentes InsertAntecedentes(String[] pacienteData) throws ParseException{
+	public Antecedentes InsertAntecedentes(String[] pacienteData, Session session) throws ParseException{
 		
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
 		Antecedentes antecedente = new Antecedentes();
@@ -203,7 +259,7 @@ public class InsertPacienteService {
 		return antecedente;
 	}
 	
-	public Localizacion InsertLocalizacion(String[] pacienteData) throws ParseException {
+	public Localizacion InsertLocalizacion(String[] pacienteData, Session session) throws ParseException {
 		
 		Localizacion localizacion = new Localizacion();
     	
@@ -249,13 +305,15 @@ public class InsertPacienteService {
 			        	if(validador.getMessages().getValidation()){       	
 				         	System.out.println("Insertando paciente");
 				         	Integer rut = Integer.parseInt(pacienteData[3]);
+				         	
 				    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
 				            Paciente paciente_req = (Paciente) q.uniqueResult();
 				        	Paciente paciente = InsertPaciente(pacienteData, paciente_req);
-				        	Diagnostico diagnostico = this.InsertDiagnostico(pacienteData, paciente);
-				        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico);
-				        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData);
-				        	Localizacion localizacion = this.InsertLocalizacion(pacienteData);
+				        	
+				        	Diagnostico diagnostico = this.InsertDiagnostico(pacienteData, paciente, session);
+				        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico, session);
+				        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData, session);
+				        	Localizacion localizacion = this.InsertLocalizacion(pacienteData, session);
 				        	session.save(localizacion);
 				        	paciente.setLocalizacion(localizacion);
 				        	session.save(paciente);

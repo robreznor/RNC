@@ -7,6 +7,7 @@ public class ValidationMessages {
 	
 	private Boolean validation;
 	private List<String> messages;
+	private String title;
 	
 	public ValidationMessages(){
 		messages = new ArrayList<String>();
@@ -27,6 +28,14 @@ public class ValidationMessages {
 	
 	public void setMessage(String message) {
 		this.messages.add(message);
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }
