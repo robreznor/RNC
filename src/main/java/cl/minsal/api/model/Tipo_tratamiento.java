@@ -12,10 +12,10 @@ public class Tipo_tratamiento implements Serializable {
 	
 	@Id
 	private Integer codigo;
-	private String nombre;
+	private String nombre_tratamiento;
 	
 	public String getNombre() {
-		return nombre;
+		return nombre_tratamiento;
 	}
 	
 	public Integer getCodigo() {

@@ -21,19 +21,26 @@ import org.springframework.ui.ModelMap;
 import cl.minsal.api.model.Actividad_economica;
 import cl.minsal.api.model.Antecedentes;
 import cl.minsal.api.model.Beneficiario_fonasa;
+import cl.minsal.api.model.Comuna;
 import cl.minsal.api.model.Diagnostico;
 import cl.minsal.api.model.Ecog;
 import cl.minsal.api.model.Estado_conyugal;
 import cl.minsal.api.model.Genero;
 import cl.minsal.api.model.Instruccion;
+import cl.minsal.api.model.Intencion_tratamiento;
 import cl.minsal.api.model.Localizacion;
 import cl.minsal.api.model.Medico;
+import cl.minsal.api.model.Motivo_presentacion;
 import cl.minsal.api.model.Ocupacion;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Pais;
 import cl.minsal.api.model.Prevision;
+import cl.minsal.api.model.Provincia;
 import cl.minsal.api.model.Pueblo_originario;
+import cl.minsal.api.model.Region;
 import cl.minsal.api.model.Religion_culto;
+import cl.minsal.api.model.Resolucion_comite;
+import cl.minsal.api.model.Tipo_tratamiento;
 import cl.minsal.api.model.Tipos_comite;
 import cl.minsal.api.model.Tratamiento;
 import cl.minsal.api.object.ValidationMessages;
@@ -159,7 +166,7 @@ public class InsertPacienteService {
 		System.out.println("insertando tratamiento");
 		Set<Tratamiento> tratamientos = new HashSet<Tratamiento>();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
-			
+
 		if(!pacienteData[40].equals("")){
 			Tratamiento tratamiento = new Tratamiento();
 			Medico medico = new Medico();
@@ -168,14 +175,21 @@ public class InsertPacienteService {
 			
 			java.util.Date fecha_intencion_date= fecha.parse(pacienteData[39]);
 			java.sql.Date fecha_intencion = new java.sql.Date(fecha_intencion_date.getTime());
-						
-			tratamiento.setTipo_tratamiento(Integer.parseInt(pacienteData[37].split("-")[1]));
-			tratamiento.setIntencion_tratamiento(Integer.parseInt(pacienteData[38].split("-")[1]));
+			
+			Query q = session.createQuery("from Tipo_tratamiento tratamiento where tratamiento.codigo= '" + pacienteData[37].split("-")[1] + "'");
+			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[38].split("-")[1] + "'");
+	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[40].split("-")[1] + "'");
+	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
+	        
+			tratamiento.setTipo_tratamiento(tipo_tratamiento);
+			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
 			tratamiento.setDescripcion_tratamiento(pacienteData[41]);
 			tratamiento.setMedico(medico);
 			tratamiento.setDiagnostico(diagnostico);
-			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[40].split("-")[1]));
+			tratamiento.setResolucion_comite(resolucion_comite);
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
@@ -189,13 +203,20 @@ public class InsertPacienteService {
 			java.util.Date fecha_intencion_date= fecha.parse(pacienteData[45]);
 			java.sql.Date fecha_intencion = new java.sql.Date(fecha_intencion_date.getTime());
 						
-			tratamiento.setTipo_tratamiento(Integer.parseInt(pacienteData[43].split("-")[1]));
-			tratamiento.setIntencion_tratamiento(Integer.parseInt(pacienteData[44].split("-")[1]));
+			Query q = session.createQuery("from Tipo_tratamiento tratamiento where tratamiento.codigo= '" + pacienteData[43].split("-")[1] + "'");
+			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[44].split("-")[1] + "'");
+	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Resolucion_comite res where res.codigo= '" + pacienteData[46].split("-")[1] + "'");
+	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
+	        
+			tratamiento.setTipo_tratamiento(tipo_tratamiento);
+			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
 			tratamiento.setDescripcion_tratamiento(pacienteData[54]);
 			tratamiento.setMedico(medico);
 			tratamiento.setDiagnostico(diagnostico);
-			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[46].split("-")[1]));
+			tratamiento.setResolucion_comite(resolucion_comite);
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
@@ -207,14 +228,21 @@ public class InsertPacienteService {
 			
 			java.util.Date fecha_intencion_date= fecha.parse(pacienteData[51]);
 			java.sql.Date fecha_intencion = new java.sql.Date(fecha_intencion_date.getTime());
-						
-			tratamiento.setTipo_tratamiento(Integer.parseInt(pacienteData[49].split("-")[1]));
-			tratamiento.setIntencion_tratamiento(Integer.parseInt(pacienteData[50].split("-")[1]));
+					
+			Query q = session.createQuery("from Tipo_tratamiento tratamiento where tratamiento.codigo= '" + pacienteData[49].split("-")[1] + "'");
+			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[50].split("-")[1] + "'");
+	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Resolucion_comite res where res.codigo= '" + pacienteData[52].split("-")[1] + "'");
+	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
+	        
+			tratamiento.setTipo_tratamiento(tipo_tratamiento);
+			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
 			tratamiento.setDescripcion_tratamiento(pacienteData[53]);
 			tratamiento.setMedico(medico);
 			tratamiento.setDiagnostico(diagnostico);
-			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[52].split("-")[1]));
+			tratamiento.setResolucion_comite(resolucion_comite);
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
@@ -226,17 +254,21 @@ public class InsertPacienteService {
 			
 			java.util.Date fecha_intencion_date= fecha.parse(pacienteData[57]);
 			java.sql.Date fecha_intencion = new java.sql.Date(fecha_intencion_date.getTime());
-						
-			tratamiento.setTipo_tratamiento(Integer.parseInt(pacienteData[55].split("-")[1]));
-			tratamiento.setIntencion_tratamiento(Integer.parseInt(pacienteData[56].split("-")[1]));
-			tratamiento.setFecha_intencion(fecha_intencion);
-
-			tratamiento.setDescripcion_tratamiento(pacienteData[59]);
-
 			
+			Query q = session.createQuery("from Tipo_tratamiento tratamiento where tratamiento.codigo= '" + pacienteData[55].split("-")[1] + "'");
+			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[56].split("-")[1] + "'");
+	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
+	        q = session.createQuery("from Resolucion_comite res where res.codigo= '" + pacienteData[59].split("-")[1] + "'");
+	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
+	        
+			tratamiento.setTipo_tratamiento(tipo_tratamiento);
+			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
+			tratamiento.setFecha_intencion(fecha_intencion);
+			tratamiento.setDescripcion_tratamiento(pacienteData[59]);
 			tratamiento.setMedico(medico);
 			tratamiento.setDiagnostico(diagnostico);
-			tratamiento.setResolucion_comite(Integer.parseInt(pacienteData[58].split("-")[1]));
+			tratamiento.setResolucion_comite(resolucion_comite);
 			tratamiento.setFecha_registro(this.timestamp);
 			tratamientos.add(tratamiento);
 		}
@@ -254,7 +286,10 @@ public class InsertPacienteService {
 //		java.sql.Date fecha_intencion = new java.sql.Date(fecha_intencion_date.getTime());
 //		antecedente.setFecha_primera_consulta(fecha_intencion);
 		
-//		antecedente.setMotivo_presentacion(Integer.parseInt(pacienteData[46].split("-")[1]));
+//		Query q = session.createQuery("from Motivo_presentacion motivo where motivo.codigo= '" + pacienteData[46].split("-")[1] + "'");
+//		Motivo_presentacion motivo_presentacion = (Motivo_presentacion) q.uniqueResult();
+//		
+//		antecedente.setMotivo_presentacion(motivo_presentacion);
 		
 		return antecedente;
 	}
@@ -263,13 +298,20 @@ public class InsertPacienteService {
 		
 		Localizacion localizacion = new Localizacion();
     	
-//    	localizacion.setRegion(Integer.parseInt(pacienteData[17].split("_")[1]));
-//    	localizacion.setProvincia(Integer.parseInt(pacienteData[18].split("_")[1]));
-//    	localizacion.setComuna(Integer.parseInt(pacienteData[19].split("-")[1]));
+		Query q = session.createQuery("from Region region where region.codigo= '" + pacienteData[17].split("_")[1] + "'");
+		Region region = (Region) q.uniqueResult();
+		q = session.createQuery("from Provincia prov where prov.codigo= '" + pacienteData[18].split("_")[1] + "'");
+		Provincia provincia = (Provincia) q.uniqueResult();
+		q = session.createQuery("from Comuna com where com.codigo= '" + pacienteData[19].split("-")[1] + "'");
+		Comuna comuna = (Comuna) q.uniqueResult();
+    	localizacion.setRegion(region);
+    	localizacion.setProvincia(provincia);
+    	localizacion.setComuna(comuna);
     	localizacion.setDireccion(pacienteData[20]);
     	
     	return localizacion;
 	}
+	
 	public void InsertData(InputStreamReader csvFile) throws ParseException {
 
         BufferedReader br = null;
@@ -280,19 +322,15 @@ public class InsertPacienteService {
         
         br = new BufferedReader(csvFile);
         int count = 0;
-        SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-        Session session = sessionFactory.openSession();
         PacienteValidator validador = new PacienteValidator();
         String[] read_line;
         String[] pacienteData = new String[59]; 
+        SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-			while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
-					
-				if(count>3){        
-
-			        read_line = line.split(cvsSplitBy);
-			        Transaction tx1 = session.beginTransaction();
-			        System.out.println(read_line.length);
+        	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
+        		if(count>3){
+        			read_line = line.split(cvsSplitBy);
 			        for(int i=0;i<pacienteData.length;i++){
 			        	if(i<read_line.length){
 			        		pacienteData[i] = read_line[i];			        
@@ -302,7 +340,26 @@ public class InsertPacienteService {
 			        }
 			        if(read_line.length>33){
 			        	validador.pacienteValidation(pacienteData);
-			        	if(validador.getMessages().getValidation()){       	
+			        }
+        		}
+        		count++;
+        	}
+        	if(validador.getMessages().getValidation()){
+                count = 0;
+                while ((line = br.readLine()) != null) {   	
+    				if(count>3){        
+    			        read_line = line.split(cvsSplitBy);
+    			        Transaction tx1 = session.beginTransaction();
+    			        System.out.println(read_line.length);
+    			        for(int i=0;i<pacienteData.length;i++){
+    			        	if(i<read_line.length){
+    			        		pacienteData[i] = read_line[i];			        
+    			        	}else{
+    			        		pacienteData[i] = "";
+    			        	}			        	
+    			        }
+    			        if(read_line.length>33){
+    			        	      	
 				         	System.out.println("Insertando paciente");
 				         	Integer rut = Integer.parseInt(pacienteData[3]);
 				         	
@@ -322,16 +379,16 @@ public class InsertPacienteService {
 				        	session.save(diagnostico);
 				        	
 				        	for(Tratamiento tratamiento: tratamientos){
-				        		System.out.print(tratamiento.getMedico());
 				        		session.save(tratamiento.getMedico());
 				        		session.save(tratamiento);
 				        	}
 				        	tx1.commit();
-				        }
-			        }
-				}
-				count++;               
-			}
+    				        
+    			        }
+    				}
+    				count++;               
+    			}
+        	}   	
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

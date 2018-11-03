@@ -6,17 +6,24 @@ import cl.minsal.api.object.ValidationMessages;
 public class PacienteValidator {
 	
 	private ValidationMessages messages;
+	private Integer count;
 	
 	public PacienteValidator(){
 		messages = new ValidationMessages();
+		count = 0;
 	}
 
 	public ValidationMessages getMessages() {
 		return messages;
 	}
+	
+	public void main(){
+		
+	}
 
 	public void pacienteValidation(String [] pacienteData){
 		String rut = " [rut: "+pacienteData[3]+"]";
+
 		if(pacienteData[3].equals("")){
 			//model.addAttribute("error.paciente.rut","El rut es un campo requerido");
 			this.messages.setMessage("El rut es un campo requerido");
@@ -85,7 +92,7 @@ public class PacienteValidator {
 				this.messages.setValidation(false);
 			}
 			if(pacienteData[i+3].equals("")){
-				this.messages.setMessage(message + "fecha inteción");
+				this.messages.setMessage(message + "fecha intención");
 				this.messages.setValidation(false);
 			}
 			if(pacienteData[i+4].equals("")){
@@ -93,6 +100,13 @@ public class PacienteValidator {
 				this.messages.setValidation(false);
 			}
 			
+		} 
+		
+		count ++;
+		if(this.messages.getValidation()){
+			this.messages.setTitle("Su archivo ha sido cargado cargado con Exito! "+ count +" Registro(s) insertados");
+		}else{
+			this.messages.setTitle("La carga no se pudo realizar, por los siguientes motivos:");
 		}
 	}
 }

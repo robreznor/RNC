@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Tratamiento implements Serializable {
@@ -22,10 +23,7 @@ public class Tratamiento implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id_tratamiento;
 	private String descripcion_tratamiento;
-	private Integer resolucion_comite;
-	private Integer tipo_tratamiento;
 	private Date fecha_intencion;
-	private Integer intencion_tratamiento;
 	private Timestamp fecha_registro;
 	
 	@ManyToOne
@@ -36,19 +34,31 @@ public class Tratamiento implements Serializable {
     @JoinColumn(name="id_medico", nullable=false)
 	private Medico medico;
 	
+	@JoinColumn(name = "resolucion_comite")
+    @OneToOne
+    private Resolucion_comite resolucion_comite;
+	
+	@JoinColumn(name = "tipo_tratamiento")
+    @OneToOne
+    private Tipo_tratamiento tipo_tratamiento;
+	
+	@JoinColumn(name = "intencion_tratamiento")
+    @OneToOne
+    private Intencion_tratamiento intencion_tratamiento;
 	public Integer getId_tratamiento() {
 		return id_tratamiento;
 	}
+	
 	public String getDescripcion_tratamiento() {
 		return descripcion_tratamiento;
 	}
-	public Integer getResolucion_comite() {
+	public Resolucion_comite getResolucion_comite() {
 		return resolucion_comite;
 	}
-	public Integer getTipo_tratamiento() {
+	public Tipo_tratamiento getTipo_tratamiento() {
 		return tipo_tratamiento;
 	}
-	public void setTipo_tratamiento(Integer tipo_tratamiento) {
+	public void setTipo_tratamiento(Tipo_tratamiento tipo_tratamiento) {
 		this.tipo_tratamiento = tipo_tratamiento;
 	}
 	public Date getFecha_intencion() {
@@ -69,13 +79,13 @@ public class Tratamiento implements Serializable {
 	public void setDescripcion_tratamiento(String descripcion_tratamiento) {
 		this.descripcion_tratamiento = descripcion_tratamiento;
 	}
-	public void setResolucion_comite(Integer resolucion_comite) {
+	public void setResolucion_comite(Resolucion_comite resolucion_comite) {
 		this.resolucion_comite = resolucion_comite;
 	}
-	public Integer getIntencion_tratamiento() {
+	public Intencion_tratamiento getIntencion_tratamiento() {
 		return intencion_tratamiento;
 	}
-	public void setIntencion_tratamiento(Integer intencion_tratamiento) {
+	public void setIntencion_tratamiento(Intencion_tratamiento intencion_tratamiento) {
 		this.intencion_tratamiento = intencion_tratamiento;
 	}
 	public Timestamp getFecha_registro() {

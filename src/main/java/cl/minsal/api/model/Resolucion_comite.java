@@ -11,15 +11,20 @@ public class Resolucion_comite implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	private Integer codigo;
-	private String nombre;
+	private Integer codigo_resolucion;
+	private String descripcion;
+	private Integer codigo_comite;
 	
-	public String getNombre() {
-		return nombre;
+	public String getDescripcion() {
+		return descripcion;
 	}
 	
 	public Integer getCodigo() {
-		return codigo;
+		return codigo_resolucion;
+	}
+	
+	public Integer getCodigo_comite() {
+		return codigo_comite;
 	}
 	
 }

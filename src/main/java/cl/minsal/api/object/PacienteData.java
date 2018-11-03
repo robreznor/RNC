@@ -5,12 +5,12 @@ public class PacienteData {
 	private String nombre;
 	private String rut;
 	private String fechaNacimiento;
-	private Number sexo;
+	private String sexo;
 	private String fechaPrimeraConsulta;
 	public PacienteData(){}
 	
 	public PacienteData(String nombre, String rut, String fechaNacimiento,
-			Number sexo, String fechaPrimeraConsulta) {
+			String sexo, String fechaPrimeraConsulta) {
 		super();
 		this.nombre = nombre;
 		this.rut = rut;
@@ -37,10 +37,10 @@ public class PacienteData {
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-	public Number getSexo() {
+	public String getSexo() {
 		return sexo;
 	}
-	public void setSexo(Number sexo) {
+	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
 	public String getFechaPrimeraConsulta() {

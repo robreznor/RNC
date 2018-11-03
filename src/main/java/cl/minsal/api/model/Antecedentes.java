@@ -22,8 +22,11 @@ public class Antecedentes implements Serializable {
 	
 	private Date fecha_primera_consulta;
 	private String diagnostico_previo;
-	private Integer motivo_presentacion;
 	private Timestamp fecha_registro;
+	
+	@JoinColumn(name = "motivo_presentacion")
+    @OneToOne
+    private Motivo_presentacion motivo_presentacion;
 	
 	public void setFecha_primera_consulta(Date fecha_primera_consulta) {
 		this.fecha_primera_consulta = fecha_primera_consulta;
@@ -33,7 +36,7 @@ public class Antecedentes implements Serializable {
 		this.diagnostico_previo = diagnostico_previo;
 	}
 	
-	public void setMotivo_presentacion(Integer motivo_presentacion) {
+	public void setMotivo_presentacion(Motivo_presentacion motivo_presentacion) {
 		this.motivo_presentacion = motivo_presentacion;
 	}
 	
@@ -45,7 +48,7 @@ public class Antecedentes implements Serializable {
 		return fecha_primera_consulta;
 	}
 	
-	public Integer getMotivo_presentacion() {
+	public Motivo_presentacion getMotivo_presentacion() {
 		return motivo_presentacion;
 	}
 	
