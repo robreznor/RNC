@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.HibernateException;
@@ -15,8 +17,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.springframework.ui.ModelMap;
 
 import cl.minsal.api.model.Actividad_economica;
 import cl.minsal.api.model.Antecedentes;
@@ -82,7 +82,7 @@ public class InsertPacienteService {
     			paciente.setGenero(genero);
     		}
     		if(!pacienteData[8].equals("")){
-    			q = session.createQuery("from Pais pais where pais.codigo= '" + pacienteData[9].split("-")[1] + "'");
+    			q = session.createQuery("from Pais pais where pais.codigo= '" + pacienteData[8].split("-")[1] + "'");
         		Pais pais = (Pais) q.uniqueResult();
     			paciente.setPais(pais);
     		}
@@ -155,7 +155,12 @@ public class InsertPacienteService {
 		diagnostico.setDiagnostico_comite(pacienteData[24]);
 		diagnostico.setDiagnostico_cie10(pacienteData[25]);
 		diagnostico.setEcog(ecog);
-		diagnostico.setEstadio(pacienteData[34]+pacienteData[35]);
+		if(pacienteData.length>35){
+			diagnostico.setEstadio(pacienteData[34]+pacienteData[35]);
+		}else{
+			diagnostico.setEstadio(pacienteData[34]);
+		}
+		
 		diagnostico.setPaciente(paciente);
 		diagnostico.setTnm(pacienteData[28]+pacienteData[29]+pacienteData[30]+pacienteData[31]+pacienteData[32]+pacienteData[33]);
 		diagnostico.setFecha_registro(this.timestamp);
@@ -207,7 +212,7 @@ public class InsertPacienteService {
 			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
 	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[44].split("-")[1] + "'");
 	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
-	        q = session.createQuery("from Resolucion_comite res where res.codigo= '" + pacienteData[46].split("-")[1] + "'");
+	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[46].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
@@ -233,7 +238,7 @@ public class InsertPacienteService {
 			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
 	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[50].split("-")[1] + "'");
 	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
-	        q = session.createQuery("from Resolucion_comite res where res.codigo= '" + pacienteData[52].split("-")[1] + "'");
+	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[52].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
@@ -259,7 +264,7 @@ public class InsertPacienteService {
 			Tipo_tratamiento tipo_tratamiento = (Tipo_tratamiento) q.uniqueResult();
 	        q = session.createQuery("from Intencion_tratamiento intencion where intencion.codigo= '" + pacienteData[56].split("-")[1] + "'");
 	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
-	        q = session.createQuery("from Resolucion_comite res where res.codigo= '" + pacienteData[59].split("-")[1] + "'");
+	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[58].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
@@ -324,71 +329,70 @@ public class InsertPacienteService {
         int count = 0;
         PacienteValidator validador = new PacienteValidator();
         String[] read_line;
-        String[] pacienteData = new String[59]; 
+        String[] pacienteData = new String[60]; 
+        List<String[]> allPacienteData = new ArrayList<String[]>();
         SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
         Session session = sessionFactory.openSession();
+        
         try {
         	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
         		if(count>3){
         			read_line = line.split(cvsSplitBy);
-			        for(int i=0;i<pacienteData.length;i++){
-			        	if(i<read_line.length){
-			        		pacienteData[i] = read_line[i];			        
-			        	}else{
-			        		pacienteData[i] = "";
-			        	}			        	
-			        }
-			        if(read_line.length>33){
+        			if(read_line.length>33){
+				        for(int i=0;i<pacienteData.length;i++){
+				        	if(i<read_line.length){
+				        		pacienteData[i] = read_line[i];	
+				        		
+				        	}else{
+				        		pacienteData[i] = "";
+				        	}			        	
+				        }
+			        
 			        	validador.pacienteValidation(pacienteData);
+			        	if(validador.getMessages().getValidation()){
+			        		String[] copy = new String[60];
+			        		for(int i=0;i<pacienteData.length;i++){
+			        			copy[i] = pacienteData[i];
+			        		}
+			        		allPacienteData.add(copy);
+			        	}    	
 			        }
         		}
         		count++;
         	}
         	if(validador.getMessages().getValidation()){
-                count = 0;
-                while ((line = br.readLine()) != null) {   	
-    				if(count>3){        
-    			        read_line = line.split(cvsSplitBy);
-    			        Transaction tx1 = session.beginTransaction();
-    			        System.out.println(read_line.length);
-    			        for(int i=0;i<pacienteData.length;i++){
-    			        	if(i<read_line.length){
-    			        		pacienteData[i] = read_line[i];			        
-    			        	}else{
-    			        		pacienteData[i] = "";
-    			        	}			        	
-    			        }
-    			        if(read_line.length>33){
-    			        	      	
-				         	System.out.println("Insertando paciente");
-				         	Integer rut = Integer.parseInt(pacienteData[3]);
-				         	
-				    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
-				            Paciente paciente_req = (Paciente) q.uniqueResult();
-				        	Paciente paciente = InsertPaciente(pacienteData, paciente_req);
-				        	
-				        	Diagnostico diagnostico = this.InsertDiagnostico(pacienteData, paciente, session);
-				        	Set<Tratamiento> tratamientos = this.InsertTratamiento(pacienteData, diagnostico, session);
-				        	Antecedentes antecedente = this.InsertAntecedentes(pacienteData, session);
-				        	Localizacion localizacion = this.InsertLocalizacion(pacienteData, session);
-				        	session.save(localizacion);
-				        	paciente.setLocalizacion(localizacion);
-				        	session.save(paciente);
-				        	session.save(antecedente);
-				        	diagnostico.setAntecedentes(antecedente);
-				        	session.save(diagnostico);
-				        	
-				        	for(Tratamiento tratamiento: tratamientos){
-				        		session.save(tratamiento.getMedico());
-				        		session.save(tratamiento);
-				        	}
-				        	tx1.commit();
-    				        
-    			        }
-    				}
-    				count++;               
-    			}
-        	}   	
+        			
+	        	for(String[] data: allPacienteData){
+
+	
+		        	Transaction tx1 = session.beginTransaction();      	
+		         	System.out.println("Insertando paciente");
+		         	Integer rut = Integer.parseInt(data[3]);
+		         	
+		    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
+		            Paciente paciente_req = (Paciente) q.uniqueResult();
+		        	Paciente paciente = InsertPaciente(data, paciente_req);
+		        	
+		        	Diagnostico diagnostico = this.InsertDiagnostico(data, paciente, session);
+		        	Set<Tratamiento> tratamientos = this.InsertTratamiento(data, diagnostico, session);
+		        	Antecedentes antecedente = this.InsertAntecedentes(data, session);
+		        	Localizacion localizacion = this.InsertLocalizacion(data, session);
+		        	session.save(localizacion);
+		        	paciente.setLocalizacion(localizacion);
+		        	session.save(paciente);
+		        	session.save(antecedente);
+		        	diagnostico.setAntecedentes(antecedente);
+		        	session.save(diagnostico);
+		        	
+		        	for(Tratamiento tratamiento: tratamientos){
+		        		session.save(tratamiento.getMedico());
+		        		session.save(tratamiento);
+		        	}
+		        	tx1.commit();
+				        
+	        	}
+        	}
+//        	}   	
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -399,7 +403,8 @@ public class InsertPacienteService {
 			if(session!=null){
 				session.close();
 			}
-			this.messages = validador.getMessages();
-		}     
+		}
+        
+		this.messages = validador.getMessages();
 	}
 }

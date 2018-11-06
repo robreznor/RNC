@@ -62,7 +62,7 @@ public class ApiRestController {
 		
         if (result.hasErrors()) {
         	validadorResponse.setValidation(false);
-        	validadorResponse.setMessage("");
+        	validadorResponse.addMessage("");
         	validadorResponse.setTitle("");
             return validadorResponse;
         } else {

@@ -1,13 +1,19 @@
 package cl.minsal.api.service;
 
+import cl.minsal.api.object.Diagnostico;
+import cl.minsal.api.object.PacienteData;
+import cl.minsal.api.object.PacienteSearch;
+import cl.minsal.api.object.PrimeraConsulta;
+import cl.minsal.api.object.diagnostic;
+import cl.minsal.api.object.documentoDeOrigen;
+import cl.minsal.api.object.institucionOrigen;
+import cl.minsal.api.util.HibernateUtility;
+import cl.minsal.api.model.Paciente;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hibernate.HibernateException;
@@ -16,18 +22,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.junit.Test;
 
-import cl.minsal.api.model.Paciente;
-import cl.minsal.api.object.PacienteSearch;
-import cl.minsal.api.object.Diagnostico;
-import cl.minsal.api.object.PacienteData;
-import cl.minsal.api.object.PrimeraConsulta;
-import cl.minsal.api.object.diagnostic;
-import cl.minsal.api.object.documentoDeOrigen;
-import cl.minsal.api.object.institucionOrigen;
-import cl.minsal.api.util.HibernateUtility;
+
 public class PacienteDataService {
 	
 	public static PrimeraConsulta getPrimeraConsulta(Integer id){

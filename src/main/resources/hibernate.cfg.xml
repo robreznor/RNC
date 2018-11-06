@@ -7,12 +7,12 @@
     <session-factory>
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://pgsqlqacl1.naiss.local:5432/rnc?currentSchema=public</property>
+        <!-- <property name="hibernate.connection.url">jdbc:postgresql://pgsqlqacl1.naiss.local:5432/rnc?currentSchema=public</property>
         <property name="hibernate.connection.username">adm_rnc</property>
-        <property name="hibernate.connection.password">kZ4syEjf</property>
+        <property name="hibernate.connection.password">kZ4syEjf</property> -->
         
         <property name="hibernate.jndi.url">jdni/rnc</property>
-        <!-- <property name="hibernate.connection.datasource"> java:comp/env/jdni/rnc</property> -->
+        <property name="hibernate.connection.datasource">java:comp/env/jdni/rnc</property> 
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <!-- Print executed SQL to stdout -->
         <property name="show_sql">true</property>
@@ -25,26 +25,26 @@
         <mapping class="cl.minsal.api.model.Establecimiento"/>
         <mapping class="cl.minsal.api.model.Medico"/>
         <mapping class="cl.minsal.api.model.Tratamiento"/>
-				<mapping class="cl.minsal.api.model.Diagnostico"/>      
-				<mapping class="cl.minsal.api.model.Actividad_economica"/>
-				<mapping class="cl.minsal.api.model.Beneficiario_fonasa"/>
-				<mapping class="cl.minsal.api.model.Comuna"/>
-				<mapping class="cl.minsal.api.model.Ecog"/>
-				<mapping class="cl.minsal.api.model.Estado_conyugal"/>
-				<mapping class="cl.minsal.api.model.Genero"/>
-				<mapping class="cl.minsal.api.model.Instruccion"/>
-				<mapping class="cl.minsal.api.model.Intencion_tratamiento"/>
-				<mapping class="cl.minsal.api.model.Motivo_presentacion"/>
-				<mapping class="cl.minsal.api.model.Ocupacion"/>
-				<mapping class="cl.minsal.api.model.Pais"/>
-				<mapping class="cl.minsal.api.model.Prevision"/>
-				<mapping class="cl.minsal.api.model.Provincia"/>
-				<mapping class="cl.minsal.api.model.Pueblo_originario"/>
-				<mapping class="cl.minsal.api.model.Religion_culto"/>
-				<mapping class="cl.minsal.api.model.Resolucion_comite"/>
-				<mapping class="cl.minsal.api.model.Servicio_salud"/>
-				<mapping class="cl.minsal.api.model.Tipo_tratamiento"/>
-				<mapping class="cl.minsal.api.model.Tipos_comite"/>
-				<mapping class="cl.minsal.api.model.Region"/>
+		<mapping class="cl.minsal.api.model.Diagnostico"/>      
+		<mapping class="cl.minsal.api.model.Actividad_economica"/>
+		<mapping class="cl.minsal.api.model.Beneficiario_fonasa"/>
+		<mapping class="cl.minsal.api.model.Comuna"/>
+		<mapping class="cl.minsal.api.model.Ecog"/>
+		<mapping class="cl.minsal.api.model.Estado_conyugal"/>
+		<mapping class="cl.minsal.api.model.Genero"/>
+		<mapping class="cl.minsal.api.model.Instruccion"/>
+		<mapping class="cl.minsal.api.model.Intencion_tratamiento"/>
+		<mapping class="cl.minsal.api.model.Motivo_presentacion"/>
+		<mapping class="cl.minsal.api.model.Ocupacion"/>
+		<mapping class="cl.minsal.api.model.Pais"/>
+		<mapping class="cl.minsal.api.model.Prevision"/>
+		<mapping class="cl.minsal.api.model.Provincia"/>
+		<mapping class="cl.minsal.api.model.Pueblo_originario"/>
+		<mapping class="cl.minsal.api.model.Religion_culto"/>
+		<mapping class="cl.minsal.api.model.Resolucion_comite"/>
+		<mapping class="cl.minsal.api.model.Servicio_salud"/>
+		<mapping class="cl.minsal.api.model.Tipo_tratamiento"/>
+		<mapping class="cl.minsal.api.model.Tipos_comite"/>
+		<mapping class="cl.minsal.api.model.Region"/>
     </session-factory>
 </hibernate-configuration>

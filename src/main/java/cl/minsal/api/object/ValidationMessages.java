@@ -26,8 +26,12 @@ public class ValidationMessages {
 		return messages;
 	}
 	
-	public void setMessage(String message) {
+	public void addMessage(String message) {
 		this.messages.add(message);
+	}
+	
+	public void setMessage(List<String> message) {
+		this.messages = message;
 	}
 
 	public String getTitle() {

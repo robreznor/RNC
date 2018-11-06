@@ -28,7 +28,7 @@ public class FileValidator {
             return validadorResponse;
         }else {
         	validadorResponse.setValidation(false);
-        	validadorResponse.setMessage("No se encuentra el archivo");
+        	validadorResponse.setTitle("No se encuentra el archivo");
         	return validadorResponse;
         }
     }
