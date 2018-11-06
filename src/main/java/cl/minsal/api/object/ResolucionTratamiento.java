@@ -13,6 +13,7 @@ public class ResolucionTratamiento {
 	private tratamiento tratamiento;
 	private tratamientoIndicado tratamientoIndicado;
 	private String fechaRegistro;
+	private institucionOrigen institucionOrigen;
 	
 	public String getHeader() {
 		return header;
@@ -55,5 +56,11 @@ public class ResolucionTratamiento {
 	}
 	public void setFechaRegistro(String fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+	public institucionOrigen getInstitucionOrigen() {
+		return institucionOrigen;
+	}
+	public void setInstitucionOrigen(institucionOrigen institucionOrigen) {
+		this.institucionOrigen = institucionOrigen;
 	}	
 }

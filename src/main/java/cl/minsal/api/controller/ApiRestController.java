@@ -94,4 +94,10 @@ public class ApiRestController {
 		return diagnosticos;
 	}
 	
+	@RequestMapping(value="/api/tratamientos/{id}", method=RequestMethod.GET)
+    public Set<ResolucionTratamiento> TratamientosPaciente(@PathVariable Integer id) {
+		Set<ResolucionTratamiento> tratamientos = PacienteDataService.getTratamientos(id);
+		return tratamientos;
+	}
+	
 }

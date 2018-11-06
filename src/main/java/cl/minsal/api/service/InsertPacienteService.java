@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -52,19 +53,25 @@ public class InsertPacienteService {
 	private ValidationMessages messages;
 	private Timestamp timestamp;
 	
+	public InsertPacienteService(){
+		TimeZone.setDefault(TimeZone.getTimeZone("Chile/Continental"));
+	}
+	
 	public ValidationMessages getMessages() {
 		return messages;
 	}
 
-	public Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
+	private Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
 
         if(paciente == null){
         	paciente = new Paciente();
         	SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
             Session session = sessionFactory.openSession();
+            
     		paciente.setNombre(pacienteData[0]);
         	paciente.setRut(Integer.parseInt(pacienteData[3]));
         	paciente.setDverificador(pacienteData[4]);
+        	
         	if(!pacienteData[1].equals("")) paciente.setApellido1(pacienteData[1]);
     		if(!pacienteData[2].equals("")) paciente.setApellido2(pacienteData[2]);
     		if(!pacienteData[5].equals("")){
@@ -133,7 +140,7 @@ public class InsertPacienteService {
     	return paciente;
 	}
 	
-	public Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente, Session session) throws ParseException{
+	private Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente, Session session) throws ParseException{
 		
 		Query q = session.createQuery("from Tipos_comite tipo where tipo.codigo= '" + pacienteData[21].split("_")[1] + "'");
 		Tipos_comite tipo_comite = (Tipos_comite) q.uniqueResult();
@@ -167,7 +174,7 @@ public class InsertPacienteService {
 		return diagnostico;
 	}
 	
-	public Set<Tratamiento> InsertTratamiento(String[] pacienteData, Diagnostico diagnostico, Session session) throws ParseException{
+	private Set<Tratamiento> InsertTratamiento(String[] pacienteData, Diagnostico diagnostico, Session session) throws ParseException{
 		System.out.println("insertando tratamiento");
 		Set<Tratamiento> tratamientos = new HashSet<Tratamiento>();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -214,6 +221,7 @@ public class InsertPacienteService {
 	        Intencion_tratamiento intencion_tratamiento = (Intencion_tratamiento) q.uniqueResult();
 	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[46].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
+	        
 	        
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
 			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
@@ -282,7 +290,7 @@ public class InsertPacienteService {
 	
 	}
 	
-	public Antecedentes InsertAntecedentes(String[] pacienteData, Session session) throws ParseException{
+	private Antecedentes InsertAntecedentes(String[] pacienteData, Session session) throws ParseException{
 		
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
 		Antecedentes antecedente = new Antecedentes();
@@ -299,7 +307,7 @@ public class InsertPacienteService {
 		return antecedente;
 	}
 	
-	public Localizacion InsertLocalizacion(String[] pacienteData, Session session) throws ParseException {
+	private Localizacion InsertLocalizacion(String[] pacienteData, Session session) throws ParseException {
 		
 		Localizacion localizacion = new Localizacion();
     	
@@ -333,6 +341,7 @@ public class InsertPacienteService {
         List<String[]> allPacienteData = new ArrayList<String[]>();
         SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
         Session session = sessionFactory.openSession();
+        Boolean error = false;
         
         try {
         	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
@@ -364,7 +373,6 @@ public class InsertPacienteService {
         			
 	        	for(String[] data: allPacienteData){
 
-	
 		        	Transaction tx1 = session.beginTransaction();      	
 		         	System.out.println("Insertando paciente");
 		         	Integer rut = Integer.parseInt(data[3]);
@@ -391,20 +399,25 @@ public class InsertPacienteService {
 		        	tx1.commit();
 				        
 	        	}
-        	}
-//        	}   	
+        	}	
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
+			error = true;
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			error = true;
 			e.printStackTrace();
 		} finally {
 			if(session!=null){
 				session.close();
 			}
 		}
-        
-		this.messages = validador.getMessages();
+        if(error){
+        	ValidationMessages message = new ValidationMessages();
+        	message.setTitle("Hubo un problema al procesar su archivo");
+        	message.setValidation(false);
+        	this.messages = message;
+        }else{
+        	this.messages = validador.getMessages();
+        }
 	}
 }

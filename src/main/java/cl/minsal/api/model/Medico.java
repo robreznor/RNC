@@ -31,9 +31,15 @@ public class Medico implements Serializable {
 	private Set<Tratamiento> tratamiento;
 	
 	@OneToOne
-	@JoinColumn(name = "id_medico")
-	private Localizacion id_establecimiento;
+	@JoinColumn(name = "id_establecimiento")
+	private Establecimiento establecimiento;
 	
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
+	}
 	public void setNombre_medico(String nombre_medico) {
 		this.nombre_medico = nombre_medico;
 	}
