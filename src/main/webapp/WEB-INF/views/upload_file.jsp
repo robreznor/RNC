@@ -16,14 +16,7 @@
 	src="http://www.expertphp.in/js/jquery.form.js"></script>
 </head>
 <body>
-	${model}
-	${error.paciente.rut}
-	${model.error.paciente.rut}
-	${error.paciente.apellido1}
-	${'error.paciente.apellido1'}
-	${'model'}
-	<c:out value="${error.paciente.rut}"/>
-	<c:out value="${model.error.paciente.rut}"/>
+
 	<div class="header">
 		<div class="row margin-bottom-10">
 			<div class="container col-md-4 left">

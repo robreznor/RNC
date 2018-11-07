@@ -1,17 +1,23 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
-	<filter>
-	  <filter-name>cors</filter-name>
-	  <filter-class>cl.minsal.api.util.CORSFilter</filter-class>
+ 	<filter>
+	    <filter-name>springSecurityFilterChain</filter-name>
+	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter> 
 	<filter-mapping>
-	  <filter-name>cors</filter-name>
-	  <url-pattern>/**</url-pattern>
+	    <filter-name>springSecurityFilterChain</filter-name>
+	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<listener>
+	  <listener-class>
+	    org.springframework.web.context.ContextLoaderListener
+	  </listener-class>
+	</listener>
+
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>
@@ -23,6 +29,7 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+	
 	<!-- <resource-ref>
 	    <res-ref-name>jdni/rnc</res-ref-name>
 	    <res-type>javax.sql.DataSource</res-type>
@@ -31,3 +38,4 @@
   	</resource-ref>
  -->
 </web-app>
+
