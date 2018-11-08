@@ -155,90 +155,90 @@
         </dependency>
 	</dependencies>
 	<build>
-	<plugins>
- 		<!-- <plugin> 
-         <groupId>com.github.eirslett</groupId>
-         <artifactId>frontend-maven-plugin</artifactId>
-         <version>1.0</version>
-         <configuration>
-             <workingDirectory>${angular.project.location}</workingDirectory>
-             <installDirectory>${angular.project.nodeinstallation}</installDirectory>
-         </configuration>
-         <executions>  
-            <execution>
-                <id>install node and npm</id>
-                <goals>
-                    <goal>install-node-and-npm</goal>
-                </goals>
-                <configuration>
-                    <nodeVersion>v8.11.4</nodeVersion>
-                    <npmVersion>5.6.0</npmVersion>
-                </configuration>
-            </execution>
-            <execution>
-                <id>npm install</id>
-                <goals>
-                    <goal>npm</goal>
-                </goals>
-                <configuration>
-                    <arguments>install</arguments>
-                </configuration>
-            </execution>
-            <execution>
-                <id>npm build</id>
-                <goals>
-                    <goal>npm</goal>
-                </goals>
-                <configuration>
-                    <arguments>run build</arguments>
-                </configuration>
-            </execution>
-         </executions>
-      </plugin>   -->
-	  <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-    			<webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
-  			</configuration>
-       </plugin>			
-       <plugin>
-    		<groupId>org.apache.maven.plugins</groupId>
-        	<artifactId>maven-resources-plugin</artifactId>
-          <version>2.4</version>
-        <executions>
-           <execution>
-               <id>default-copy-resources</id>
-               <phase>process-resources</phase>
-               <goals>
-                   <goal>copy-resources</goal>
-               </goals>
-               <configuration>
-                   <overwrite>true</overwrite>
-                   <!-- This folder is the folder where your angular files 
-                   will be copied to. It must match the resulting war-file name.
-                   So if you have customized the name of war-file for ex. as "app.war"
-                   then below value should be ${project.build.directory}/app/ 
-                   Value given below is as per default war-file name -->
-                   <outputDirectory>${project.build.directory}\api</outputDirectory>
-                   <resources>
-                       <resource>
-                           <directory>${angular.project.location}\dist\angular-project</directory>
-                       </resource>
-                   </resources>
-              	</configuration>
-           		</execution>
-           </executions>
-        </plugin> 
-        <plugin>
+		<plugins>
+	 		<!-- <plugin> 
+	         <groupId>com.github.eirslett</groupId>
+	         <artifactId>frontend-maven-plugin</artifactId>
+	         <version>1.0</version>
+	         <configuration>
+	             <workingDirectory>${angular.project.location}</workingDirectory>
+	             <installDirectory>${angular.project.nodeinstallation}</installDirectory>
+	         </configuration>
+	         <executions>  
+	            <execution>
+	                <id>install node and npm</id>
+	                <goals>
+	                    <goal>install-node-and-npm</goal>
+	                </goals>
+	                <configuration>
+	                    <nodeVersion>v8.11.4</nodeVersion>
+	                    <npmVersion>5.6.0</npmVersion>
+	                </configuration>
+	            </execution>
+	            <execution>
+	                <id>npm install</id>
+	                <goals>
+	                    <goal>npm</goal>
+	                </goals>
+	                <configuration>
+	                    <arguments>install</arguments>
+	                </configuration>
+	            </execution>
+	            <execution>
+	                <id>npm build</id>
+	                <goals>
+	                    <goal>npm</goal>
+	                </goals>
+	                <configuration>
+	                    <arguments>run build</arguments>
+	                </configuration>
+	            </execution>
+	         </executions>
+	      </plugin>   -->
+		  <plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-war-plugin</artifactId>
 	        <version>2.4</version>
 	        <configuration>
 	    			<webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
 	  			</configuration>
-       </plugin>			
+	       </plugin>			
+	       <plugin>
+	   			<groupId>org.apache.maven.plugins</groupId>
+	       		<artifactId>maven-resources-plugin</artifactId>
+	        	<version>2.4</version>
+		        <executions>
+		           <execution>
+		               <id>default-copy-resources</id>
+		               <phase>process-resources</phase>
+		               <goals>
+		                   <goal>copy-resources</goal>
+		               </goals>
+		               <configuration>
+		                   <overwrite>true</overwrite>
+		                   <!-- This folder is the folder where your angular files 
+		                   will be copied to. It must match the resulting war-file name.
+		                   So if you have customized the name of war-file for ex. as "app.war"
+		                   then below value should be ${project.build.directory}/app/ 
+		                   Value given below is as per default war-file name -->
+		                   <outputDirectory>${project.build.directory}\api</outputDirectory>
+		                   <resources>
+		                       <resource>
+		                           <directory>${angular.project.location}\dist\angular-project</directory>
+		                       </resource>
+		                   </resources>
+		              	</configuration>
+	           		</execution>
+	       		</executions>
+	       	</plugin> 
+	        <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>2.4</version>
+		        <configuration>
+	    			<webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+	  			</configuration>
+	       </plugin>	   
 		</plugins>
 		<finalName>api</finalName>
 	</build>
