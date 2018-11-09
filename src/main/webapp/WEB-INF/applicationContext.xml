@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
     http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
       
-    <http auto-config="true" >
+   <!--  <http auto-config="true" >
         <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/home" access="permitAll" />
         <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
@@ -20,6 +20,6 @@
                 <user name="dba"   password="root123" authorities="ROLE_ADMIN,ROLE_DBA" />
             </user-service>
         </authentication-provider>
-    </authentication-manager>
+    </authentication-manager> -->
        
-</beans:beans>
+</beans:beans> 

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.ModelMap;
@@ -22,13 +24,11 @@ import cl.minsal.api.service.InsertPacienteService;
 import cl.minsal.api.service.PacienteDataService;
 import cl.minsal.api.util.FileValidator;
 
-import java.security.Principal;
 import java.text.ParseException;
 import java.util.Set;
 import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.bind.DatatypeConverter;
 
@@ -169,18 +169,25 @@ public class ApiRestController {
 //        return userName;
 //    }
     
-    @RequestMapping("/users/authenticate")
-    public boolean login(@RequestBody User user) {
-        return
-          user.getUsername().equals("user") && user.getPassword().equals("password");
+    @RequestMapping(value="/api/users/authenticate", method=RequestMethod.POST)
+    public ModelMap login(HttpServletRequest request, ModelMap map) {
+    	
+    	if(request.getParameter("username").equals("rob") && request.getParameter("password").equals("teenage")){
+    		map.addAttribute("welcomeMessage", "welcome");
+            map.addAttribute("message", "Baeldung");
+            return map;
+    	}else{
+    		return null;
+    	}	
+//       return user.getUsername().equals("user") && user.getPassword().equals("password");
     }
      
-    @RequestMapping("/user")
+    @RequestMapping("/api/user")
     public Object user(HttpServletRequest request) {
         final String authToken = request.getHeader("Authorization")
           .substring("Basic".length()).trim();
 //        return () ->  new String(Base64.getDecoder()
-//          .decode(authToken)).split(":")[0];
+//          .decode(authToken)).split(":")[0]; 
 
         return (new Object(){
         	
