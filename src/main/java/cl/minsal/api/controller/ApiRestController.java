@@ -3,12 +3,16 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +20,7 @@ import org.springframework.security.core.userdetails.User;
 //import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
@@ -26,10 +31,13 @@ import cl.minsal.api.util.FileValidator;
 
 import java.text.ParseException;
 import java.util.Set;
+import java.util.UUID;
 import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.ws.rs.Consumes;
 import javax.xml.bind.DatatypeConverter;
 
 import cl.minsal.api.object.*;
@@ -169,17 +177,20 @@ public class ApiRestController {
 //        return userName;
 //    }
     
-    @RequestMapping(value="/api/users/authenticate", method=RequestMethod.POST)
-    public ModelMap login(HttpServletRequest request, ModelMap map) {
+    @RequestMapping(value="/api/users/authenticate", method=RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody UserLoginResponse login(@RequestBody UserLoginRequest userReq, UserLoginResponse userRes) {
     	
-    	if(request.getParameter("username").equals("rob") && request.getParameter("password").equals("teenage")){
-    		map.addAttribute("welcomeMessage", "welcome");
-            map.addAttribute("message", "Baeldung");
-            return map;
+    	if(userReq.getUsername().equals("rob") && userReq.getPassword().equals("teenage")){
+    		userRes.setUsername("rob");
+    		userRes.setId(1);
+    		userRes.setFirstName("rob");
+    		userRes.setLastName("maclean");
+    		userRes.setToken(UUID.randomUUID().toString());
+    		
+            return userRes;
     	}else{
     		return null;
     	}	
-//       return user.getUsername().equals("user") && user.getPassword().equals("password");
     }
      
     @RequestMapping("/api/user")
@@ -205,5 +216,22 @@ public class ApiRestController {
         });
                 
     }
+    
+    @RequestMapping(value = "/getuser", method = RequestMethod.GET) 
+    public String getUser() {
+                
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	if (!(authentication instanceof AnonymousAuthenticationToken)) {
+    		authentication.getAuthorities();
+    		authentication.getCredentials();
+    		authentication.getDetails();
+    		authentication.getPrincipal();
+    	    String currentUserName = authentication.getName();
+    	    return currentUserName;
+    	}
+        return "welcome";
+
+    }
+
 	
 }
