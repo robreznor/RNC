@@ -8,20 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 //import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 import cl.minsal.api.model.Paciente;
@@ -31,13 +23,10 @@ import cl.minsal.api.util.FileValidator;
 
 import java.text.ParseException;
 import java.util.Set;
-import java.util.UUID;
 import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.xml.bind.DatatypeConverter;
 
 import cl.minsal.api.object.*;
@@ -120,118 +109,5 @@ public class ApiRestController {
 		Set<ResolucionTratamiento> tratamientos = PacienteDataService.getTratamientos(id);
 		return tratamientos;
 	}
-	
-//    @RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
-//    public ModelAndView homePage(ModelMap model) {
-//    	ModelAndView mav = new ModelAndView("welcome");
-//        mav.addObject("greeting", "Hi, Welcome to mysite");
-//        return mav;
-//    }
-// 
-//    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-//    public ModelAndView adminPage(ModelMap model) {
-//        ModelAndView mav = new ModelAndView("admin");
-//        mav.addObject("user", getPrincipal());
-//        return mav;
-//    }
-//     
-//    @RequestMapping(value = "/db", method = RequestMethod.GET)
-//    public ModelAndView dbaPage(ModelMap model) {
-//    	ModelAndView mav = new ModelAndView("dba");
-//        mav.addObject("user", getPrincipal()); 
-//        return mav;
-//    }
-// 
-//    @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
-//    public ModelAndView accessDeniedPage(ModelMap model) {
-//    	ModelAndView mav = new ModelAndView("accessDenied");
-//        mav.addObject("user", getPrincipal());
-//        return mav;
-//    }
-// 
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public ModelAndView loginPage() {
-//    	ModelAndView mav = new ModelAndView("login");
-//        mav.addObject("user", getPrincipal());
-//        return mav;
-//    }
-// 
-//    @RequestMapping(value="/logout", method = RequestMethod.GET)
-//    public ModelAndView logoutPage (HttpServletRequest request, HttpServletResponse response) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null){    
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//        }
-//        return new ModelAndView("redirect:/login?logout");
-//    }
-// 
-//    private String getPrincipal(){
-//        String userName = null;
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-// 
-//        if (principal instanceof UserDetails) {
-//            userName = ((UserDetails)principal).getUsername();
-//        } else {
-//            userName = principal.toString();
-//        }
-//        return userName;
-//    }
-    
-    @RequestMapping(value="/api/users/authenticate", method=RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody UserLoginResponse login(@RequestBody UserLoginRequest userReq, UserLoginResponse userRes) {
-    	
-    	if(userReq.getUsername().equals("rob") && userReq.getPassword().equals("teenage")){
-    		userRes.setUsername("rob");
-    		userRes.setId(1);
-    		userRes.setFirstName("rob");
-    		userRes.setLastName("maclean");
-    		userRes.setToken(UUID.randomUUID().toString());
-    		
-            return userRes;
-    	}else{
-    		return null;
-    	}	
-    }
-     
-    @RequestMapping("/api/user")
-    public Object user(HttpServletRequest request) {
-        final String authToken = request.getHeader("Authorization")
-          .substring("Basic".length()).trim();
-//        return () ->  new String(Base64.getDecoder()
-//          .decode(authToken)).split(":")[0]; 
-
-        return (new Object(){
-        	
-        	@Override
-        	public String toString() {
-        		try {
-					String retorno = new String(DatatypeConverter.parseBase64Binary(authToken), "UTF-8").split(":")[0];
-					return retorno;
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        		return null;
-        	}	
-        });
-                
-    }
-    
-    @RequestMapping(value = "/getuser", method = RequestMethod.GET) 
-    public String getUser() {
-                
-    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	if (!(authentication instanceof AnonymousAuthenticationToken)) {
-    		authentication.getAuthorities();
-    		authentication.getCredentials();
-    		authentication.getDetails();
-    		authentication.getPrincipal();
-    	    String currentUserName = authentication.getName();
-    	    return currentUserName;
-    	}
-        return "welcome";
-
-    }
-
 	
 }

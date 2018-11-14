@@ -11,28 +11,10 @@
       http://www.springframework.org/schema/context
 	  http://www.springframework.org/schema/context/spring-context-4.0.xsd">
       
-<!--    <http auto-config="true" >
-        <intercept-url pattern="/" access="permitAll" />
-        <intercept-url pattern="/home" access="permitAll" />
-        <intercept-url pattern="/api**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/dba**" access="hasRole('ADMIN') and hasRole('DBA')" />
-        <form-login  login-page="/login" username-parameter="ssoId" password-parameter="password" authentication-failure-url="/Access_Denied" />
-        <csrf disabled="true"/>
-    </http>
-    <authentication-manager >
-        <authentication-provider>
-            <user-service>
-                <user name="bill"  password="abc123"  authorities="ROLE_USER" />
-                <user name="admin" password="root123" authorities="ROLE_ADMIN" />
-                <user name="dba"   password="root123" authorities="ROLE_ADMIN,ROLE_DBA" />
-            </user-service>
-        </authentication-provider>
-    </authentication-manager> -->
-    <sec:http entry-point-ref="customEntryPoint" use-expressions="true">
+    <!-- <sec:http entry-point-ref="customEntryPoint" use-expressions="true">
 		<sec:custom-filter ref="authenticationFilter"
 			before="PRE_AUTH_FILTER" />			
+		<sec:intercept-url pattern="/users/authenticate" access="permitAll" />
 		<sec:intercept-url pattern="/login" access="permitAll" />
 		<sec:intercept-url pattern="/**"
 			access="hasAuthority('AUTH_USER')" />
@@ -54,7 +36,31 @@
 	</beans:bean>
 
 	<beans:bean id="customSuccessHandler"
-		class="cl.minsal.api.authentication.CustomSuccessHandler" />
+		class="cl.minsal.api.authentication.CustomSuccessHandler" /> -->
+		
+    <global-method-security pre-post-annotations="enabled" />  
     
+    <http pattern="/api/login" security="none"/>  
+    <http pattern="/api/signup" security="none"/>
+	
+	<context:component-scan base-package="cl.minsal.api.authentication" />
+	
+    <http pattern="/api/**" entry-point-ref="restAuthenticationEntryPoint" create-session="stateless"> 
+        <csrf disabled="true"/>  
+        <custom-filter before="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter"/>  
+    </http>
     
+    <beans:bean id="jwtAuthenticationFilter" class="cl.minsal.api.authentication.JwtAuthenticationFilter">  
+        <beans:property name="authenticationManager" ref="authenticationManager" /> 
+        <beans:property name="authenticationSuccessHandler" ref="jwtAuthenticationSuccessHandler" />
+    </beans:bean>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="jwtAuthenticationProvider" />  
+    </authentication-manager>
+    
+    <beans:bean id="jwtAuthenticationProvider" class="cl.minsal.api.authentication.JwtAuthenticationProvider" /> 
+    <beans:bean id="restAuthenticationEntryPoint" class="cl.minsal.api.authentication.RestAuthenticationEntryPoint" />	
+    <beans:bean id="jwtAuthenticationSuccessHandler" class="cl.minsal.api.authentication.JwtAuthenticationSuccessHandler" />	
+				
 </beans:beans> 
