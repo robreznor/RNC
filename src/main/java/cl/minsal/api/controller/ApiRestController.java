@@ -1,33 +1,20 @@
 package cl.minsal.api.controller;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
-
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.service.InsertPacienteService;
 import cl.minsal.api.service.PacienteDataService;
 import cl.minsal.api.util.FileValidator;
-
 import java.text.ParseException;
 import java.util.Set;
 import java.io.InputStreamReader;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.xml.bind.DatatypeConverter;
 
 import cl.minsal.api.object.*;
 
