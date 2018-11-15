@@ -16,9 +16,7 @@ import cl.minsal.api.transfer.JwtUserDto;
 import cl.minsal.api.util.JwtUtil;
 
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-
-    private JwtUtil  jwtUtil;
-
+	
     @Override
     public boolean supports(Class<?> authentication) {
         return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
@@ -32,7 +30,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
         String token = jwtAuthenticationToken.getToken(); 
-
+        JwtUtil jwtUtil = new JwtUtil();
         JwtUserDto parsedUser = jwtUtil.parseToken(token);
 
         if (parsedUser == null) {

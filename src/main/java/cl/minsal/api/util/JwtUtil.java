@@ -1,19 +1,18 @@
 package cl.minsal.api.util;
 
+import java.security.Key;
+
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
-
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import cl.minsal.api.transfer.JwtUserDto;
 
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private static Key secret;
 
     /**
      * Tries to parse specified String as a JWT token. If successful, returns User object with username, id and role prefilled (extracted from token).
@@ -52,14 +51,15 @@ public class JwtUtil {
         Claims claims = Jwts.claims().setSubject(u.getUsername());
         claims.put("userId", u.getId() + "");
         claims.put("role", u.getRole());
-
+        
+        secret = MacProvider.generateKey(SignatureAlgorithm.HS256);
+ 
         return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
     
-    @Test
     public void main(String[] args) {
 
         JwtUserDto user = new JwtUserDto();

@@ -1,7 +1,5 @@
 package cl.minsal.api.util;
 
-import org.junit.Test;
-
 import cl.minsal.api.transfer.JwtUserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +18,6 @@ public class JwtTokenGenerator {
                 .compact();
     }
     
-    @Test
     public void main() {
 
         JwtUserDto user = new JwtUserDto();
