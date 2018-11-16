@@ -21,17 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import cl.minsal.api.model.Usuario;
 import cl.minsal.api.object.UserLoginRequest;
 import cl.minsal.api.object.UserLoginResponse;
+import cl.minsal.api.service.InserUserService;
 import cl.minsal.api.transfer.JwtUserDto;
 import cl.minsal.api.util.JwtUtil;
 
 @RestController
 public class AuthController {
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-	public ResponseEntity<Object> login(@RequestParam String username, @RequestParam String password, UserLoginResponse userRes ){
-	
+	@RequestMapping(value="/login", method=RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<Object> login(@RequestBody UserLoginRequest userReq, UserLoginResponse userRes ){
+		
+		String username = userReq.getUsername();
+		String password = userReq.getPassword();
 		if(username.equals("rob") && password.equals("teenage")){
 			JwtUtil jwtutil = new JwtUtil();
 			JwtUserDto user = new JwtUserDto();
@@ -48,6 +52,25 @@ public class AuthController {
 			return new ResponseEntity<Object>(userRes, HttpStatus.OK );
 		}
 
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode message = mapper.createObjectNode();
+        message.put("message", "La combinación usuario y contraseña no es correcta");
+		return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value="/test", method=RequestMethod.POST, consumes="application/json")
+	public void test(@RequestBody UserLoginRequest userReq){
+		System.out.print(userReq.getUsername());
+	}
+	
+	@RequestMapping(value="/register", method=RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<Object> register(@RequestBody Usuario user){
+		System.out.print(user.getPassword());
+
+		boolean userExist = InserUserService.userExist(user.getUsuario());
+		if(userExist){
+			
+		}
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode message = mapper.createObjectNode();
         message.put("message", "La combinación usuario y contraseña no es correcta");

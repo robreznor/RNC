@@ -51,8 +51,6 @@ public class PacienteDataService {
 	        return primeraConsulta;   
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			sessionFactory.close();
 		}
         return null;
 	}
@@ -108,9 +106,8 @@ public class PacienteDataService {
 	        }
 		}catch(Exception e){
         	e.printStackTrace();
-        }finally{
-        	sessionFactory.close();
         }
+		
 		return null;
 	}
 	
@@ -200,11 +197,8 @@ public class PacienteDataService {
 	        return tratamientosResp;
         }catch(Exception e){
         	e.printStackTrace();
-        }finally{
-        	if(sessionFactory!=null){
-        		sessionFactory.close();
-        	}
         }
+		
 		return null;
 	}
 	
@@ -239,27 +233,21 @@ public class PacienteDataService {
 		    return paciente_data;
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			sessionFactory.close();	
-		} 
+		}
 		return null;
 	}
 	
 	public static Paciente getPaciente(Integer id){
 		
 		Paciente paciente = new Paciente();
-		SessionFactory sessionFactory = null;
+
 		try{
-			sessionFactory = HibernateUtility.getSessionFactory();
+			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 	        Session session = sessionFactory.openSession();
 	        Query q = session.createQuery("from Paciente where p.id= '" + id + "'");
 	        paciente = (Paciente) q.uniqueResult();	
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			if(sessionFactory!=null){
-				sessionFactory.close();
-			}
 		}
 		return paciente;	
 	}
@@ -279,7 +267,6 @@ public class PacienteDataService {
 	        	PacienteSearch paciente = new PacienteSearch((Integer)obj[0], (Integer)obj[1], (String)obj[2], (String)obj[3], (String)obj[4]);
 	        	pacientes.add(paciente);
 	        }   
-	        sessionFactory.close();
 	        return pacientes;
 		}catch(HibernateException e) {
 			e.printStackTrace();

@@ -21,6 +21,7 @@
 	    <angular.project.nodeinstallation>node_installation</angular.project.nodeinstallation>
 	    <start-class>cl.minsal.api.controller.ApiRestController</start-class>
 	    <springsecurity.version>4.0.1.RELEASE</springsecurity.version>
+	    <hibernate.version>4.0.1.Final</hibernate.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -109,10 +110,15 @@
 		    <version>9.4-1200-jdbc41</version>
 		</dependency>
 		<dependency>
-		   <groupId>hibernate</groupId>
+		   <groupId>org.hibernate</groupId>
 		   <artifactId>hibernate-entitymanager</artifactId>
-		   <version>3.4.0.GA</version>
+		   <version>${hibernate.version}</version>
  	 	</dependency>
+ 	 	<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>4.2.0.Final</version>
+		</dependency>
 	 	<dependency>
 		    <groupId>javax.validation</groupId>
 		    <artifactId>validation-api</artifactId>
