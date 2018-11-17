@@ -48,5 +48,6 @@
 		<mapping class="cl.minsal.api.model.Tipos_comite"/>
 		<mapping class="cl.minsal.api.model.Region"/>
 		<mapping class="cl.minsal.api.model.Usuario"/>
+
     </session-factory>
 </hibernate-configuration>
