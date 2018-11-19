@@ -61,13 +61,10 @@ public class InsertPacienteService {
 		return messages;
 	}
 
-	private Paciente InsertPaciente(String[] pacienteData, Paciente paciente) throws ParseException{
+	private Paciente InsertPaciente(String[] pacienteData, Paciente paciente, Session session) throws ParseException{
 
         if(paciente == null){
-        	paciente = new Paciente();
-        	SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-            Session session = sessionFactory.openSession();
-            
+        	paciente = new Paciente();  
     		paciente.setNombre(pacienteData[0]);
         	paciente.setRut(Integer.parseInt(pacienteData[3]));
         	paciente.setDverificador(pacienteData[4]);
@@ -135,16 +132,17 @@ public class InsertPacienteService {
     			paciente.setBeneficiario_fonasa(beneficiario_fonasa);
     		}
     		paciente.setFecha_registro(this.timestamp);
-    		sessionFactory.close();
+
         }
     	return paciente;
 	}
 	
-	private Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente, Session session) throws ParseException{
+	private Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente) throws ParseException{
 		
+		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+        Session session = sessionFactory.openSession();
 		Query q = session.createQuery("from Tipos_comite tipo where tipo.codigo= '" + pacienteData[21].split("_")[1] + "'");
-		Tipos_comite tipo_comite = (Tipos_comite) q.uniqueResult();
-		
+		Tipos_comite tipo_comite = (Tipos_comite) q.uniqueResult();	
 		q = session.createQuery("from Ecog ecog where ecog.codigo= '" + pacienteData[26].split("_")[1] + "'");
 		Ecog ecog = (Ecog) q.uniqueResult();
 		
@@ -171,6 +169,7 @@ public class InsertPacienteService {
 		diagnostico.setPaciente(paciente);
 		diagnostico.setTnm(pacienteData[28]+pacienteData[29]+pacienteData[30]+pacienteData[31]+pacienteData[32]+pacienteData[33]);
 		diagnostico.setFecha_registro(this.timestamp);
+		session.close();
 		return diagnostico;
 	}
 	
@@ -321,7 +320,7 @@ public class InsertPacienteService {
     	localizacion.setProvincia(provincia);
     	localizacion.setComuna(comuna);
     	localizacion.setDireccion(pacienteData[20]);
-    	
+    	session.close();
     	return localizacion;
 	}
 	
@@ -339,9 +338,8 @@ public class InsertPacienteService {
         String[] read_line;
         String[] pacienteData = new String[60]; 
         List<String[]> allPacienteData = new ArrayList<String[]>();
-        SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-        Session session = sessionFactory.openSession();
         Boolean error = false;
+        SessionFactory sessionFactory = HibernateUtility.getSessionFactory(); 
         
         try {
         	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
@@ -372,19 +370,18 @@ public class InsertPacienteService {
         	if(validador.getMessages().getValidation()){
         			
 	        	for(String[] data: allPacienteData){
-
-		        	Transaction tx1 = session.beginTransaction();      	
+	        		Session session = sessionFactory.openSession();
 		         	System.out.println("Insertando paciente");
 		         	Integer rut = Integer.parseInt(data[3]);
-		         	
+		         	Transaction tx1 = session.beginTransaction();
 		    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
 		            Paciente paciente_req = (Paciente) q.uniqueResult();
-		        	Paciente paciente = InsertPaciente(data, paciente_req);
+		        	Paciente paciente = InsertPaciente(data, paciente_req, session);
 		        	
-		        	Diagnostico diagnostico = this.InsertDiagnostico(data, paciente, session);
+		        	Diagnostico diagnostico = this.InsertDiagnostico(data, paciente);
 		        	Set<Tratamiento> tratamientos = this.InsertTratamiento(data, diagnostico, session);
 		        	Antecedentes antecedente = this.InsertAntecedentes(data, session);
-		        	Localizacion localizacion = this.InsertLocalizacion(data, session);
+		        	Localizacion localizacion = this.InsertLocalizacion(data, session);    
 		        	session.save(localizacion);
 		        	paciente.setLocalizacion(localizacion);
 		        	session.save(paciente);
@@ -396,8 +393,8 @@ public class InsertPacienteService {
 		        		session.save(tratamiento.getMedico());
 		        		session.save(tratamiento);
 		        	}
-		        	tx1.commit();
-				        
+		        	
+		        	tx1.commit();  	    
 	        	}
         	}	
 		} catch (HibernateException e) {
@@ -406,11 +403,8 @@ public class InsertPacienteService {
 		} catch (IOException e) {
 			error = true;
 			e.printStackTrace();
-		} finally {
-			if(session!=null){
-				session.close();
-			}
-		}
+		} 
+        
         if(error){
         	ValidationMessages message = new ValidationMessages();
         	message.setTitle("Hubo un problema al procesar su archivo");

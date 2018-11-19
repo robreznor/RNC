@@ -34,7 +34,7 @@ public class PacienteDataService {
 		
 		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 		try{
-			Session session = sessionFactory.openSession(); 
+			Session session = sessionFactory.getCurrentSession(); 
 	        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
 	        Paciente paciente = (Paciente) q.uniqueResult();
 	        
@@ -61,7 +61,7 @@ public class PacienteDataService {
 		Paciente paciente = new Paciente();
 		
 		try{
-			Session session = sessionFactory.openSession(); 
+			Session session = sessionFactory.getCurrentSession(); 
 	        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
 	        paciente = (Paciente) q.uniqueResult();
 			
@@ -117,7 +117,7 @@ public class PacienteDataService {
 		Paciente paciente = new Paciente();
 		
 		try{
-			Session session = sessionFactory.openSession(); 
+			Session session = sessionFactory.getCurrentSession(); 
 	        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
 	        paciente = (Paciente) q.uniqueResult();
 			
@@ -221,7 +221,7 @@ public class PacienteDataService {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 		try{	
-		    Session session = sessionFactory.openSession();
+		    Session session = sessionFactory.getCurrentSession();
 		    Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
 		    Paciente paciente = (Paciente) q.uniqueResult();
 		    PacienteData paciente_data = new PacienteData();
@@ -243,7 +243,7 @@ public class PacienteDataService {
 
 		try{
 			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-	        Session session = sessionFactory.openSession();
+	        Session session = sessionFactory.getCurrentSession();
 	        Query q = session.createQuery("from Paciente where p.id= '" + id + "'");
 	        paciente = (Paciente) q.uniqueResult();	
 		}catch(Exception e){

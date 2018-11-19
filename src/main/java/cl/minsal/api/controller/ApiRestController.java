@@ -3,17 +3,22 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.validation.BindingResult;
+
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.service.InsertPacienteService;
 import cl.minsal.api.service.PacienteDataService;
 import cl.minsal.api.util.FileValidator;
+
 import java.text.ParseException;
 import java.util.Set;
 import java.io.InputStreamReader;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import cl.minsal.api.object.*;
@@ -42,28 +47,22 @@ public class ApiRestController {
 		return paciente_data;
 	}
 	
-//	@RequestMapping(value="/api/paciente_primera_consulta/{id}", method=RequestMethod.GET)
-//	private Paciente paciente_primera_consulta(@PathVariable Integer id){
-//		
-//		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-//        Session session = sessionFactory.openSession(); 
-//        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
-//        List<Paciente> pacientes = q.list();
-//        
-//		return pacientes.get(0);
-//	}
-	
 	@RequestMapping(value = "/api/file_upload", method = RequestMethod.POST)
     public ValidationMessages singleFileUpload(@Valid FileBucket fileBucket,
-            BindingResult result, ValidationMessages validadorResponse) throws IOException, ParseException {
+            BindingResult result, ValidationMessages validadorResponse, HttpServletRequest request) throws IOException, ParseException {
 		
+
         if (result.hasErrors()) {
+        	
         	validadorResponse.setValidation(false);
         	validadorResponse.addMessage("");
         	validadorResponse.setTitle("");
             return validadorResponse;
         } else {
             try {
+            	System.out.println(request.getAuthType());
+        		System.out.println(request.getHeader("Authorization"));
+        		System.out.println(request.getHeaderNames());
             	ValidationMessages fileValidation = FileValidator.validate(fileBucket);
             	if(fileValidation.getValidation()){
             		InputStreamReader file = new InputStreamReader(fileBucket.getFile().getInputStream(), "UTF8");
