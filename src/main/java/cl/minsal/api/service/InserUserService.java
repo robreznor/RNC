@@ -3,6 +3,7 @@ package cl.minsal.api.service;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Usuario;
@@ -19,7 +20,6 @@ public class InserUserService {
 	        Query q = session.createQuery("from Usuario u where u.usuario= '" + username + "'");
 	        Paciente paciente = (Paciente) q.uniqueResult();
 	        if(paciente==null){
-	        	System.out.print("no existe el paciente");
 	        	userExist= false;
 	        }
 		}catch(Exception e){
@@ -29,20 +29,20 @@ public class InserUserService {
 	}
 	
 	public static boolean inserUser(Usuario user){
-//		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-		boolean userExist= true;
-//		try{
-//			Session session = sessionFactory.openSession(); 
-//	        Query q = session.createQuery("from Usuario u where u.usuario= '" + user + "'");
-//	        Paciente paciente = (Paciente) q.uniqueResult();
-//	        if(paciente==null){
-//	        	System.out.print("no existe el paciente");
-//	        	userExist= false;
-//	        }
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-        return userExist;
+
+		try{
+			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+			Session session = sessionFactory.openSession(); 
+			Transaction tx1 = session.beginTransaction();
+			session.save(user);
+	        tx1.commit();
+	        session.close();
+	        return true;
+	        
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+        return false;
 	}
 	
 }

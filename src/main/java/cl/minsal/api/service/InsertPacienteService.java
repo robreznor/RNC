@@ -320,7 +320,7 @@ public class InsertPacienteService {
     	localizacion.setProvincia(provincia);
     	localizacion.setComuna(comuna);
     	localizacion.setDireccion(pacienteData[20]);
-    	session.close();
+
     	return localizacion;
 	}
 	
@@ -339,7 +339,6 @@ public class InsertPacienteService {
         String[] pacienteData = new String[60]; 
         List<String[]> allPacienteData = new ArrayList<String[]>();
         Boolean error = false;
-        SessionFactory sessionFactory = HibernateUtility.getSessionFactory(); 
         
         try {
         	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
@@ -368,16 +367,17 @@ public class InsertPacienteService {
         		count++;
         	}
         	if(validador.getMessages().getValidation()){
-        			
-	        	for(String[] data: allPacienteData){
-	        		Session session = sessionFactory.openSession();
+        		
+        		SessionFactory sessionFactory = HibernateUtility.getSessionFactory(); 
+        		Session session = sessionFactory.openSession();	
+	        	
+        		for(String[] data: allPacienteData){  			
 		         	System.out.println("Insertando paciente");
 		         	Integer rut = Integer.parseInt(data[3]);
 		         	Transaction tx1 = session.beginTransaction();
 		    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
 		            Paciente paciente_req = (Paciente) q.uniqueResult();
 		        	Paciente paciente = InsertPaciente(data, paciente_req, session);
-		        	
 		        	Diagnostico diagnostico = this.InsertDiagnostico(data, paciente);
 		        	Set<Tratamiento> tratamientos = this.InsertTratamiento(data, diagnostico, session);
 		        	Antecedentes antecedente = this.InsertAntecedentes(data, session);
@@ -394,8 +394,9 @@ public class InsertPacienteService {
 		        		session.save(tratamiento);
 		        	}
 		        	
-		        	tx1.commit();  	    
+		        	tx1.commit();  	   
 	        	}
+        		session.close();
         	}	
 		} catch (HibernateException e) {
 			error = true;

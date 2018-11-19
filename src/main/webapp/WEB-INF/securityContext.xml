@@ -16,8 +16,7 @@
 			before="PRE_AUTH_FILTER" />			
 		<sec:intercept-url pattern="/users/authenticate" access="permitAll" />
 		<sec:intercept-url pattern="/login" access="permitAll" />
-		<sec:intercept-url pattern="/**"
-			access="hasAuthority('AUTH_USER')" />
+		<sec:intercept-url pattern="/**" access="hasAuthority('AUTH_USER')" />
 		<sec:logout delete-cookies="JSESSIONID" />
 		<sec:csrf disabled="true" />
 	</sec:http>
@@ -42,14 +41,14 @@
     
     <http pattern="/api/login" security="none"/>  
     <http pattern="/api/signup" security="none"/>
-    <http pattern="/api/api/file_upload" security="none"/>
 	
-		<context:component-scan base-package="cl.minsal.api.authentication" />
+	<context:component-scan base-package="cl.minsal.api.authentication" />
 	
-    <!-- <http pattern="/api/**" entry-point-ref="restAuthenticationEntryPoint" create-session="stateless"> 
+    <http pattern="/api/**" entry-point-ref="restAuthenticationEntryPoint" create-session="stateless"> 
         <csrf disabled="true"/>  
         <custom-filter before="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter"/>  
-    </http> -->
+    	<intercept-url pattern="/api/api/paciente_search" access="hasAuthority('AUTH_USER')"/>
+    </http>
     
     <beans:bean id="jwtAuthenticationFilter" class="cl.minsal.api.authentication.JwtAuthenticationFilter">  
         <beans:property name="authenticationManager" ref="authenticationManager" /> 

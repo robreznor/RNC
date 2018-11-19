@@ -18,11 +18,11 @@ public class Usuario {
     @ColumnTransformer(
         read =  "pgp_sym_decrypt(" +
                 "    password, " +
-                "    current_setting('encrypt.key')" +
+                "    'secretkey'" +
                 ")",
         write = "pgp_sym_encrypt( " +
                 "    ?, " +
-                "    current_setting('encrypt.key')" +
+                "    'secretkey'" +
                 ") "
     )
     

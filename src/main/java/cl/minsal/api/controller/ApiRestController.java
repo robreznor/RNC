@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 
 import cl.minsal.api.model.Paciente;
@@ -29,6 +31,8 @@ public class ApiRestController {
     @Autowired
     FileValidator fileValidator;
 	
+    @PreAuthorize ("hasRole('ROLE_WRITE')")
+    @Secured("ROLE_VIEWER")
 	@RequestMapping(value="/api/paciente_search", method=RequestMethod.GET)
     public Set<PacienteSearch> pacienteSearch() {
     	Set<PacienteSearch> pacientes = PacienteDataService.getPacientes();

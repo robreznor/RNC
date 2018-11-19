@@ -1,13 +1,10 @@
 package cl.minsal.api.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +22,7 @@ import cl.minsal.api.model.Usuario;
 import cl.minsal.api.object.UserLoginRequest;
 import cl.minsal.api.object.UserLoginResponse;
 import cl.minsal.api.service.InserUserService;
+import cl.minsal.api.service.UserService;
 import cl.minsal.api.transfer.JwtUserDto;
 import cl.minsal.api.util.JwtUtil;
 
@@ -36,18 +34,17 @@ public class AuthController {
 		
 		String username = userReq.getUsername();
 		String password = userReq.getPassword();
-		if(username.equals("rob") && password.equals("teenage")){
+		Usuario user = UserService.correctPassword(username, password);
+		if(user!=null){
 			JwtUtil jwtutil = new JwtUtil();
-			JwtUserDto user = new JwtUserDto();
+			JwtUserDto userDto = new JwtUserDto();
 			Long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-			user.setId(id);
-			user.setRole("user");
-			userRes.setUsername(username);
-			String token = jwtutil.generateToken(user);
-			user.setUsername(username);
+			userDto.setId(id);
+			userDto.setRole(user.getRole());
+			userDto.setUsername(user.getUsuario());
+			String token = jwtutil.generateToken(userDto);
+			userRes.setUsername(user.getUsuario());
 			userRes.setId(1);
-			userRes.setFirstName("rob");
-			userRes.setLastName("reznor");
 			userRes.setToken(token);
 			return new ResponseEntity<Object>(userRes, HttpStatus.OK );
 		}
@@ -62,19 +59,27 @@ public class AuthController {
 	public void test(@RequestBody UserLoginRequest userReq){
 		System.out.print(userReq.getUsername());
 	}
-	
+
 	@RequestMapping(value="/register", method=RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<Object> register(@RequestBody Usuario user){
 		System.out.print(user.getPassword());
 
 		boolean userExist = InserUserService.userExist(user.getUsuario());
-		if(userExist){
-			
-		}
-        ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
         ObjectNode message = mapper.createObjectNode();
-        message.put("message", "La combinación usuario y contraseña no es correcta");
-		return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+		if(userExist){	
+	        message.put("message", "El nombre de usuario ingresado ya existe");
+			return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+		}
+		boolean insertSuccess = InserUserService.inserUser(user);
+		if(insertSuccess){
+			return new ResponseEntity<Object>(HttpStatus.OK);
+		}else{
+			message.put("message", "Hubo un error al intentar registrar el usuario, vuelva a intentarlo");
+			return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+		}
+		
+        
 	}
 	
 }
