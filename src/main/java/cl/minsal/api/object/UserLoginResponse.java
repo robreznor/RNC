@@ -7,16 +7,18 @@ public class UserLoginResponse {
 	}
 	
 	public UserLoginResponse(String username, Integer id, String firstName,
-			String lastName, String token) {
+			String lastName, String token, String role) {
 		super();
 		this.username = username;
 		this.id = id;
 		this.token = token;
+		this.role = role;
 	}
 	
 	private String username;
 	private Integer id;
 	private String token;
+	private String role;
 	
 	public String getUsername() {
 		return username;
@@ -35,6 +37,14 @@ public class UserLoginResponse {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	

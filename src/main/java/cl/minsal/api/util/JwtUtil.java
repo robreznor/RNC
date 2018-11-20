@@ -59,15 +59,5 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
-    
-    public void main(String[] args) {
-
-        JwtUserDto user = new JwtUserDto();
-        user.setId(123L);
-        user.setUsername("Pascal");
-        user.setRole("admin");
-
-        System.out.println("**************************************\n\n" + this.generateToken(user) + "\n\n**************************************");
-    }
 
 }

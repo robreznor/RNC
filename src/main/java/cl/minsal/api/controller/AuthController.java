@@ -44,8 +44,9 @@ public class AuthController {
 			userDto.setUsername(user.getUsuario());
 			String token = jwtutil.generateToken(userDto);
 			userRes.setUsername(user.getUsuario());
-			userRes.setId(1);
+			userRes.setId(user.getId_usuario());
 			userRes.setToken(token);
+			userRes.setRole(user.getRole());
 			return new ResponseEntity<Object>(userRes, HttpStatus.OK );
 		}
 
@@ -53,11 +54,6 @@ public class AuthController {
         ObjectNode message = mapper.createObjectNode();
         message.put("message", "La combinación usuario y contraseña no es correcta");
 		return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
-	}
-	
-	@RequestMapping(value="/test", method=RequestMethod.POST, consumes="application/json")
-	public void test(@RequestBody UserLoginRequest userReq){
-		System.out.print(userReq.getUsername());
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST, consumes = "application/json")

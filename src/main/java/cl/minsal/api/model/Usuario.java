@@ -1,11 +1,11 @@
 package cl.minsal.api.model;
 
+import static cl.minsal.api.constant.SecurityConstants.SECRET;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
@@ -18,11 +18,11 @@ public class Usuario {
     @ColumnTransformer(
         read =  "pgp_sym_decrypt(" +
                 "    password, " +
-                "    'secretkey'" +
+                "    '"+SECRET+"'" +
                 ")",
         write = "pgp_sym_encrypt( " +
                 "    ?, " +
-                "    'secretkey'" +
+                "    '"+SECRET+"'" +
                 ") "
     )
     

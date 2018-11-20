@@ -1,6 +1,7 @@
 package cl.minsal.api.controller;
 import java.io.IOException;
 
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,6 +18,9 @@ import cl.minsal.api.service.PacienteDataService;
 import cl.minsal.api.util.FileValidator;
 
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Set;
 import java.io.InputStreamReader;
 
@@ -30,11 +34,10 @@ public class ApiRestController {
 	
     @Autowired
     FileValidator fileValidator;
-	
-    @PreAuthorize ("hasRole('ROLE_WRITE')")
-    @Secured("ROLE_VIEWER")
+    
+    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value="/api/paciente_search", method=RequestMethod.GET)
-    public Set<PacienteSearch> pacienteSearch() {
+    public Set<PacienteSearch> pacienteSearch(HttpServletRequest request) {
     	Set<PacienteSearch> pacientes = PacienteDataService.getPacientes();
 		return pacientes;
     }
