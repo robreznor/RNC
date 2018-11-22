@@ -17,6 +17,10 @@ public class PacienteValidator {
 		return messages;
 	}
 	
+	public Integer getCount(){
+		return this.count;
+	}
+	
 	public void main(){
 		
 	}
@@ -39,7 +43,7 @@ public class PacienteValidator {
 			this.messages.setValidation(false);
 		}
 		if(pacienteData[1].equals("")){
-			this.messages.addMessage("El primer apellido del paciente es un campo requerido" + rut);
+			this.messages.addMessage("El primer apellido  del paciente es un campo requerido" + rut);
 			this.messages.setValidation(false);
 		}
 		if(pacienteData[2].equals("")){

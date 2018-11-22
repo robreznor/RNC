@@ -1,21 +1,13 @@
 package cl.minsal.api.controller;
 
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,30 +17,18 @@ import cl.minsal.api.model.Usuario;
 import cl.minsal.api.object.UserLoginRequest;
 import cl.minsal.api.object.UserLoginResponse;
 import cl.minsal.api.service.UserService;
-import cl.minsal.api.transfer.JwtUserDto;
-import cl.minsal.api.util.JwtUtil;
 
 @RestController
 public class UserController {
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<Object> login(@RequestBody UserLoginRequest userReq, UserLoginResponse userRes ){
+	public ResponseEntity<Object> login(@RequestBody UserLoginRequest userReq){
 		
 		String username = userReq.getUsername();
 		String password = userReq.getPassword();
 		Usuario user = UserService.correctPassword(username, password);
 		if(user!=null){
-			JwtUtil jwtutil = new JwtUtil();
-			JwtUserDto userDto = new JwtUserDto();
-			Long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-			userDto.setId(id);
-			userDto.setRole(user.getRole());
-			userDto.setUsername(user.getUsuario());
-			String token = jwtutil.generateToken(userDto);
-			userRes.setUsername(user.getUsuario());
-			userRes.setId(user.getId_usuario());
-			userRes.setToken(token);
-			userRes.setRole(user.getRole());
+			UserLoginResponse userRes = UserService.fillUserResponse(user);
 			return new ResponseEntity<Object>(userRes, HttpStatus.OK );
 		}
 
@@ -90,7 +70,7 @@ public class UserController {
 	
 	@RequestMapping(value="/users/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteUser(@PathVariable Integer id){
-		if(UserService.DeleteUser(id)){
+		if(UserService.deleteUser(id)){
 			return new ResponseEntity<Object>(HttpStatus.OK);
 		}else{
 			return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);

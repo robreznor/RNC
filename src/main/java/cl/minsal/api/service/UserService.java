@@ -2,6 +2,7 @@ package cl.minsal.api.service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,7 +11,10 @@ import org.hibernate.Transaction;
 
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Usuario;
+import cl.minsal.api.object.UserLoginResponse;
+import cl.minsal.api.transfer.JwtUserDto;
 import cl.minsal.api.util.HibernateUtility;
+import cl.minsal.api.util.JwtUtil;
 
 public class UserService {
 	
@@ -91,7 +95,7 @@ public class UserService {
 		}	
 	}
 	
-	public static boolean DeleteUser(Integer id){
+	public static boolean deleteUser(Integer id){
 		try{
 			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 	        Session session = sessionFactory.openSession();
@@ -104,6 +108,24 @@ public class UserService {
 			e.printStackTrace();
 			return false;
 		}		
+	}
+	
+	public static UserLoginResponse fillUserResponse (Usuario user){
+		JwtUtil jwtutil = new JwtUtil();
+		JwtUserDto userDto = new JwtUserDto();
+		Long id = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+		userDto.setId(id);
+		userDto.setRole(user.getRole());
+		userDto.setUsername(user.getUsuario());
+		String token = jwtutil.generateToken(userDto);
+		UserLoginResponse userRes = new UserLoginResponse();
+		userRes.setUsername(user.getUsuario());
+		userRes.setId(user.getId_usuario());
+		userRes.setToken(token);
+		userRes.setRole(user.getRole());
+		
+		return userRes;
+		
 	}
 //	
 //	public static Usuario getUpdateUser(){

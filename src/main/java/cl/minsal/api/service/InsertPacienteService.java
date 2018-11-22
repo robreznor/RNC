@@ -412,7 +412,14 @@ public class InsertPacienteService {
         	message.setValidation(false);
         	this.messages = message;
         }else{
-        	this.messages = validador.getMessages();
+        	if(validador.getCount()==0){
+        		ValidationMessages message = new ValidationMessages();
+        		message.setTitle("No se encontraron registros en el archivo");
+        		message.setValidation(false);
+        		this.messages = message;
+        	}else{
+        		this.messages = validador.getMessages();
+        	}	
         }
 	}
 }

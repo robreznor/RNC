@@ -58,24 +58,19 @@ public class ApiRestController {
     public ValidationMessages singleFileUpload(@Valid FileBucket fileBucket,
             BindingResult result, ValidationMessages validadorResponse, HttpServletRequest request) throws IOException, ParseException {
 		
-
-        if (result.hasErrors()) {
-        	
+        if (result.hasErrors()) {	
         	validadorResponse.setValidation(false);
         	validadorResponse.addMessage("");
         	validadorResponse.setTitle("");
             return validadorResponse;
         } else {
             try {
-            	System.out.println(request.getAuthType());
-        		System.out.println(request.getHeader("Authorization"));
-        		System.out.println(request.getHeaderNames());
             	ValidationMessages fileValidation = FileValidator.validate(fileBucket);
             	if(fileValidation.getValidation()){
             		InputStreamReader file = new InputStreamReader(fileBucket.getFile().getInputStream(), "UTF8");
                 	InsertPacienteService insertar = new InsertPacienteService();
-                	System.out.println("Insertando datos");
                     insertar.InsertData(file);
+                    if()
                     validadorResponse = insertar.getMessages();
             	}else {
             		validadorResponse = fileValidation;
