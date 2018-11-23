@@ -70,7 +70,6 @@ public class ApiRestController {
             		InputStreamReader file = new InputStreamReader(fileBucket.getFile().getInputStream(), "UTF8");
                 	InsertPacienteService insertar = new InsertPacienteService();
                     insertar.InsertData(file);
-                    if()
                     validadorResponse = insertar.getMessages();
             	}else {
             		validadorResponse = fileValidation;
