@@ -32,8 +32,8 @@ public class PacienteDataService {
 	
 	public static PrimeraConsulta getPrimeraConsulta(Integer id){
 		
-		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 		try{
+			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 			Session session = sessionFactory.openSession(); 
 	        Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
 	        Paciente paciente = (Paciente) q.uniqueResult();
@@ -52,8 +52,9 @@ public class PacienteDataService {
 	        return primeraConsulta;   
 		}catch(Exception e){
 			e.printStackTrace();
+			 return null;
 		}
-        return null;
+       
 	}
 	
 	public static Set<Diagnostico> getDiagnosticos(Integer id){

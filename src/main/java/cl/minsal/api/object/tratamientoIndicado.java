@@ -6,6 +6,7 @@ public class tratamientoIndicado {
 	private String intencion;
 	private String fechaIntencion;
 	private String estado;
+	
 	public String getTipo() {
 		return tipo;
 	}

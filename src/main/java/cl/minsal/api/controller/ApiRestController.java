@@ -35,7 +35,6 @@ public class ApiRestController {
     @Autowired
     FileValidator fileValidator;
     
-    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(value="/api/paciente_search", method=RequestMethod.GET)
     public Set<PacienteSearch> pacienteSearch(HttpServletRequest request) {
     	Set<PacienteSearch> pacientes = PacienteDataService.getPacientes();
