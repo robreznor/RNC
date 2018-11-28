@@ -40,14 +40,14 @@
     <global-method-security secured-annotations="enabled" /> 
     
     <http pattern="/login" security="none"/> 
-	<http pattern="/stadistic" security="none"/> 
+	<http pattern="/stadistic/**" security="none"/> 
 	<context:component-scan base-package="cl.minsal.api.authentication" />
 	
     <http entry-point-ref="restAuthenticationEntryPoint" create-session="stateless" use-expressions="true"> 
         <csrf disabled="true"/>  
         <custom-filter before="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter"/> 
         <intercept-url pattern="/login" access="permitAll" /> 
-        <intercept-url pattern="stadistic" access="permitAll" /> 
+        <intercept-url pattern="stadistic/**" access="permitAll" /> 
         <intercept-url pattern="/login" access="permitAll" /> 
         <intercept-url pattern="/users/**" access="hasAuthority('admin')"/>
         <intercept-url pattern="/register" access="hasAuthority('admin')"/>

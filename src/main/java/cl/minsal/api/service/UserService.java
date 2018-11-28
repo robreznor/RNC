@@ -127,18 +127,6 @@ public class UserService {
 		return userRes;
 		
 	}
-//	
-//	public static Usuario getUpdateUser(){
-//		
-//	}
-//
-//	public static Usuario getUpdateUser(){
-//	
-//	}
-//
-//	public static Usuario getUpdateUser(){
-//		
-//	}
 	
 	private static Usuario getUserQuery(Integer id){
 		

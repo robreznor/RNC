@@ -10,9 +10,15 @@ import cl.minsal.api.service.PlotService;
 @RestController
 public class PlotController {
 	
-	@RequestMapping(value="/stadistic", method=RequestMethod.GET)
-	private BarPlot search(){
+	@RequestMapping(value="/stadistic/cancer_by_type", method=RequestMethod.GET)
+	private BarPlot cancerByType(){
 		BarPlot barPlot = PlotService.cancerByType();
+		return barPlot;
+	}
+
+	@RequestMapping(value="/stadistic/cancer_by_age", method=RequestMethod.GET)
+	private BarPlot cancerByAge(){
+		BarPlot barPlot = PlotService.cancerByAge();
 		return barPlot;
 	}
 }
