@@ -2,7 +2,6 @@ package cl.minsal.api.util;
 
 import java.security.Key;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,6 +22,9 @@ public class JwtUtil {
      */
     public JwtUserDto parseToken(String token) {
         try {
+        	if(secret==null){
+        		return null;
+        	}
             Claims body = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token)

@@ -31,7 +31,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
         String token = jwtAuthenticationToken.getToken(); 
         JwtUtil jwtUtil = new JwtUtil();
-        JwtUserDto parsedUser = jwtUtil.parseToken(token);
+           JwtUserDto parsedUser = jwtUtil.parseToken(token);
 
         if (parsedUser == null) {
             throw new JwtTokenMalformedException("JWT token is not valid");

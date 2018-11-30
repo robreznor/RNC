@@ -38,6 +38,11 @@ public class PlotService {
 			Set<Diagnostico> diagnosticos = (Set<Diagnostico>) paciente.getDiagnostico();
 			for(Diagnostico diagnostico: diagnosticos){
 				label = diagnostico.getDiagnostico_cie10();
+				Date date = diagnostico.getFecha_diagnostico();				
+				Date olderDate = Utils.olderDate(date, Utils.stringToDate(barPlot.getDateStart()));
+				Date newerDate = Utils.newerDate(date, Utils.stringToDate(barPlot.getDateEnd()));
+				barPlot.setDateStart(Utils.dateToString(olderDate));
+				barPlot.setDateEnd(Utils.dateToString(newerDate));
 				setBarPlot(barPlot, label);
 			}
 		}
@@ -66,12 +71,24 @@ public class PlotService {
 			Date birthDate = paciente.getFecha_nacimiento();
 			Date currentDate = new Date();
 			age = Utils.calculateAge(birthDate, currentDate);
-			System.out.println(age);
 			String label = labels.get(getAgeRange(age));
 			setBarPlot(barPlot, label);
 		}
+		barPlot = orderAgeRange(barPlot, labels);
 		
 		return barPlot;
+	}
+	
+	public static BarPlot orderAgeRange(BarPlot barPlot, List<String> labels){
+		BarPlot copyBarPlot = new BarPlot();
+		for(int i=0;i<labels.size();i++){
+			Integer index = barPlot.getLabels().indexOf(labels.get(i));
+			if(index!=-1){
+				copyBarPlot.addLabel(barPlot.getLabels().get(index));
+				copyBarPlot.addVal(barPlot.getVal().get(index));
+			}
+		}
+		return copyBarPlot;
 	}
 	
 	public static Integer getAgeRange(Integer edad){

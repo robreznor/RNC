@@ -10,44 +10,18 @@
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
       http://www.springframework.org/schema/context
 	  http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-      
-    <!-- <sec:http entry-point-ref="customEntryPoint" use-expressions="true">
-		<sec:custom-filter ref="authenticationFilter"
-			before="PRE_AUTH_FILTER" />			
-		<sec:intercept-url pattern="/users/authenticate" access="permitAll" />
-		<sec:intercept-url pattern="/login" access="permitAll" />
-		<sec:intercept-url pattern="/**" access="hasAuthority('AUTH_USER')" />
-		<sec:logout delete-cookies="JSESSIONID" />
-		<sec:csrf disabled="true" />
-	</sec:http>
-
-	<context:component-scan base-package="cl.minsal.api.authentication" />
-
-	<sec:authentication-manager alias="authenticationManager">
-		<authentication-provider ref="customAuthenticationProvider" />
-	</sec:authentication-manager>
-
-	<beans:bean id="authenticationFilter"
-		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
-		<beans:property name="authenticationManager" ref="authenticationManager" />
-		<beans:property name="postOnly" value="false" />
-		<beans:property name="authenticationSuccessHandler" ref="customSuccessHandler" />
-	</beans:bean>
-
-	<beans:bean id="customSuccessHandler"
-		class="cl.minsal.api.authentication.CustomSuccessHandler" /> -->
-		
+      	
     <global-method-security secured-annotations="enabled" /> 
     
     <http pattern="/login" security="none"/> 
-	<http pattern="/stadistic/**" security="none"/> 
+
 	<context:component-scan base-package="cl.minsal.api.authentication" />
 	
     <http entry-point-ref="restAuthenticationEntryPoint" create-session="stateless" use-expressions="true"> 
         <csrf disabled="true"/>  
         <custom-filter before="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter"/> 
         <intercept-url pattern="/login" access="permitAll" /> 
-        <intercept-url pattern="stadistic/**" access="permitAll" /> 
+        <intercept-url pattern="/api/stadistic" access="hasAuthority('user') or hasAuthority('admin')" /> 
         <intercept-url pattern="/login" access="permitAll" /> 
         <intercept-url pattern="/users/**" access="hasAuthority('admin')"/>
         <intercept-url pattern="/register" access="hasAuthority('admin')"/>
