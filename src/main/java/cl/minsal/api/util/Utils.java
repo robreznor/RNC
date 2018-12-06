@@ -65,10 +65,8 @@ public class Utils {
 	
 	public static Date stringToDate(String stringDate){
 		try{
-			System.out.println("string date"+stringDate);
 			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			Date date = formatter.parse(stringDate);
-			System.out.println("date format "+date);
 			return date;
 		}catch(ParseException e){
 			e.printStackTrace();
@@ -84,12 +82,6 @@ public class Utils {
 	        String dateInString = "21-Nov-2020";
 	        String stringDate = "1800-05-12";
 	        Date date = formatter.parse(dateInString);
-	        System.out.println("String to date: "+Utils.stringToDate(stringDate));
-	        System.out.println("Date to string: "+Utils.dateToString(current));
-	        System.out.println("Fecha actual "+ current);
-	        System.out.println("Fecha ingresada "+ date); 
-			System.out.println("Fecha más actual "+newerDate(date, current));
-			System.out.println("Fecha más antigua "+olderDate(date, current));
 		}catch(ParseException e){
 			e.printStackTrace();
 		}	

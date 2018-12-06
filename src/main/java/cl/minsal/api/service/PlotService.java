@@ -38,12 +38,14 @@ public class PlotService {
 			Set<Diagnostico> diagnosticos = (Set<Diagnostico>) paciente.getDiagnostico();
 			for(Diagnostico diagnostico: diagnosticos){
 				label = diagnostico.getDiagnostico_cie10();
-				Date date = diagnostico.getFecha_diagnostico();				
-				Date olderDate = Utils.olderDate(date, Utils.stringToDate(barPlot.getDateStart()));
-				Date newerDate = Utils.newerDate(date, Utils.stringToDate(barPlot.getDateEnd()));
-				barPlot.setDateStart(Utils.dateToString(olderDate));
-				barPlot.setDateEnd(Utils.dateToString(newerDate));
-				setBarPlot(barPlot, label);
+				Date date = diagnostico.getFecha_diagnostico();	
+				if(date!=null){
+					Date olderDate = Utils.olderDate(date, Utils.stringToDate(barPlot.getDateStart()));
+					Date newerDate = Utils.newerDate(date, Utils.stringToDate(barPlot.getDateEnd()));
+					barPlot.setDateStart(Utils.dateToString(olderDate));
+					barPlot.setDateEnd(Utils.dateToString(newerDate));
+					setBarPlot(barPlot, label);
+				}
 			}
 		}
 		return barPlot;	
