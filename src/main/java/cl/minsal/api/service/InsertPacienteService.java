@@ -47,6 +47,7 @@ import cl.minsal.api.model.Tratamiento;
 import cl.minsal.api.object.ValidationMessages;
 import cl.minsal.api.util.HibernateUtility;
 import cl.minsal.api.util.PacienteValidator;
+import cl.minsal.api.util.ValidationsUtil;
 
 public class InsertPacienteService {
 	
@@ -344,7 +345,7 @@ public class InsertPacienteService {
         	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
         		if(count>3){
         			read_line = line.split(cvsSplitBy);
-        			if(read_line.length>33){
+        			if(!ValidationsUtil.emptyRow(read_line)){
 				        for(int i=0;i<pacienteData.length;i++){
 				        	if(i<read_line.length){
 				        		pacienteData[i] = read_line[i];	
