@@ -184,7 +184,6 @@ public class PacienteDataService {
 	        		tratam.setParticipantesComite(participantesComite);
 	        		tratam.setResolucionComite(resolucionComite);
 	        		tratam.setResponsablesTratamiento(responsablesTratamiento);
-	        		//documentoDeOrigen.set
 	        		tratamientoResp.setDocumentoDeOrigen(documentoDeOrigen);
 	        		
 	        		tratamientoResp.setInstitucionOrigen(institucionOrigen);

@@ -40,10 +40,10 @@ public class PlotService {
 				label = diagnostico.getDiagnostico_cie10();
 				Date date = diagnostico.getFecha_diagnostico();	
 				if(date!=null){
-					Date olderDate = Utils.olderDate(date, Utils.stringToDate(barPlot.getDateStart()));
-					Date newerDate = Utils.newerDate(date, Utils.stringToDate(barPlot.getDateEnd()));
-					barPlot.setDateStart(Utils.dateToString(olderDate));
-					barPlot.setDateEnd(Utils.dateToString(newerDate));
+					Date olderDate = Utils.olderDate(date, Utils.stringToDate(barPlot.getDateStart(), "dd-MM-yyyy"));
+					Date newerDate = Utils.newerDate(date, Utils.stringToDate(barPlot.getDateEnd(), "dd-MM-yyyy"));
+					barPlot.setDateStart(Utils.dateToString(olderDate, "dd-MM-yyyy"));
+					barPlot.setDateEnd(Utils.dateToString(newerDate, "dd-MM-yyyy"));
 					setBarPlot(barPlot, label);
 				}
 			}

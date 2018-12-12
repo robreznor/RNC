@@ -17,15 +17,15 @@ import cl.minsal.api.model.Paciente;
 public class Utils {
 
 	public static int calculateAge(Date birthDate, Date currentDate) {                                                                                                                    
-	    int d1 = dateToInteger(birthDate);                           
-	    int d2 = dateToInteger(currentDate);                        
+	    int d1 = dateToInteger(birthDate, "yyyyMMdd");                           
+	    int d2 = dateToInteger(currentDate, "yyyyMMdd");                        
 	    int age = (d2 - d1) / 10000;                                                       
 	    return age;                                                                        
 	}
 	
 	public static Date olderDate(Date date1, Date date2){                         
-		 int d1 = dateToInteger(date1);                           
-		 int d2 = dateToInteger(date2);
+		 int d1 = dateToInteger(date1, "yyyyMMdd");                           
+		 int d2 = dateToInteger(date2, "yyyyMMdd");
 		 if(d1<d2){
 			 return date1;
 		 }else{
@@ -34,8 +34,8 @@ public class Utils {
 	}
 	
 	public static Date newerDate(Date date1, Date date2){
-		int d1 = dateToInteger(date1);                           
-		 int d2 = dateToInteger(date2);
+		int d1 = dateToInteger(date1, "yyyyMMdd");                           
+		 int d2 = dateToInteger(date2, "yyyyMMdd");
 		 if(d1>d2){
 			 return date1;
 		 }else{
@@ -43,8 +43,8 @@ public class Utils {
 		 }
 	}
 	
-	public static String dateToString(Date date){
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	public static String dateToString(Date date, String format){
+		DateFormat dateFormat = new SimpleDateFormat(format);
 		String stringDate = dateFormat.format(date);
 		return stringDate;
 	}
@@ -57,15 +57,15 @@ public class Utils {
 		return pacientes;
 	}
 	
-	private static Integer dateToInteger(Date date){
-		DateFormat formatter = new SimpleDateFormat("yyyyMMdd");                           
+	public static Integer dateToInteger(Date date, String format){
+		DateFormat formatter = new SimpleDateFormat(format);                           
 	    int integerDate = Integer.parseInt(formatter.format(date)); 
 	    return integerDate;
 	}
 	
-	public static Date stringToDate(String stringDate){
+	public static Date stringToDate(String stringDate, String format){
 		try{
-			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			DateFormat formatter = new SimpleDateFormat(format);
 			Date date = formatter.parse(stringDate);
 			return date;
 		}catch(ParseException e){
@@ -74,16 +74,5 @@ public class Utils {
 		}		
 	}
 	
-	@Test
-	public void test() {
-		try{
-			Date current = new Date();
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-	        String dateInString = "21-Nov-2020";
-	        String stringDate = "1800-05-12";
-	        Date date = formatter.parse(dateInString);
-		}catch(ParseException e){
-			e.printStackTrace();
-		}	
-	}
+	
 }

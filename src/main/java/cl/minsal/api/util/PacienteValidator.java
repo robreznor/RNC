@@ -27,7 +27,7 @@ public class PacienteValidator {
 
 	public void pacienteValidation(String [] pacienteData){
 
-		ValidationsUtil.emptyFieldValidation(pacienteData, this.messages);
+		ValidationsUtil.pacienteValidation(pacienteData, this.messages);
 		count ++;
 		if(this.messages.getValidation()){
 			this.messages.setTitle("Su archivo ha sido cargado cargado con Exito! "+ count +" Registro(s) insertados");

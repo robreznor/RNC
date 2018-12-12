@@ -342,28 +342,10 @@ public class InsertPacienteService {
         Boolean error = false;
         
         try {
-        	while (((line = br.readLine()) != null && validador.getMessages().getValidation())) {   
+        	while ((line = br.readLine()) != null) {   
         		if(count>3){
         			read_line = line.split(cvsSplitBy);
-        			if(!ValidationsUtil.emptyRow(read_line)){
-				        for(int i=0;i<pacienteData.length;i++){
-				        	if(i<read_line.length){
-				        		pacienteData[i] = read_line[i];	
-				        		
-				        	}else{
-				        		pacienteData[i] = "";
-				        	}			        	
-				        }
-			        
-			        	validador.pacienteValidation(pacienteData);
-			        	if(validador.getMessages().getValidation()){
-			        		String[] copy = new String[60];
-			        		for(int i=0;i<pacienteData.length;i++){
-			        			copy[i] = pacienteData[i];
-			        		}
-			        		allPacienteData.add(copy);
-			        	}    	
-			        }
+        			getPacientesData(read_line, pacienteData, validador, allPacienteData);
         		}
         		count++;
         	}
@@ -373,7 +355,6 @@ public class InsertPacienteService {
         		Session session = sessionFactory.openSession();	
 	        	
         		for(String[] data: allPacienteData){  			
-		         	System.out.println("Insertando paciente");
 		         	Integer rut = Integer.parseInt(data[3]);
 		         	Transaction tx1 = session.beginTransaction();
 		    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
@@ -423,4 +404,31 @@ public class InsertPacienteService {
         	}	
         }
 	}
+	
+	private void getPacientesData(String[] read_line, String[] pacienteData, PacienteValidator validador, List<String[]> allPacienteData){
+
+		if(!ValidationsUtil.emptyRow(read_line)){
+	        for(int i=0;i<pacienteData.length;i++){
+	        	if(i<read_line.length){
+	        		pacienteData[i] = read_line[i];	
+	        		
+	        	}else{
+	        		pacienteData[i] = "";
+	        	}			        	
+	        }
+	    
+	    	validador.pacienteValidation(pacienteData);
+	    	if(validador.getMessages().getValidation()){
+	    		String[] copy = new String[60];
+	    		for(int i=0;i<pacienteData.length;i++){
+	    			copy[i] = pacienteData[i];
+	    		}
+	    		allPacienteData.add(copy);
+	    	}    	
+	    }
+		
+		
+	}
+	
+	
 }

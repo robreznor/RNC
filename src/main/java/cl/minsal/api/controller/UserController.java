@@ -26,15 +26,14 @@ public class UserController {
 		
 		String username = userReq.getUsername();
 		String password = userReq.getPassword();
-		Usuario user = UserService.correctPassword(username, password);
+		 ObjectMapper mapper = new ObjectMapper();
+        ObjectNode message = mapper.createObjectNode();
+		Usuario user = UserService.correctPassword(username, password, message);
+		
 		if(user!=null){
 			UserLoginResponse userRes = UserService.fillUserResponse(user);
 			return new ResponseEntity<Object>(userRes, HttpStatus.OK );
 		}
-
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode message = mapper.createObjectNode();
-        message.put("message", "La combinación usuario y contraseña no es correcta");
 		return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
 	}
 

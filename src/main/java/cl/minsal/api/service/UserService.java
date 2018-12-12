@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Usuario;
 import cl.minsal.api.object.UserLoginResponse;
@@ -52,18 +54,23 @@ public class UserService {
         return false;
 	}
 	
-	public static Usuario correctPassword(String username, String password){
+	public static Usuario correctPassword(String username, String password, ObjectNode message){
 		try{
 			SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 			Session session =  sessionFactory.openSession();
 			Query query = session.createQuery("from Usuario u where u.usuario='"+ username +"'");
 			Usuario user = (Usuario) query.uniqueResult();
-			if(password.equals(user.getPassword())){
+			if(user==null){
+				message.put("message", "La combinación usuario y contraseña no es correcta");
+			}
+			else if(password.equals(user.getPassword())){
 				return user;
 			}
+			
 
 		}catch(Exception e){
 			e.printStackTrace();
+			message.put("message", "El servidor no está disponible");
 		}
 		return null;
 	}
@@ -132,7 +139,7 @@ public class UserService {
 		
 		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
         Session session = sessionFactory.openSession();
-        Query q = session.createQuery("from Usuario u where u.id_usuario='"+id+"'");
+        Query q = session.createQuery("from Usuario u where u.codigo='" + id + "'");
         Usuario usuario =  (Usuario) q.uniqueResult();	 
         session.close();
         return usuario;
