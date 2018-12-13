@@ -26,7 +26,7 @@ public class UserController {
 		
 		String username = userReq.getUsername();
 		String password = userReq.getPassword();
-		 ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
         ObjectNode message = mapper.createObjectNode();
 		Usuario user = UserService.correctPassword(username, password, message);
 		

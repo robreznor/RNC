@@ -1,5 +1,6 @@
 package cl.minsal.api.util;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -15,14 +16,23 @@ public class HibernateUtility {
     }
 
     public static synchronized SessionFactory getSessionFactory() {
-
-        if (factory == null) {
-        	Configuration configuration = new Configuration();
-        	configuration.configure("hibernate.cfg.xml");
-            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(
-            configuration.getProperties()). buildServiceRegistry();
-            factory = configuration.buildSessionFactory(serviceRegistry);
-        }
-        return factory;
+    	try{
+    		if (factory == null) {
+            	Configuration configuration = new Configuration();
+            	System.out.println("1");
+            	configuration.configure("hibernate.cfg.xml");
+            	System.out.println("2");
+                ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(
+                configuration.getProperties()).buildServiceRegistry();
+                System.out.println("3");
+                factory = configuration.buildSessionFactory(serviceRegistry);
+                System.out.println("4");
+            }
+            return factory;
+    		
+    	}catch(HibernateException e){
+    		e.printStackTrace();
+    	}
+        return null;
     }
 }

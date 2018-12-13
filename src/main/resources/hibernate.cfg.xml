@@ -7,12 +7,12 @@
     <session-factory>
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-         <property name="hibernate.connection.url">jdbc:postgresql://172.20.8.73:5432/rnc?currentSchema=public</property>
+<!--          <property name="hibernate.connection.url">jdbc:postgresql://pgsqlqacl1.naiss.local:5432/rnc?currentSchema=public</property>
         <property name="hibernate.connection.username">adm_rnc</property>
-        <property name="hibernate.connection.password">kZ4syEjf</property> 
+        <property name="hibernate.connection.password">kZ4syEjf</property>  -->
         
-       	<!-- <property name="hibernate.jndi.url">jdni/rnc</property>
-        <property name="hibernate.connection.datasource">java:comp/env/jdni/rnc</property> -->
+       	<!-- <property name="hibernate.jndi.url">jdni/rnc</property> -->
+        <property name="hibernate.connection.datasource">java:comp/env/jdni/rnc</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <!-- Print executed SQL to stdout -->
         <property name="show_sql">true</property>

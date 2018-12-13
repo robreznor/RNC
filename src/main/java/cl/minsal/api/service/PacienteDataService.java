@@ -104,9 +104,9 @@ public class PacienteDataService {
 		    	diagnostico.setInstitucionOrigen(institucionOrigen);
 		    	diagnostico.setTipo("diagnostico");
 		    	diagnosticosResp.add(diagnostico);  
-		    	session.close();
-		    	return diagnosticosResp;
 	        }
+	        session.close();
+	        return diagnosticosResp;
 		}catch(Exception e){
         	e.printStackTrace();
         }

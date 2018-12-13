@@ -66,75 +66,71 @@ public class InsertPacienteService {
 
         if(paciente == null){
         	paciente = new Paciente();  
-    		paciente.setNombre(pacienteData[0]);
         	paciente.setRut(Integer.parseInt(pacienteData[3]));
         	paciente.setDverificador(pacienteData[4]);
-        	
-        	if(!pacienteData[1].equals("")) paciente.setApellido1(pacienteData[1]);
-    		if(!pacienteData[2].equals("")) paciente.setApellido2(pacienteData[2]);
-    		if(!pacienteData[5].equals("")){
-    			SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
-            	java.util.Date fecha_nacimiento_date= fecha.parse(pacienteData[5]);
-            	java.sql.Date fecha_nacimiento = new java.sql.Date(fecha_nacimiento_date.getTime());
-    			paciente.setFecha_nacimiento(fecha_nacimiento);
-    		}
-    		
-    		Query q = null;   		 	
-    		
-    		if(!pacienteData[6].equals("")){ 
-        		q = session.createQuery("from Genero gen where gen.codigo= '" + pacienteData[6].split("-")[1] + "'");
-        		Genero genero = (Genero) q.uniqueResult();
-    			paciente.setGenero(genero);
-    		}
-    		if(!pacienteData[8].equals("")){
-    			q = session.createQuery("from Pais pais where pais.codigo= '" + pacienteData[8].split("-")[1] + "'");
-        		Pais pais = (Pais) q.uniqueResult();
-    			paciente.setPais(pais);
-    		}
-    		if(!pacienteData[9].equals("")){
-    			q = session.createQuery("from Pueblo_originario pueblo where pueblo.codigo= '" + pacienteData[9].split("-")[1] + "'");
-        		Pueblo_originario pueblo_originario = (Pueblo_originario) q.uniqueResult();
-    			paciente.setPueblo_originario(pueblo_originario);
-    		}
-    		if(!pacienteData[10].equals("")){
-    			 q = session.createQuery("from Estado_conyugal estado where estado.codigo= '" + pacienteData[10].split("-")[1] + "'");
-	    		Estado_conyugal estado_conyugal = (Estado_conyugal) q.uniqueResult();
-    			paciente.setEstado_conyugal(estado_conyugal);
-    		}
-    		if(!pacienteData[11].equals("")){
-    			q = session.createQuery("from Religion_culto religion where religion.codigo= '" + pacienteData[11].split("-")[1] + "'");
-        		Religion_culto religion = (Religion_culto) q.uniqueResult();
-    			paciente.setReligion(religion);
-    		}
-    		if(!pacienteData[12].equals("")){
-    			q = session.createQuery("from Instruccion ins where ins.codigo= '" + pacienteData[12].split("-")[1] + "'");
-        		Instruccion instruccion = (Instruccion) q.uniqueResult();
-    			paciente.setInstruccion(instruccion);
-    		}
-    		if(!pacienteData[13].equals("")){
-    			 q = session.createQuery("from Ocupacion ocup where ocup.codigo= '" + pacienteData[13].split("-")[1] + "'");
-	    		Ocupacion ocupacion = (Ocupacion) q.uniqueResult();
-    			paciente.setOcupacion(ocupacion);
-    		}
-    		
-    		if(!pacienteData[14].equals("")){
-    			q = session.createQuery("from Actividad_economica a where a.codigo= '" + pacienteData[14].split("-")[1] + "'");
-    	        Actividad_economica actividad_economica = (Actividad_economica) q.uniqueResult();  
-    			paciente.setActividad_economica(actividad_economica);
-    		}
-    		if(!pacienteData[15].equals("")){
-    			q = session.createQuery("from Prevision prev where prev.codigo= '" + pacienteData[15].split("-")[1] + "'");
-    	        Prevision prevision = (Prevision) q.uniqueResult();
-    			paciente.setPrevision(prevision);
-    		}
-    		if(!pacienteData[16].equals("")){
-    			q = session.createQuery("from Beneficiario_fonasa fonasa where fonasa.codigo= '" + pacienteData[16].split("-")[1] + "'");
-    	        Beneficiario_fonasa beneficiario_fonasa = (Beneficiario_fonasa) q.uniqueResult();
-    			paciente.setBeneficiario_fonasa(beneficiario_fonasa);
-    		}
-    		paciente.setFecha_registro(this.timestamp);
-
-        }
+        	paciente.setFecha_registro(this.timestamp);
+        }	
+        paciente.setNombre(pacienteData[0]);
+    	if(!pacienteData[1].equals("")) paciente.setApellido1(pacienteData[1]);
+		if(!pacienteData[2].equals("")) paciente.setApellido2(pacienteData[2]);
+		if(!pacienteData[5].equals("")){
+			SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
+        	java.util.Date fecha_nacimiento_date= fecha.parse(pacienteData[5]);
+        	java.sql.Date fecha_nacimiento = new java.sql.Date(fecha_nacimiento_date.getTime());
+			paciente.setFecha_nacimiento(fecha_nacimiento);
+		}
+		Query q = null;   		 	
+		if(!pacienteData[6].equals("")){ 
+    		q = session.createQuery("from Genero gen where gen.codigo= '" + pacienteData[6].split("-")[1] + "'");
+    		Genero genero = (Genero) q.uniqueResult();
+			paciente.setGenero(genero);
+		}
+		if(!pacienteData[8].equals("")){
+			q = session.createQuery("from Pais pais where pais.codigo= '" + pacienteData[8].split("-")[1] + "'");
+    		Pais pais = (Pais) q.uniqueResult();
+			paciente.setPais(pais);
+		}
+		if(!pacienteData[9].equals("")){
+			q = session.createQuery("from Pueblo_originario pueblo where pueblo.codigo= '" + pacienteData[9].split("-")[1] + "'");
+    		Pueblo_originario pueblo_originario = (Pueblo_originario) q.uniqueResult();
+			paciente.setPueblo_originario(pueblo_originario);
+		}
+		if(!pacienteData[10].equals("")){
+			 q = session.createQuery("from Estado_conyugal estado where estado.codigo= '" + pacienteData[10].split("-")[1] + "'");
+    		Estado_conyugal estado_conyugal = (Estado_conyugal) q.uniqueResult();
+			paciente.setEstado_conyugal(estado_conyugal);
+		}
+		if(!pacienteData[11].equals("")){
+			q = session.createQuery("from Religion_culto religion where religion.codigo= '" + pacienteData[11].split("-")[1] + "'");
+    		Religion_culto religion = (Religion_culto) q.uniqueResult();
+			paciente.setReligion(religion);
+		}
+		if(!pacienteData[12].equals("")){
+			q = session.createQuery("from Instruccion ins where ins.codigo= '" + pacienteData[12].split("-")[1] + "'");
+    		Instruccion instruccion = (Instruccion) q.uniqueResult();
+			paciente.setInstruccion(instruccion);
+		}
+		if(!pacienteData[13].equals("")){
+			 q = session.createQuery("from Ocupacion ocup where ocup.codigo= '" + pacienteData[13].split("-")[1] + "'");
+    		Ocupacion ocupacion = (Ocupacion) q.uniqueResult();
+			paciente.setOcupacion(ocupacion);
+		}
+		
+		if(!pacienteData[14].equals("")){
+			q = session.createQuery("from Actividad_economica a where a.codigo= '" + pacienteData[14].split("-")[1] + "'");
+	        Actividad_economica actividad_economica = (Actividad_economica) q.uniqueResult();  
+			paciente.setActividad_economica(actividad_economica);
+		}
+		if(!pacienteData[15].equals("")){
+			q = session.createQuery("from Prevision prev where prev.codigo= '" + pacienteData[15].split("-")[1] + "'");
+	        Prevision prevision = (Prevision) q.uniqueResult();
+			paciente.setPrevision(prevision);
+		}
+		if(!pacienteData[16].equals("")){
+			q = session.createQuery("from Beneficiario_fonasa fonasa where fonasa.codigo= '" + pacienteData[16].split("-")[1] + "'");
+	        Beneficiario_fonasa beneficiario_fonasa = (Beneficiario_fonasa) q.uniqueResult();
+			paciente.setBeneficiario_fonasa(beneficiario_fonasa);
+		} 
     	return paciente;
 	}
 	
