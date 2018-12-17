@@ -32,7 +32,7 @@ public class PacienteValidator {
 		if(this.messages.getValidation()){
 			this.messages.setTitle("Su archivo ha sido cargado cargado con Exito! "+ count +" Registro(s) insertados");
 		}else{
-			this.messages.setTitle("La carga no se pudo realizar, por los siguientes motivos:");
+			this.messages.setTitle("La carga no se pudo realizar por los siguientes motivos:");
 		}
 	}
 }

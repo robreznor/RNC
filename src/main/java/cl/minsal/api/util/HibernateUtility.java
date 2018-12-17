@@ -19,14 +19,10 @@ public class HibernateUtility {
     	try{
     		if (factory == null) {
             	Configuration configuration = new Configuration();
-            	System.out.println("1");
             	configuration.configure("hibernate.cfg.xml");
-            	System.out.println("2");
                 ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(
                 configuration.getProperties()).buildServiceRegistry();
-                System.out.println("3");
                 factory = configuration.buildSessionFactory(serviceRegistry);
-                System.out.println("4");
             }
             return factory;
     		

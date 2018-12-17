@@ -1,7 +1,6 @@
 package cl.minsal.api.service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import org.hibernate.Query;
@@ -139,7 +138,7 @@ public class UserService {
 		
 		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
         Session session = sessionFactory.openSession();
-        Query q = session.createQuery("from Usuario u where u.codigo='" + id + "'");
+        Query q = session.createQuery("from Usuario u where u.id_usuario='" + id + "'");
         Usuario usuario =  (Usuario) q.uniqueResult();	 
         session.close();
         return usuario;

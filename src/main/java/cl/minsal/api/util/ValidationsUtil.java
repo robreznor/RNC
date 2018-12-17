@@ -295,7 +295,7 @@ public class ValidationsUtil {
 			if(!DateValidator.isThisDateValid(pacienteData[23], format)){
 				messages.addMessage("La fecha de comité " + pacienteData[23] + " no tiene un formato válido. Recuerde que el formato válido es: Año-Mes-Día" + rut);
 				messages.setValidation(false);
-			}else if(!DateValidator.isThisDateInRange(pacienteData[23], format, null, maxDate)){
+			}else if(!DateValidator.isThisDateInRange(pacienteData[23], format, minDate, maxDate)){
 				messages.addMessage("La fecha " + pacienteData[23] + " no se encuentra en el rango válido. La fecha de comité debe estar en el rango: " + minDate + " - " + maxDate + rut);
 				messages.setValidation(false);	
 			}		
@@ -317,19 +317,19 @@ public class ValidationsUtil {
 		}
 		if(!pacienteData[28].equals("")){
 			if(!tTNMValidation(pacienteData[28], pacienteData[29])){
-				messages.addMessage("T:" + pacienteData[28] + pacienteData[29] + "en T de TNM no es un código válido" + rut);
+				messages.addMessage(pacienteData[28] + pacienteData[29] + " en T de TNM no es un código válido" + rut);
 				messages.setValidation(false);
 			}
 		}
 		if(!pacienteData[30].equals("") && !pacienteData[31].equals("")){
 			if(!nTNMValidation(pacienteData[30], pacienteData[31])){
-				messages.addMessage("T:" + pacienteData[30] + pacienteData[31] + "en N de TNM no es un código válido" + rut);
+				messages.addMessage(pacienteData[30] + pacienteData[31] + " en N de TNM no es un código válido" + rut);
 				messages.setValidation(false);
 			}
 		}
 		if(!pacienteData[32].equals("") && !pacienteData[33].equals("")){
 			if(!mTNMValidation(pacienteData[32], pacienteData[33])){
-				messages.addMessage("T:" + pacienteData[32] + pacienteData[33] + "en M de TNM no es un código válido" + rut);
+				messages.addMessage(pacienteData[32] + pacienteData[33] + " en M de TNM no es un código válido" + rut);
 				messages.setValidation(false);
 			}
 		}
@@ -413,7 +413,7 @@ public class ValidationsUtil {
 	}
 	
 	private static boolean firstNameValidation(String name){
-		return (name.length()<=50 && name.matches( "[a-zA-ZáéíóúÁÉÍÓÚñÑ]*" ));
+		return (name.length()<=50 && name.matches( "[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"));
 	}
 	
 	private static boolean lastNameValidation(String lastname){
