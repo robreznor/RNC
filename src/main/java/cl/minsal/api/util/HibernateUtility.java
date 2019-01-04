@@ -23,6 +23,7 @@ public class HibernateUtility {
                 ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(
                 configuration.getProperties()).buildServiceRegistry();
                 factory = configuration.buildSessionFactory(serviceRegistry);
+                //factory =new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
             }
             return factory;
     		
