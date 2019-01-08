@@ -3,7 +3,6 @@ package cl.minsal.api.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -45,10 +43,20 @@ public class Tratamiento implements Serializable {
 	@JoinColumn(name = "intencion_tratamiento")
     @OneToOne
     private Intencion_tratamiento intencion_tratamiento;
+	
+	@JoinColumn(name="codigo_establecimiento", referencedColumnName = "codigo_establecimiento")
+    @OneToOne
+    private Establecimiento establecimiento;
+	
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
+	}
 	public Integer getId_tratamiento() {
 		return id_tratamiento;
 	}
-	
 	public String getDescripcion_tratamiento() {
 		return descripcion_tratamiento;
 	}

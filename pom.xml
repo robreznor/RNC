@@ -35,63 +35,63 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-orm-4.0.3.RELEASE.jar</systemPath>
+   			<systemPath>${basedir}/libs/spring-orm-4.0.3.RELEASE.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-jdbc-4.0.3.RELEASE.jar</systemPath>
+   			<systemPath>${basedir}/libs/spring-jdbc-4.0.3.RELEASE.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-tx-4.0.3.RELEASE.jar</systemPath>   
+   			<systemPath>${basedir}/libs/spring-tx-4.0.3.RELEASE.jar</systemPath>   
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-context-4.0.3.RELEASE.jar</systemPath>
+   			<systemPath>${basedir}/libs/spring-context-4.0.3.RELEASE.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
+			<version>4.1.6</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-aop-4.0.3.RELEASE.jar</systemPath> 
+   		<systemPath>${basedir}/libs/spring-aop-4.1.6.RELEASE.jar</systemPath> 
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-webmvc-4.0.3.RELEASE.jar</systemPath> 
+   			<systemPath>${basedir}/libs/spring-webmvc-4.0.3.RELEASE.jar</systemPath> 
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-web-4.0.3.RELEASE.jar</systemPath> 
+   			<systemPath>${basedir}/libs/spring-web-4.0.3.RELEASE.jar</systemPath> 
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/spring-core-4.0.3.RELEASE.jar</systemPath> 
+   			<systemPath>${basedir}/libs/spring-core-4.0.3.RELEASE.jar</systemPath> 
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/javax.servlet-api-3.0.1.jar</systemPath>
+   			<systemPath>${basedir}/libs/javax.servlet-api-3.0.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -105,7 +105,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1200-jdbc41</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/postgresql-9.4-1200-jdbc41.jar</systemPath> 
+   			<systemPath>${basedir}/libs/postgresql-9.4-1200-jdbc41.jar</systemPath> 
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -119,7 +119,7 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 			<scope>system</scope>
-   		<systemPath>${basedir}/libs/jstl-1.2.jar</systemPath>
+   			<systemPath>${basedir}/libs/jstl-1.2.jar</systemPath>
 		</dependency>
 		<dependency>
 		    <groupId>commons-collections</groupId>
@@ -280,14 +280,7 @@
 		    <artifactId>aopalliance</artifactId>
 		    <version>1.0</version>
 		    <scope>system</scope>
-    		<systemPath>${basedir}/libs/jackson-databind-2.9.1.jar</systemPath>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aop</artifactId>
-		    <version>4.1.6.RELEASE</version>
-		    <scope>system</scope>
-    		<systemPath>${basedir}/libs/jackson-databind-2.9.1.jar</systemPath>
+    		<systemPath>${basedir}/libs/aopalliance-1.0.jar</systemPath>
 		</dependency>
 		<dependency>
 		    <groupId>org.springframework</groupId>

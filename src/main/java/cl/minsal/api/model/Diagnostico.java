@@ -48,7 +48,17 @@ public class Diagnostico implements Serializable {
 	@JoinColumn(name="tipo_comite")
     @OneToOne
     private Tipos_comite tipos_comite;
-		
+	
+	@JoinColumn(name="codigo_establecimiento", referencedColumnName = "codigo_establecimiento")
+    @OneToOne
+    private Establecimiento establecimiento;
+	
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
+	}
 	public void setEcog(Ecog ecog) {
 		this.ecog = ecog;
 	}

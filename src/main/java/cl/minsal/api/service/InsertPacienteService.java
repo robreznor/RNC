@@ -25,6 +25,7 @@ import cl.minsal.api.model.Beneficiario_fonasa;
 import cl.minsal.api.model.Comuna;
 import cl.minsal.api.model.Diagnostico;
 import cl.minsal.api.model.Ecog;
+import cl.minsal.api.model.Establecimiento;
 import cl.minsal.api.model.Estado_conyugal;
 import cl.minsal.api.model.Genero;
 import cl.minsal.api.model.Instruccion;
@@ -62,13 +63,14 @@ public class InsertPacienteService {
 		return messages;
 	}
 
-	private Paciente InsertPaciente(String[] pacienteData, Paciente paciente, Session session) throws ParseException{
+	private Paciente InsertPaciente(String[] pacienteData, Paciente paciente, Session session, Integer codigo_establecimiento) throws ParseException{
 
         if(paciente == null){
         	paciente = new Paciente();  
         	paciente.setRut(Integer.parseInt(pacienteData[3]));
         	paciente.setDverificador(pacienteData[4]);
         	paciente.setFecha_registro(this.timestamp);
+        	paciente.setEstablecimiento(getEstablecimiento(codigo_establecimiento));
         }	
         paciente.setNombre(pacienteData[0]);
     	if(!pacienteData[1].equals("")) paciente.setApellido1(pacienteData[1]);
@@ -134,7 +136,7 @@ public class InsertPacienteService {
     	return paciente;
 	}
 	
-	private Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente) throws ParseException{
+	private Diagnostico InsertDiagnostico(String[] pacienteData, Paciente paciente, Integer codigo_establecimiento) throws ParseException{
 		
 		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
         Session session = sessionFactory.openSession();
@@ -151,6 +153,7 @@ public class InsertPacienteService {
     	java.sql.Date fecha_diagnostico = new java.sql.Date(fecha_diagnostico_date.getTime()); 
     	java.sql.Date fecha_comite = new java.sql.Date(fecha_comite_date.getTime());
     	
+    	diagnostico.setEstablecimiento(getEstablecimiento(codigo_establecimiento));
 		diagnostico.setTipo_comite(tipo_comite);
 		diagnostico.setFecha_diagnostico(fecha_diagnostico);
 		diagnostico.setFecha_comite(fecha_comite);
@@ -170,7 +173,7 @@ public class InsertPacienteService {
 		return diagnostico;
 	}
 	
-	private Set<Tratamiento> InsertTratamiento(String[] pacienteData, Diagnostico diagnostico, Session session) throws ParseException{
+	private Set<Tratamiento> InsertTratamiento(String[] pacienteData, Diagnostico diagnostico, Session session, Integer codigo_establecimiento) throws ParseException{
 		System.out.println("insertando tratamiento");
 		Set<Tratamiento> tratamientos = new HashSet<Tratamiento>();
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -191,6 +194,7 @@ public class InsertPacienteService {
 	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[40].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
+	        tratamiento.setEstablecimiento(getEstablecimiento(codigo_establecimiento));
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
 			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
@@ -218,7 +222,7 @@ public class InsertPacienteService {
 	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[46].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
-	        
+	        tratamiento.setEstablecimiento(getEstablecimiento(codigo_establecimiento));
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
 			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
@@ -245,6 +249,7 @@ public class InsertPacienteService {
 	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[52].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
+	        tratamiento.setEstablecimiento(getEstablecimiento(codigo_establecimiento));
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
 			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
@@ -271,6 +276,7 @@ public class InsertPacienteService {
 	        q = session.createQuery("from Resolucion_comite res where res.codigo_resolucion= '" + pacienteData[58].split("-")[1] + "'");
 	        Resolucion_comite resolucion_comite = (Resolucion_comite) q.uniqueResult();
 	        
+	        tratamiento.setEstablecimiento(getEstablecimiento(codigo_establecimiento));
 			tratamiento.setTipo_tratamiento(tipo_tratamiento);
 			tratamiento.setIntencion_tratamiento(intencion_tratamiento);
 			tratamiento.setFecha_intencion(fecha_intencion);
@@ -321,7 +327,7 @@ public class InsertPacienteService {
     	return localizacion;
 	}
 	
-	public void InsertData(InputStreamReader csvFile) throws ParseException {
+	public void InsertData(InputStreamReader csvFile, Integer codigo_establecimiento) throws ParseException {
 
         BufferedReader br = null;
         String line = "";
@@ -355,9 +361,9 @@ public class InsertPacienteService {
 		         	Transaction tx1 = session.beginTransaction();
 		    		Query q = session.createQuery("from Paciente p where p.rut= '" + rut + "'");
 		            Paciente paciente_req = (Paciente) q.uniqueResult();
-		        	Paciente paciente = InsertPaciente(data, paciente_req, session);
-		        	Diagnostico diagnostico = this.InsertDiagnostico(data, paciente);
-		        	Set<Tratamiento> tratamientos = this.InsertTratamiento(data, diagnostico, session);
+		        	Paciente paciente = InsertPaciente(data, paciente_req, session, codigo_establecimiento);
+		        	Diagnostico diagnostico = this.InsertDiagnostico(data, paciente, codigo_establecimiento);
+		        	Set<Tratamiento> tratamientos = this.InsertTratamiento(data, diagnostico, session, codigo_establecimiento);
 		        	Antecedentes antecedente = this.InsertAntecedentes(data, session);
 		        	Localizacion localizacion = this.InsertLocalizacion(data, session);    
 		        	session.save(localizacion);
@@ -424,6 +430,19 @@ public class InsertPacienteService {
 	    }
 		
 		
+	}
+	
+	private Establecimiento getEstablecimiento(Integer codigo_establecimiento){
+		try{
+			SessionFactory sessionFactory = HibernateUtility.getSessionFactory(); 
+    		Session session = sessionFactory.openSession();	
+    		Query q = session.createQuery("from Establecimiento e where e.codigo_establecimiento= '" + codigo_establecimiento + "'");
+            Establecimiento establecimiento= (Establecimiento) q.uniqueResult();
+        	return establecimiento;	
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	

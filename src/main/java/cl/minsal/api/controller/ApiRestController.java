@@ -40,6 +40,12 @@ public class ApiRestController {
     	Set<PacienteSearch> pacientes = PacienteDataService.getPacientes();
 		return pacientes;
     }
+	
+	@RequestMapping(value="/api/pacientes", method=RequestMethod.GET)
+    public List<Paciente> pacienteSearch() {
+    	List<Paciente> pacientes = PacienteDataService.getAllPacientes();
+		return pacientes;
+    }
 
 	@RequestMapping(value="/api/paciente/{id}", method=RequestMethod.GET)
 	private Paciente search(@PathVariable Integer id){
@@ -53,9 +59,9 @@ public class ApiRestController {
 		return paciente_data;
 	}
 	
-	@RequestMapping(value = "/api/file_upload", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/file_upload/{codigo_establecimiento}", method = RequestMethod.POST)
     public ValidationMessages singleFileUpload(@Valid FileBucket fileBucket,
-            BindingResult result, ValidationMessages validadorResponse, HttpServletRequest request) throws IOException, ParseException {
+            BindingResult result, ValidationMessages validadorResponse, @PathVariable Integer codigo_establecimiento) throws IOException, ParseException {
 		
         if (result.hasErrors()) {	
         	validadorResponse.setValidation(false);
@@ -68,7 +74,7 @@ public class ApiRestController {
             	if(fileValidation.getValidation()){
             		InputStreamReader file = new InputStreamReader(fileBucket.getFile().getInputStream(), "UTF8");
                 	InsertPacienteService insertar = new InsertPacienteService();
-                    insertar.InsertData(file);
+                    insertar.InsertData(file, codigo_establecimiento);
                     validadorResponse = insertar.getMessages();
             	}else {
             		validadorResponse = fileValidation;

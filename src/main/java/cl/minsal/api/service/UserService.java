@@ -129,6 +129,7 @@ public class UserService {
 		userRes.setId(user.getId_usuario());
 		userRes.setToken(token);
 		userRes.setRole(user.getRole());
+		userRes.setCodigo_establecimiento(user.getEstablecimiento().getCodigo_establecimiento());
 		
 		return userRes;
 		

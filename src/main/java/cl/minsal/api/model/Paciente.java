@@ -34,7 +34,7 @@ public class Paciente implements Serializable {
     @OneToOne
     private Localizacion localizacion;
     
-    @JoinColumn(name="actividad_economica")
+	@JoinColumn(name="actividad_economica")
     @OneToOne
     private Actividad_economica actividad_economica;
     
@@ -57,14 +57,6 @@ public class Paciente implements Serializable {
     @JoinColumn(name="nivel_instruccion")
     @OneToOne
     private Instruccion nivel_instruccion;
-    
-    public Pais getPais() {
-		return pais;
-	}
-
-	public void setPais(Pais pais) {
-		this.pais = pais;
-	}
 
 	@JoinColumn(name="ocupacion")
     @OneToOne
@@ -81,10 +73,37 @@ public class Paciente implements Serializable {
     @JoinColumn(name="religion")
     @OneToOne
     private Religion_culto religion;
+    
+    @JoinColumn(name="codigo_establecimiento", referencedColumnName = "codigo_establecimiento")
+    @OneToOne
+    private Establecimiento establecimiento;
 
 	@OneToMany(mappedBy="paciente")
 	private Set<Diagnostico> diagnostico;
 	
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
+	
+	public Instruccion getNivel_instruccion() {
+		return nivel_instruccion;
+	}
+
+	public void setNivel_instruccion(Instruccion nivel_instruccion) {
+		this.nivel_instruccion = nivel_instruccion;
+	}
+
+	public Establecimiento getEstablecimiento() {
+		return  establecimiento;
+	}
+
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
+	}
 	public Actividad_economica getActividad_economica() {
 		return actividad_economica;
 	}

@@ -1,11 +1,15 @@
 package cl.minsal.api.model;
 
 import static cl.minsal.api.constant.SecurityConstants.SECRET;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
 import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
@@ -32,15 +36,20 @@ public class Usuario {
     private String usuario;
     private String role;
     
+    @JoinColumn(name="codigo_establecimiento", referencedColumnName = "codigo_establecimiento")
+    @OneToOne
+    private Establecimiento establecimiento;
+
 	public Usuario() {
 		super();
 	}
 	
-	public Usuario(String password, String usuario,String role) {
+	public Usuario(String password, String usuario,String role, Establecimiento establecimiento) {
 		super();
 		this.password = password;
 		this.usuario = usuario;
 		this.role = role;
+		this.establecimiento = establecimiento;
 	}
 	
 	public Integer getId_usuario() {
@@ -63,6 +72,12 @@ public class Usuario {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public Establecimiento getEstablecimiento() {
+		return establecimiento;
+	}
+	public void setEstablecimiento(Establecimiento establecimiento) {
+		this.establecimiento = establecimiento;
 	}
  
 }

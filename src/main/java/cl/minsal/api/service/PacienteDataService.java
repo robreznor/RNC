@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.HibernateException;
@@ -169,7 +170,10 @@ public class PacienteDataService {
 			    	String responsablesTratamiento = "";
 			    	String intencion = tratamiento.getIntencion_tratamiento().getNombre();
 			    	String estado = "";
-			    	String fechaIntencion = dateFormatTrat.format(tratamiento.getFecha_intencion());
+			    	String fechaIntencion = "";
+			    	if(tratamiento.getFecha_intencion()!= null) {
+			    		fechaIntencion = dateFormatTrat.format(tratamiento.getFecha_intencion());
+			    	} 
 			    	String tipoTratInd = "";
 			    	tratamientoIndicado.setEstado(estado);
 			    	tratamientoIndicado.setFechaIntencion(fechaIntencion);
@@ -225,7 +229,7 @@ public class PacienteDataService {
 		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
 		try{	
 		    Session session = sessionFactory.openSession();
-		    Query q = session.createQuery("from Paciente p where p.id= '" + id + "'");
+		    Query q = session.createQuery("from Paciente p where p.id_paciente= '" + id + "'");
 		    Paciente paciente = (Paciente) q.uniqueResult();
 		    PacienteData paciente_data = new PacienteData();
 		    paciente_data.setNombre(paciente.getNombre() + ' ' + paciente.getApellido1() + ' ' + paciente.getApellido2());
@@ -268,7 +272,6 @@ public class PacienteDataService {
 
 	        for(int i =0; i< q.list().size(); i++){
 	        	Object[] obj = (Object[]) q.list().get(i);
-	        	System.out.print(obj[0]);
 	        	PacienteSearch paciente = new PacienteSearch((Integer)obj[0], (Integer)obj[1], (String)obj[2], (String)obj[3], (String)obj[4]);
 	        	pacientes.add(paciente);
 	        }   
@@ -278,6 +281,13 @@ public class PacienteDataService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static List<Paciente> getAllPacientes(){
+		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+		Session session = sessionFactory.openSession();
+	    Query q = session.createQuery("from Paciente");
+	    return q.list();
 	}
 	
 	

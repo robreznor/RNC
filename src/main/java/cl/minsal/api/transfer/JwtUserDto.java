@@ -3,11 +3,9 @@ package cl.minsal.api.transfer;
 public class JwtUserDto {
 
     private Long id;
-
     private String username;
-
     private String role;
-
+     
     public Long getId() {
         return id;
     }
