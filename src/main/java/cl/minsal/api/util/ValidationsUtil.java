@@ -411,7 +411,7 @@ public class ValidationsUtil {
 	}
 	
 	private static boolean firstNameValidation(String name){
-		return (name.length()<=50 && name.matches( "[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"));
+		return (name.length()<=50 && name.matches( "[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([.][ ][a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"));
 	}
 	
 	private static boolean lastNameValidation(String lastname){
@@ -579,27 +579,10 @@ public class ValidationsUtil {
 	
 	@Test
 	public void test(){
-//		assertEquals(true,codeIsValid("from Genero u where u.codigo='1'"));
-//		assertEquals(false,codeIsValid("from Genero u where u.codigo='666'"));
-//		assertEquals(false, lastNameValidation("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-//		assertEquals(true, lastNameValidation("rentor"));
-//		assertEquals(true,rutValidation("12.199.237",'K'));
-//		assertEquals(false,rutValidation("965854",'K'));
-//		assertEquals(true, DateValidator.isThisDateValid("11/12/2018","dd/MM/yyyy"));
-//		assertEquals(false, DateValidator.isThisDateValid("11-99-2018","dd/MM/yyyy"));
-//		assertEquals(true, DateValidator.isThisDateInRange("11-12-2018", "dd-MM-yyyy", "10-05-2014", Utils.dateToString(new Date(), "dd-MM-yyyy")));
-//		assertEquals(true, healthServiceValidation("99"));
-//		assertEquals(false, healthServiceValidation("o0as"));
-//		assertEquals(true, tTNMValidation("Tis",""));
-//		assertEquals(true, tTNMValidation("x","a"));
-//		assertEquals(false, tTNMValidation("10","1"));
-//		assertEquals(true, nTNMValidation("N","X"));
-//		assertEquals(false, nTNMValidation("M","11"));
-//		assertEquals(true, mTNMValidation("M","0"));
-//		assertEquals(false, mTNMValidation("N","20"));
-		assertEquals(true, firstNameValidation("juan"));
+		assertEquals(true, firstNameValidation("sanhuesa"));
 		assertEquals(true, firstNameValidation("ñoÑo"));
-		assertEquals(false, firstNameValidation("juan12"));
+		assertEquals(true, firstNameValidation("juanito "));
+		assertEquals(true, firstNameValidation("dr. robert"));
 		assertEquals(false, firstNameValidation("roberto-"));
 		assertEquals(false, firstNameValidation("roberto*{^^^}}"));
 		assertEquals(true, lastNameValidation("mac lean"));
