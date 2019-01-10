@@ -14,7 +14,7 @@
     <global-method-security secured-annotations="enabled" /> 
     
     <http pattern="/login" security="none"/> 
-    <http pattern="/*" security="none"/>
+   	<http pattern="/*" security="none"/>
     <http pattern="/assets/*" security="none"/>
 	
 	<context:component-scan base-package="cl.minsal.api.authentication" />
@@ -24,7 +24,7 @@
         <custom-filter before="FORM_LOGIN_FILTER" ref="jwtAuthenticationFilter"/> 
         <intercept-url pattern="/login" access="permitAll" /> 
         <intercept-url pattern="/users/**" access="hasAuthority('admin')"/>
-        <intercept-url pattern="/register" access="hasAuthority('admin')"/>
+        <intercept-url pattern="/register*" access="hasAuthority('admin')"/>
         <intercept-url pattern="/api/**" access="hasAuthority('user') or hasAuthority('admin')"/>
     </http>
     

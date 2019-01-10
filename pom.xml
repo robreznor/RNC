@@ -12,9 +12,7 @@
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<commons.beanutils>1.8.3</commons.beanutils>
 		<jackson.version>2.9.1</jackson.version>
-		<slf4j.version>1.7.5</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
-		<org.slf4j-version>1.7.2</org.slf4j-version>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<angular.project.location>angular-project</angular.project.location>
@@ -309,7 +307,28 @@
 			<version>${springsecurity.version}</version>
 			<scope>system</scope>
     		<systemPath>${basedir}/libs/spring-security-config-4.0.1.RELEASE.jar</systemPath>
-		</dependency>		
+		</dependency>	
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.6.1</version>
+		    <scope>system</scope>
+		    <systemPath>${basedir}/libs/slf4j-api-1.6.1.jar</systemPath>
+		</dependency>
+		<dependency>
+	    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-simple</artifactId>
+		    <version>1.7.7</version>
+		    <scope>system</scope>
+    		<systemPath>${basedir}/libs/slf4j-simple-1.7.7.jar</systemPath>
+		</dependency>
+		<dependency>
+		    <groupId>antlr</groupId>
+		    <artifactId>antlr</artifactId>
+		    <version>2.7.7</version>
+		    <scope>system</scope>
+    		<systemPath>${basedir}/libs/antlr-2.7.7.jar</systemPath>
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>

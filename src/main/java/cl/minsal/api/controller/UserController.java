@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import cl.minsal.api.model.Establecimiento;
 import cl.minsal.api.model.Usuario;
 import cl.minsal.api.object.UserLoginRequest;
 import cl.minsal.api.object.UserLoginResponse;
@@ -39,12 +40,10 @@ public class UserController {
 
 	@RequestMapping(value="/register", method=RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<Object> register(@RequestBody Usuario user){
-		
-		boolean userExist = UserService.userExist(user.getUsuario());
 		ObjectMapper mapper = new ObjectMapper();
         ObjectNode message = mapper.createObjectNode();
-		if(userExist){	
-	        message.put("message", "El nombre de usuario ingresado ya existe");
+		boolean userValidation = UserService.userValidation(user.getUsuario(), user.getEstablecimiento().getCodigo_establecimiento(), message);
+		if(!userValidation){	
 			return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
 		}
 		boolean insertSuccess = UserService.inserUser(user);
@@ -74,6 +73,11 @@ public class UserController {
 		}else{
 			return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@RequestMapping(value="/institutions", method=RequestMethod.GET)
+	public List<Establecimiento> getEstablecimientos(){
+		return UserService.getEstablecimientos();
 	}
 	
 }

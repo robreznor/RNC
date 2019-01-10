@@ -7,9 +7,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.junit.Test;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import cl.minsal.api.model.Establecimiento;
 import cl.minsal.api.model.Paciente;
 import cl.minsal.api.model.Usuario;
 import cl.minsal.api.object.UserLoginResponse;
@@ -144,5 +146,35 @@ public class UserService {
         session.close();
         return usuario;
 	}
+	
+	
+	public static boolean instExist(Integer codigo_institucion){
+		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        Query q = session.createQuery("select count (*) from Establecimiento e where e.codigo_establecimiento='" + codigo_institucion + "'");
+        boolean instExist =  (Long) q.uniqueResult()>0; 
+        session.close();
+        return instExist;
+	}
+	
+	public static boolean userValidation(String username, Integer codigo_institucion, ObjectNode message){
+		if(userExist(username)){
+			message.put("message", "El nombre de usuario ingresado ya existe");
+			return false;
+		}else if(!instExist(codigo_institucion)){
+			message.put("message", "El código de institución ingresado no es válido");
+			return false;
+		}
+		return true;
+	}	
+	
+	public static List<Establecimiento> getEstablecimientos(){
+		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+		Session session =  sessionFactory.openSession();
+		Query query = session.createQuery("from Establecimiento");
+		List<Establecimiento> establecimientos = query.list();
+		return establecimientos;
+	}
+      
 	
 }
