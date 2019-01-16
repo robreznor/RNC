@@ -29,6 +29,7 @@
         <intercept-url pattern="/login" access="permitAll" /> 
         <intercept-url pattern="/users/*" access="hasAuthority('admin')"/>
         <intercept-url pattern="/register/*" access="hasAuthority('admin')"/>
+        <intercept-url pattern="/stadiscit/**" access="hasAuthority('user') or hasAuthority('admin')"/>
         <intercept-url pattern="/api/**" access="hasAuthority('user') or hasAuthority('admin')"/>
     </http>
     
