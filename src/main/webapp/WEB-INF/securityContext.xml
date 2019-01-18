@@ -14,12 +14,12 @@
     <global-method-security secured-annotations="enabled" /> 
     
     <http pattern="/login" security="none"/> 
-   	<http pattern="/" security="none"/>
     <http pattern="/assets/*.png" security="none"/>
     <http pattern="/*.js" security="none"/>
    	<http pattern="/*.html" security="none"/>     
    	<http pattern="/*.css" security="none"/> 
    	<http pattern="/*.ico" security="none"/>
+   	<http pattern="/" security="none"/> 
 	
 	<context:component-scan base-package="cl.minsal.api.authentication" />
 	
@@ -29,8 +29,9 @@
         <intercept-url pattern="/login" access="permitAll" /> 
         <intercept-url pattern="/users/*" access="hasAuthority('admin')"/>
         <intercept-url pattern="/register/*" access="hasAuthority('admin')"/>
-        <intercept-url pattern="/stadiscit/**" access="hasAuthority('user') or hasAuthority('admin')"/>
+        <intercept-url pattern="/stadiscit/**" access="hasAuthority('user') or hasAuthority('admin') or hasAuthority('basic')"/>
         <intercept-url pattern="/api/**" access="hasAuthority('user') or hasAuthority('admin')"/>
+        <intercept-url pattern="/api/file_upload" access="hasAuthority('basic')"/>
     </http>
     
     <beans:bean id="jwtAuthenticationFilter" class="cl.minsal.api.authentication.JwtAuthenticationFilter">  

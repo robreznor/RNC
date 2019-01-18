@@ -369,8 +369,8 @@
 							<arguments>run build</arguments> 
 						</configuration> 
 					</execution> 
-				</executions> 
-			</plugin> -->
+				</executions>  
+			</plugin> --> 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
